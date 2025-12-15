@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Brahmavidya Guru</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/color/96/om.png">
+    <style>
+        body { margin: 0; background: black; color: white; font-family: -apple-system, sans-serif; display: flex; flex-direction: column; align-items: center; height: 100vh; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.6; }
+        .orb-1 { top: -10%; left: -10%; width: 300px; height: 300px; background: #ff00cc; }
+        .orb-2 { bottom: -10%; right: -10%; width: 350px; height: 350px; background: #333399; }
+        .glass { background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 20px; width: 90%; max-width: 400px; text-align: center; margin-top: 50px; }
+        input, button { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: none; font-size: 16px; }
+        button { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold; }
+        .user-item { background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div id="loginView" class="glass">
+        <h2>🙏 श्री दत्त समर्थ</h2>
+        <input type="password" id="passcode" placeholder="Passcode (1234)">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="dashView" class="hidden" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+        <div class="glass" style="margin-top:20px;">
+            <h3>➕ साधक जोडा</h3>
+            <input type="email" id="email" placeholder="user@gmail.com">
+            <button onclick="addUser()">Access द्या</button>
+            <p id="msg"></p>
+        </div>
+        <div id="list" style="width:90%; max-width:400px; margin-top:20px;"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, updateDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // 🚨 तुमची FIREBASE CONFIG खाली पेस्ट करा 🚨
+        const firebaseConfig = {
+            apiKey: "AIzaSyDL1kQDe1Eqrcg762_5E1VOAqD4OWepWro",
+  authDomain: "adx2122-e0488.firebaseapp.com",
+  projectId: "adx2122-e0488",
+  storageBucket: "adx2122-e0488.firebasestorage.app",
+  messagingSenderId: "199956925239",
+  appId: "1:199956925239:web:e805cd493ccc9e65fae8b2",
+  measurementId: "G-RXEC2N9F3B"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.login = () => {
+            if(document.getElementById('passcode').value === "1234") {
+                document.getElementById('loginView').classList.add('hidden');
+                document.getElementById('dashView').classList.remove('hidden');
+                loadUsers();
+            } else alert("Error");
+        };
+
+        window.addUser = async () => {
+            const email = document.getElementById('email').value;
+            if(!email) return;
+            document.getElementById('msg').innerText = "Wait...";
+            try {
+                await setDoc(doc(db, "users", email), { email, access: true, date: serverTimestamp() });
+                document.getElementById('msg').innerText = "✅ Done!";
+                document.getElementById('email').value = "";
+            } catch(e) { alert(e.message); }
+        };
+
+        window.toggle = async (email, status) => {
+            await updateDoc(doc(db, "users", email), { access: !status });
+        };
+
+        function loadUsers() {
+            onSnapshot(collection(db, "users"), (snap) => {
+                const div = document.getElementById('list');
+                div.innerHTML = "";
+                snap.forEach(d => {
+                    const data = d.data();
+                    div.innerHTML += `
+                        <div class="user-item" style="border-left: 5px solid ${data.access ? '#00e676' : 'red'}">
+                            <div><b>${data.email}</b></div>
+                            <button style="width:auto; padding:5px 15px; margin:0; background:${data.access ? 'red' : 'green'}" 
+                                onclick="toggle('${data.email}', ${data.access})">
+                                ${data.access ? 'Block' : 'Unblock'}
+                            </button>
+                        </div>`;
+                });
+            });
+        }
+        window.toggle = toggle;
+    </script>
+</body>
+</html>
