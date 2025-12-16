@@ -1,4 +1,4 @@
-name: Brahmavidya Guaranteed Build
+name: Brahmavidya Platinum Build
 
 on:
   push:
@@ -15,65 +15,62 @@ jobs:
           
       - run: npm install -g cordova
       
+      # Java 11 हे Android 12 साठी बेस्ट आहे
       - uses: actions/setup-java@v3
-        with: { distribution: 'temurin', java-version: '17' }
+        with: { distribution: 'temurin', java-version: '11' }
 
-      # --- 1. प्रोजेक्ट तयार करणे ---
-      - name: Create Project
+      # --- 1. प्रोजेक्ट तयार करणे (STABLE VERSION) ---
+      - name: Create Project with Stable Android
         run: |
-          # ID फिक्स केला आहे: com.brahmavidya.app
+          # 1. प्रोजेक्ट तयार करणे
           cordova create myapp com.brahmavidya.app "Brahmavidya"
           cd myapp
+          
+          # 2. प्लगइन्स (Whitelist प्लगइन काढून टाकला आहे कारण तो एरर देत होता)
           cordova plugin add cordova-plugin-statusbar
-          cordova plugin add cordova-plugin-network-information
           cordova plugin add cordova-plugin-device
-          cordova plugin add cordova-plugin-whitelist
-          cordova platform add android
+          
+          # 🔥 FIX: आपण मुद्दाम जुने पण स्टेबल व्हर्जन वापरत आहोत (Android 12)
+          # Cordova 14 मुळेच तुमचे ॲप फेल होत होते.
+          cordova platform add android@12.0.0
           cd ..
 
-      # --- 2. सेफ्टी चेक आणि फाईल्स कॉपी करणे ---
-      - name: Smart File Injector
+      # --- 2. फाईल्स आणि फोटो कॉपी करणे ---
+      - name: Smart Copy Files
         run: |
-          echo "Processing files..."
+          echo "Copying user files..."
           
-          # 1. एक 'सेफ' इमेज बनवणे (जर तुमचे फोटो खराब असतील तर हे वापरले जाईल)
-          # हा हिरव्या रंगाचा छोटा बॉक्स आहे.
-          echo "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVGhD7cExAQAAAMKg9U9tCy8gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADmzpAAGqv5J7AAAAAElFTkSuQmCC" | base64 -d > safe.png
-          
-          # 2. फाईल कॉपी फंक्शन (हे चेक करेल की फाईल चांगली आहे का)
-          copy_safe() {
-            FILE=$1
-            if [ -s "$FILE" ]; then
-              echo "✅ Valid File Found: $FILE"
-              cp "$FILE" "myapp/www/$FILE"
-            else
-              echo "⚠️ Corrupt/Missing File: $FILE - Using Backup Safe Image"
-              cp safe.png "myapp/www/$FILE"
-            fi
-          }
-          
-          # 3. जुन्या फाईल्स काढणे
+          # डिफॉल्ट फाईल्स काढणे
           rm myapp/www/index.html myapp/www/css/index.css myapp/www/js/index.js
           
-          # 4. तुमचा कोड कॉपी करणे
+          # तुमचा index.html
           cp index.html myapp/www/
+          
+          # 🔥 FIX: कॅपिटल आणि स्मॉल दोन्ही नावे कॉपी करणे (.jpg आणि .JPG)
+          # तुमच्या स्क्रीनशॉटमध्ये .JPG फाईल्स दिसत होत्या, म्हणून हा बदल केला आहे.
+          cp *.png myapp/www/ || true
+          cp *.jpg myapp/www/ || true
+          cp *.JPG myapp/www/ || true
+          cp *.jpeg myapp/www/ || true
           cp *.html myapp/www/ || true
           
-          # 5. फोटो कॉपी करणे (Smart Way)
-          # आता इथे Error येणार नाही, कारण खराब फोटो असल्यास तो Backup वापरेल.
-          copy_safe "logo.png"
-          copy_safe "login_bg.png"
-          copy_safe "cover.jpg"
-          copy_safe "photo1.jpg"
-          copy_safe "photo2.jpg"
-          
-          # 6. लिस्ट बनवणे
+          # आयकॉन आहे का ते पाहणे
+          if [ -f "myapp/www/logo.png" ]; then
+              echo "✅ Logo found!"
+          else
+              echo "⚠️ Logo missing! Downloading backup..."
+              # जर लोगो नसेल तर तात्पुरता बॅकअप वापरणे (Error टाळण्यासाठी)
+              wget -O myapp/www/logo.png "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"
+          fi
+
+          # लिस्ट बनवणे
           cd myapp/www
           echo "var autoBookList = [" > filelist.js
           for f in *.html; do
             if [ "$f" != "index.html" ]; then
+              # नावात स्पेस असेल तरी चालण्यासाठी फिक्स
               baseName=$(basename "$f" .html)
-              echo "{ name: '$baseName', file: '$f', image: 'cover.jpg' }," >> filelist.js
+              echo "{ name: \`$baseName\`, file: \`$f\`, image: 'cover.jpg' }," >> filelist.js
             fi
           done
           echo "];" >> filelist.js
@@ -83,16 +80,19 @@ jobs:
       - name: Build APK
         run: |
           cd myapp
-          # आयकॉन सेट करणे
+          
+          # Config मध्ये आयकॉन आणि सेटिंग्स
           sed -i '/<widget/a <icon src="www/logo.png" />' config.xml
           sed -i '/<widget/a <preference name="Fullscreen" value="true" />' config.xml
           sed -i '/<widget/a <preference name="Orientation" value="portrait" />' config.xml
           sed -i '/<widget/a <preference name="BackgroundColor" value="0xff000000" />' config.xml
+          sed -i '/<widget/a <preference name="AndroidXEnabled" value="true" />' config.xml
           
-          # बिल्ड कमांड
+          # 🔥 Build Command
           cordova build android --debug
           
+      # --- 4. APK सेव करणे ---
       - uses: actions/upload-artifact@v4
         with:
-          name: Brahmavidya-APK
+          name: Brahmavidya-App
           path: myapp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
