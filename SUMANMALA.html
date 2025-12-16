@@ -1,0 +1,2169 @@
+
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>सुमनमाला - रेट्रो वाचन</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi:ital@0;1&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Retro / Sepia Theme (Default) */
+            --bg-color: #f0e6d2; /* Old Paper color */
+            --text-color: #3b302a; /* Dark Brown Ink */
+            --card-bg: #fdfbf7;
+            --accent-color: #8b4513; /* Saddle Brown */
+            --border-color: #d7c9a8;
+            --shadow: 5px 5px 15px rgba(59, 48, 42, 0.1);
+            --font-main: 'Tiro Devanagari Marathi', serif;
+            --font-header: 'Cinzel', serif;
+            --btn-bg: #e6dcc3;
+        }
+
+        [data-theme="dark"] {
+            /* Night / Dark Retro Theme */
+            --bg-color: #1a1816;
+            --text-color: #cbb89d;
+            --card-bg: #262422;
+            --accent-color: #d4a066;
+            --border-color: #3e3832;
+            --shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --btn-bg: #332f2c;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            margin: 0;
+            padding-top: 80px;
+            transition: all 0.4s ease;
+            font-size: 20px; /* Base larger size */
+            line-height: 1.8;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238b4513' fill-opacity='0.03'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' /%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* --- Retro Header --- */
+        .app-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            background-color: var(--bg-color);
+            border-bottom: 2px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .title-text {
+            font-family: var(--font-header);
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn {
+            background: var(--btn-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-header);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .btn:active { transform: translateY(2px); }
+        .btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+        /* --- Poem Card Design --- */
+        .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+
+        .poem-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 40px;
+            padding: 10px; /* Double border effect outer */
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .card-inner {
+            border: 2px solid var(--border-color); /* Inner border */
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .ornament-top, .ornament-bottom {
+            font-size: 2rem;
+            color: var(--accent-color);
+            opacity: 0.6;
+            margin: 10px 0;
+        }
+
+        .poem-header h2 {
+            font-family: var(--font-main);
+            color: var(--accent-color);
+            margin: 10px 0 20px 0;
+            font-size: 1.6em;
+        }
+
+        .poem-number {
+            font-family: var(--font-header);
+            font-size: 0.8rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 2px;
+        }
+
+        .poem-content {
+            font-size: 1em;
+            white-space: normal; /* Changed from pre-wrap for better centering logic */
+            margin-top: 20px;
+        }
+        
+        /* This handles the poetry formatting nicely */
+        .poem-content br { content: ""; display: block; margin-bottom: 0.2em; }
+
+        /* --- Sidebar (Index) --- */
+        .sidebar {
+            position: fixed; top: 0; left: -320px;
+            width: 300px; height: 100%;
+            background-color: var(--bg-color);
+            border-right: 2px solid var(--accent-color);
+            z-index: 2000;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            padding-top: 80px;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+        }
+        .sidebar.open { left: 0; }
+
+        .toc-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            gap: 15px;
+            align-items: baseline;
+        }
+        .toc-item:hover { background-color: var(--btn-bg); }
+        .toc-id { font-family: var(--font-header); color: var(--accent-color); font-weight: bold; min-width: 30px; }
+        .toc-title { font-weight: 500; }
+
+        /* Controls Group */
+        .controls { display: flex; gap: 10px; }
+        .overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 1500; display: none; backdrop-filter: blur(2px);
+        }
+        .overlay.visible { display: block; }
+
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <button class="btn" onclick="toggleSidebar()">
+             ☰ सूची
+        </button>
+        <div class="title-text">सुमनमाला</div>
+        <div class="controls">
+            <button class="btn" onclick="adjustFont(2)">A+</button>
+            <button class="btn" onclick="adjustFont(-2)">A-</button>
+            <button class="btn" onclick="toggleTheme()" id="theme-btn">☾</button>
+        </div>
+    </header>
+
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+    <div id="sidebar" class="sidebar">
+        <div style="padding: 0 20px; margin-bottom: 20px; color: var(--accent-color); font-family: var(--font-header);">
+            <h3>अनुक्रमणिका</h3>
+        </div>
+        
+    <div class="toc-item" onclick="scrollToPoem('poem-१०')">
+        <span class="toc-id">१०</span>
+        <span class="toc-title">हे जगद्‌गुरु महाराज...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१२')">
+        <span class="toc-id">१२</span>
+        <span class="toc-title">मंगल आरती...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२९')">
+        <span class="toc-id">२९</span>
+        <span class="toc-title">चांपेगौर ती श्रीमूर्ती..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४६')">
+        <span class="toc-id">४६</span>
+        <span class="toc-title">जय सुखाब्धी सुखपरधामा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६३')">
+        <span class="toc-id">६३</span>
+        <span class="toc-title">आरती प्रभु मेरे..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६७')">
+        <span class="toc-id">६७</span>
+        <span class="toc-title">निज बा निज..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६९')">
+        <span class="toc-id">६९</span>
+        <span class="toc-title">चांपेगौरा विशालनेत्रा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७१')">
+        <span class="toc-id">७१</span>
+        <span class="toc-title">मथुरेमध्ये अवतार झाला...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८०')">
+        <span class="toc-id">८०</span>
+        <span class="toc-title">श्रीचक्रेशा त्राही त्राही..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९५')">
+        <span class="toc-id">९५</span>
+        <span class="toc-title">श्रीचक्रधरराया चरणी द्या..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१')">
+        <span class="toc-id">१</span>
+        <span class="toc-title">श्रीदत्तात्रेय कवच</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२')">
+        <span class="toc-id">२</span>
+        <span class="toc-title">प्रार्थना पंचकम् ।।</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३')">
+        <span class="toc-id">३</span>
+        <span class="toc-title">प्रसादसेवा</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४')">
+        <span class="toc-id">४</span>
+        <span class="toc-title">मन-पंचक</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५')">
+        <span class="toc-id">५</span>
+        <span class="toc-title">सकाळची प्रार्थना</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६')">
+        <span class="toc-id">६</span>
+        <span class="toc-title">दुपारची प्रार्थना</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७')">
+        <span class="toc-id">७</span>
+        <span class="toc-title">संध्याकाळची प्रार्थना</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८')">
+        <span class="toc-id">८</span>
+        <span class="toc-title">कनवाळा, मोक्षदायी...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९')">
+        <span class="toc-id">९</span>
+        <span class="toc-title">धन्य धन्य स्वामिया...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१०')">
+        <span class="toc-id">१०</span>
+        <span class="toc-title">हे जगद्‌गुरु महाराज...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-११')">
+        <span class="toc-id">११</span>
+        <span class="toc-title">प्रभो राजसी...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१२')">
+        <span class="toc-id">१२</span>
+        <span class="toc-title">मंगल आरती...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१३')">
+        <span class="toc-id">१३</span>
+        <span class="toc-title">ऊठ जाग कन्हैया..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१४')">
+        <span class="toc-id">१४</span>
+        <span class="toc-title">यशोदा म्हणे बा...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१५')">
+        <span class="toc-id">१५</span>
+        <span class="toc-title">श्रीकृष्णनाथा झडकरी आता...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१६')">
+        <span class="toc-id">१६</span>
+        <span class="toc-title">हे महाराज श्रीदत्त दिगंबर...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१७')">
+        <span class="toc-id">१७</span>
+        <span class="toc-title">बापा तू ऊठ बा...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१८')">
+        <span class="toc-id">१८</span>
+        <span class="toc-title">उठा उठा श्रीदत्त दयाघन...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१९')">
+        <span class="toc-id">१९</span>
+        <span class="toc-title">उठोनि प्रातःकाळी...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२०')">
+        <span class="toc-id">२०</span>
+        <span class="toc-title">आरती मनोभावे...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२१')">
+        <span class="toc-id">२१</span>
+        <span class="toc-title">ऊठ रे ऊठ बापा...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२२')">
+        <span class="toc-id">२२</span>
+        <span class="toc-title">सुंदर मूर्ती श्रीदत्ता...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२३')">
+        <span class="toc-id">२३</span>
+        <span class="toc-title">प्रातःकाळी आठवा श्रीचक्रपाणि...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२४')">
+        <span class="toc-id">२४</span>
+        <span class="toc-title">उठा हो उठा हो...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२५')">
+        <span class="toc-id">२५</span>
+        <span class="toc-title">उठा उठा श्रीचक्रधर राया...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२६')">
+        <span class="toc-id">२६</span>
+        <span class="toc-title">आरती मनोभावे श्रीचक्रधररायासि...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२७')">
+        <span class="toc-id">२७</span>
+        <span class="toc-title">डोमेग्रामी पूजा त्रिकाळ आरती अवसरा...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२८')">
+        <span class="toc-id">२८</span>
+        <span class="toc-title">तुम्हा स्नान घालितो ..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-२९')">
+        <span class="toc-id">२९</span>
+        <span class="toc-title">चांपेगौर ती श्रीमूर्ती..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३०')">
+        <span class="toc-id">३०</span>
+        <span class="toc-title">विडा घ्या श्रीचक्रधरा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३१')">
+        <span class="toc-id">३१</span>
+        <span class="toc-title">जय जय दत्तदयाल...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३२')">
+        <span class="toc-id">३२</span>
+        <span class="toc-title">पंचअवतार तुम्ही..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३३')">
+        <span class="toc-id">३३</span>
+        <span class="toc-title">नमो पंच अवतार..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३४')">
+        <span class="toc-id">३४</span>
+        <span class="toc-title">म्हणे बाईसा सर्वज्ञांना..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३५')">
+        <span class="toc-id">३५</span>
+        <span class="toc-title">भक्ती मुक्ती सुखदायक..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३६')">
+        <span class="toc-id">३६</span>
+        <span class="toc-title">हीन दीन मी मज..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३७')">
+        <span class="toc-id">३७</span>
+        <span class="toc-title">नित्य नेम मध्यान्ह..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३८')">
+        <span class="toc-id">३८</span>
+        <span class="toc-title">मेरुवाळा तटी..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-३९')">
+        <span class="toc-id">३९</span>
+        <span class="toc-title">प्रभुराजा सृष्टीचा...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४०')">
+        <span class="toc-id">४०</span>
+        <span class="toc-title">जय नमो अत्रितनुजनंदा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४१')">
+        <span class="toc-id">४१</span>
+        <span class="toc-title">पंचमगोत्र परमेशर...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४२')">
+        <span class="toc-id">४२</span>
+        <span class="toc-title">तो श्रीदत्त, प्रभु समर्थ..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४३')">
+        <span class="toc-id">४३</span>
+        <span class="toc-title">जय जय अवधूत प्रभुराया..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४४')">
+        <span class="toc-id">४४</span>
+        <span class="toc-title">श्रीदत्तराज महाराज गाजतो..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४५')">
+        <span class="toc-id">४५</span>
+        <span class="toc-title">जयदेव जयदेव वृष्णिपति..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४६')">
+        <span class="toc-id">४६</span>
+        <span class="toc-title">जय सुखाब्धी सुखपरधामा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४७')">
+        <span class="toc-id">४७</span>
+        <span class="toc-title">ओवाळू आरती तुजला..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४८')">
+        <span class="toc-id">४८</span>
+        <span class="toc-title">आरती कुंजबिहारी की..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-४९')">
+        <span class="toc-id">४९</span>
+        <span class="toc-title">जय अत्रीकुमारा...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५०')">
+        <span class="toc-id">५०</span>
+        <span class="toc-title">जय जय आरती करुनि..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५१')">
+        <span class="toc-id">५१</span>
+        <span class="toc-title">धूपदीप चंदन सुगंध..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५२')">
+        <span class="toc-id">५२</span>
+        <span class="toc-title">जय जय गोविंद..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५३')">
+        <span class="toc-id">५३</span>
+        <span class="toc-title">जय जय स्वामी..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५४')">
+        <span class="toc-id">५४</span>
+        <span class="toc-title">मातुलग्रामी काणव..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५५')">
+        <span class="toc-id">५५</span>
+        <span class="toc-title">नमो जयजय..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५६')">
+        <span class="toc-id">५६</span>
+        <span class="toc-title">आरती ब्रह्मरूपा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५७')">
+        <span class="toc-id">५७</span>
+        <span class="toc-title">जयतु मंगलमय..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५८')">
+        <span class="toc-id">५८</span>
+        <span class="toc-title">जय हो मौनदेवा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-५९')">
+        <span class="toc-id">५९</span>
+        <span class="toc-title">जय नमो विघ्नमर्दना..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६०')">
+        <span class="toc-id">६०</span>
+        <span class="toc-title">श्रीआबासाहेबा बाबासाहेबा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६१')">
+        <span class="toc-id">६१</span>
+        <span class="toc-title">आरती करू विदर्भवरा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६२')">
+        <span class="toc-id">६२</span>
+        <span class="toc-title">च्यारी मासामध्ये..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६३')">
+        <span class="toc-id">६३</span>
+        <span class="toc-title">आरती प्रभु मेरे..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६४')">
+        <span class="toc-id">६४</span>
+        <span class="toc-title">आता हो स्वामी सुखे हो..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६५')">
+        <span class="toc-id">६५</span>
+        <span class="toc-title">घेई झोप प्रभु आता..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६६')">
+        <span class="toc-id">६६</span>
+        <span class="toc-title">निद्रा घ्या आता..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६७')">
+        <span class="toc-id">६७</span>
+        <span class="toc-title">निज बा निज..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६८')">
+        <span class="toc-id">६८</span>
+        <span class="toc-title">जय श्रीअच्युता कृपा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-६९')">
+        <span class="toc-id">६९</span>
+        <span class="toc-title">चांपेगौरा विशालनेत्रा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७०')">
+        <span class="toc-id">७०</span>
+        <span class="toc-title">प्रभु कृष्ण नामाने...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७१')">
+        <span class="toc-id">७१</span>
+        <span class="toc-title">मथुरेमध्ये अवतार झाला...</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७२')">
+        <span class="toc-id">७२</span>
+        <span class="toc-title">प्रायश्चित्त चौक</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७३')">
+        <span class="toc-id">७३</span>
+        <span class="toc-title">डोमेग्रामी महाराज..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७४')">
+        <span class="toc-id">७४</span>
+        <span class="toc-title">ईशरासि जडले..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७५')">
+        <span class="toc-id">७५</span>
+        <span class="toc-title">पूर्वजोड ही..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७६')">
+        <span class="toc-id">७६</span>
+        <span class="toc-title">वंदन करितो श्रीचक्रधरा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७७')">
+        <span class="toc-id">७७</span>
+        <span class="toc-title">जगतीत नसे बा कोणी..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७८')">
+        <span class="toc-id">७८</span>
+        <span class="toc-title">स्मरण करतील..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-७९')">
+        <span class="toc-id">७९</span>
+        <span class="toc-title">मज दीनाचे कोटी..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८०')">
+        <span class="toc-id">८०</span>
+        <span class="toc-title">श्रीचक्रेशा त्राही त्राही..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८१')">
+        <span class="toc-id">८१</span>
+        <span class="toc-title">अतिश्रमला जीव..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८२')">
+        <span class="toc-id">८२</span>
+        <span class="toc-title">निशीदिनी आठवा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८३')">
+        <span class="toc-id">८३</span>
+        <span class="toc-title">कैसी अगम्य लीळा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८४')">
+        <span class="toc-id">८४</span>
+        <span class="toc-title">श्रीदत्तराया साह्य कराया..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८५')">
+        <span class="toc-id">८५</span>
+        <span class="toc-title">श्रीचक्रधर स्वामी ते सोडुनि..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८६')">
+        <span class="toc-id">८६</span>
+        <span class="toc-title">श्रीचक्रधरा तुज भेटाया..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८७')">
+        <span class="toc-id">८७</span>
+        <span class="toc-title">आज्ञा मी भंगिली..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८८')">
+        <span class="toc-id">८८</span>
+        <span class="toc-title">श्रीचक्रधराराया जळते मन..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-८९')">
+        <span class="toc-id">८९</span>
+        <span class="toc-title">मज दर्शन द्या हो..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९०')">
+        <span class="toc-id">९०</span>
+        <span class="toc-title">सेंदुर्जन गावासि एकांकीच्या..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९१')">
+        <span class="toc-id">९१</span>
+        <span class="toc-title">श्रीचक्रधरा स्वामीराया..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९२')">
+        <span class="toc-id">९२</span>
+        <span class="toc-title">कोटी हमारे तुम्हे..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९३')">
+        <span class="toc-id">९३</span>
+        <span class="toc-title">क्षणभर उघड नयन..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९४')">
+        <span class="toc-id">९४</span>
+        <span class="toc-title">श्रीमूर्तीच्या लीळा..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९५')">
+        <span class="toc-id">९५</span>
+        <span class="toc-title">श्रीचक्रधरराया चरणी द्या..</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९६')">
+        <span class="toc-id">९६</span>
+        <span class="toc-title">अनुताप व्यंजक प्रबंध</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९७')">
+        <span class="toc-id">९७</span>
+        <span class="toc-title">प्रातः पूजावसर</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९८')">
+        <span class="toc-id">९८</span>
+        <span class="toc-title">मध्यान्ह पूजावसर</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-९९')">
+        <span class="toc-id">९९</span>
+        <span class="toc-title">सायंपूजावसर</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१००')">
+        <span class="toc-id">१००</span>
+        <span class="toc-title">ऋद्धिपूर पूजावसर</span>
+    </div>
+    
+    <div class="toc-item" onclick="scrollToPoem('poem-१०१')">
+        <span class="toc-id">१०१</span>
+        <span class="toc-title">आमुचा भारत भूवर..</span>
+    </div>
+    
+    </div>
+
+    <div class="container">
+        
+    <div id="poem-१०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १०</span>
+                <h2>हे जगद्‌गुरु महाराज...</h2>
+            </div>
+            <div class="poem-content">प्रार्थना</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १२</span>
+                <h2>मंगल आरती...</h2>
+            </div>
+            <div class="poem-content">सकाळच्या आरत्या</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २९</span>
+                <h2>चांपेगौर ती श्रीमूर्ती..</h2>
+            </div>
+            <div class="poem-content">दुपारच्या आरत्या</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४६</span>
+                <h2>जय सुखाब्धी सुखपरधामा..</h2>
+            </div>
+            <div class="poem-content">संध्याकाळच्या आरत्या</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६३</span>
+                <h2>आरती प्रभु मेरे..</h2>
+            </div>
+            <div class="poem-content">निद्रेच्या आरत्या</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६७</span>
+                <h2>निज बा निज..</h2>
+            </div>
+            <div class="poem-content">मूर्तीवर्णन</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६९</span>
+                <h2>चांपेगौरा विशालनेत्रा..</h2>
+            </div>
+            <div class="poem-content">पाळणा</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७१</span>
+                <h2>मथुरेमध्ये अवतार झाला...</h2>
+            </div>
+            <div class="poem-content">स्तवन</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८०</span>
+                <h2>श्रीचक्रेशा त्राही त्राही..</h2>
+            </div>
+            <div class="poem-content">जीवेशर संवाद-</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९५</span>
+                <h2>श्रीचक्रधरराया चरणी द्या..</h2>
+            </div>
+            <div class="poem-content">स्तोत्रसंग्रह</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १</span>
+                <h2>श्रीदत्तात्रेय कवच</h2>
+            </div>
+            <div class="poem-content">तम् वन्दे श्रीगुरुदत्तम्, दत्तदेवम् जगद्गुरुम् ।<br>निष्कलम् निर्गुणम् वन्दे, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।१।।<br>सुरेशैर्वन्दितम् देवम् त्रैलोक्यलोकवन्दितम् ।<br>हरिहरात्मभूवंद्यम्, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।२।।<br>ब्रह्मलोकेषु भूतेषु, शंखचक्रगदाधरम् ।<br>पाणिपात्रधरम् देवम्, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।३।।<br>निर्मलम् रक्तवर्णम् च, सुंदरम् स्वांग शोभितम् ।<br>सुलोचनम् विशालाक्षम्, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।४।।<br>विभूतिशोभितम् देहम्, हारकेयुरराजितम् ।<br>अनन्यकरुणाकारम्, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।५।।<br>विभूतियुक्तभालम् च, जटामुकुटमंडितम् ।<br>सुदीप्तौ कुण्डलौ कर्णे, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।६।।<br>प्रसन्नवदनम् देवम्, भुक्तिमुक्तिप्रदायकम् ।<br>त्वाम् नमामि जगत्रात्, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।७।।<br>राजराजम् महाराजम्, कार्तवीर्यवरप्रदम् ।<br>सुभद्रम् भद्रकल्याणम्, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।८।।<br>अनसूयोदराज्जातम्, अत्रिमुनिसमुद्भवम् ।<br>विरक्तैर्योगिभिज्ञेयम्, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।९।।<br>दिगम्बरम् तनुश्रेष्ठम्, ब्रह्मचारी व्रतेस्थिम् ।<br>भिक्षुम् च दण्डिनम् चैव, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।१०।।<br>कदायोगैः कदाभोगैः, बाललीलाभिः शोभितम् ।<br>दशनरत्नपक्तिम् च, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।११।।<br>भूतबाधा भयोन्माद, ग्रहपीडा तथैव च ।<br>दारिद्य व्यसनहरम्, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।१२।।<br>चतुर्दश्याम् भृगौ घस्रे, जन्म मार्गशीर्षे शुभे।<br>यस्य तम् तारकम् वदे, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।१३।।<br>रक्तोत्पलदलपादम्, सर्वतीर्थप्रकाशकम् ।<br>वन्दितम् योगिभिः सर्वे, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।१४।।<br>ज्ञानिनम् साक्षिणम् देवम्, गतिर्मोक्षप्रदायकम् ।<br>आत्मभूवम् वरम् कृष्णम्, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।१५।।<br>भृगूक्तैर्मधुरैवाक्यैः, श्रीदत्तात्रेय स्तुतिपरैः ।<br>साक्षादव्यक्तम् स्वयम् ब्रह्म, श्रीदत्तात्रेय ! नमोऽस्तु ते ।।१६।।<br>प्राणिनाम् सर्वजातिनाम्, कर्मपाशप्रभञ्जकम् ।<br>श्रीदत्तात्रेय स्तुतिस्तोत्रम्, सर्वकार्यविधायकम् ।।१७।।<br>अपुत्रो लभते पुत्रम्, धनधान्यसमन्वितम् ।<br>राजमान्यो भवेत् लक्ष्मीम् अप्राप्ताम् लभते क्षणात् ।।१८।।<br>त्रिसन्ध्ये जपमानस्य, श्रीदत्तात्रेय स्तुतिपराम् ।<br>तस्यरोगभयम् नास्ति, दीर्घायुर्विजयि भवेत् ।।१९।<br>कृष्माण्डाः डाकिनी यक्षाः, पिशाचाः ब्रह्मराक्षसाः ।<br>स्तोत्र श्रवणमात्रेण, नश्यन्ति नात्रसशयः ।।२०।।<br>एकविंशति श्लोकानाम्, यः सहस्रं जपेन्नरः ।<br>प्रयतः प्रातरू त्थाय, साक्षाद्देवम् स पश्यति ।। २१ ।।<br>।। इति श्रीदत्तात्रेय कवच संपूर्ण ।।<br>ते सौहार्द नितांत निर्गुण असे धर्मास संरक्षण । ते माधुर्यप्रपूर्ण भाषण तिचे होते सुखा कारण । स्नेहे ती भगिनी नव्हेच जननी, होतो आम्ही बालके । देण्या प्रेमसुखा स्वकीय तनया नेली जगच्चालके ।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २</span>
+                <h2>प्रार्थना पंचकम् ।।</h2>
+            </div>
+            <div class="poem-content">चरणकमलपारं मध्यसौंदर्यकारम् ।<br>हृदयनिगमसारं धीरदोर्दण्डशूरम् ।<br>अधरममृतधारं नेत्रतापापहारम् ।<br>स्मरति तमभिवंदे चक्रपाणि सुगौरम् ।।१।।<br>नयनश्रवणजिव्हा मानसम् वाऽपराधम् ।<br>विदितमविदितम् वा सर्वमेतद् क्षमध्वम् ।<br>करचरणकृतं वाक्कायजम् कर्मजम् वा ।<br>निर्लज्जम् कृपणं कृतघ्नमशुचिम् बव्हाशनम् हिंसकम् । आशापाशशतैर्विबद्धमनसम् दुष्कीर्तिभाजम् जडम् ।<br>जयजयकरुणाब्धे ! श्रीपते! मे मुकुंदम् ।।२।।<br>क्रूरं नष्टतमम् विनष्टमनसम् भ्रष्टम् षठम् निष्ठुरम् ।<br>कारुण्याकर ! भूपते ! यदुपते ! दोषाकरं पाहि माम् ।।३।।<br>न भक्तिश्च न वैराग्यम् न ज्ञानम् न गुणो मयि ।<br>ईदृशम् पाहि मामीश ! सदा दोषार्णवम् प्रभो ! ।।४।।<br>पापोऽहं पापकर्माऽहं पापात्मा पापसंभवः ।<br>त्राहि माम् कृपया देव ! शरणागत वत्सल ! ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३</span>
+                <h2>प्रसादसेवा</h2>
+            </div>
+            <div class="poem-content">पंचकृष्ण प्रणम्यादौ लीलाविग्रहधारिणम् ।<br>पवित्रमघहन्तारं चित्परं केवलं विभुम् ।।१।।<br>श्रीमच्चक्रधरादीनाम् पदांघ्रिस्पर्शिते भुवि ।<br>स्थानमात्रे नमस्कारः कराभ्यां क्रियते मया ।।२।।<br>धातुकाष्टपाषाणाश्च दशनं नखकुर्चके ।<br>वस्त्रचर्म तथा रोम पृथक् मे जायते नमः ।।३।।<br>शाब्दापरोक्षसामान्यविशेषज्ञानिस्तथा ।<br>भक्ताश्चाष्टौ तथा सर्वे पृथक् मे जायते नमः ।।४।।<br>वेधादि बोधवंतश्च भिक्षुर्वासनिक इति ।<br>साधनाय नमस्कारः पतितोऽपि नमस्कृतः ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४</span>
+                <h2>मन-पंचक</h2>
+            </div>
+            <div class="poem-content">वसुदेवसुतं देवं कंसचाणुरमर्दनम् ।<br>देवकी परमानंदं श्रीकृष्णं वन्दे जगद्‌गुरुम् ।।१।।<br>सह्याद्रीशिखरे रम्ये अनसूयात्रिनंदनम् ।<br>तं वन्दे परमानंदं श्रीदत्तात्रेयं जगद्गुरुम् ।।२।।<br>फलस्थनगरे जातं द्वारावत्यां निवासिनम् ।<br>नौम्यहं श्रीचक्रपाणिं तं जनकद्विजनंदनम् ।।३।।<br>नेमाम्बोदरसंभूतं काण्वादनंतनायकात् ।<br>श्रीप्रभुं नमामि गोविन्दं जीवाविद्याविभंजकम् ।।४।।<br>मालिनीपरमानंदं वन्दे श्रीचक्रधरं विभूम् ।।५।।<br>पुत्रं विशालदेवस्य नित्यमुक्तिप्रदायकम् ।<br>त्वमेव माता च पिता त्वमेव ।<br>त्वमेव बंधुश्च सखा त्वमेव ।<br>त्वमेव विद्या द्रविणं त्वमेव ।<br>त्वमेव सर्वं मम देवदेवम् ।।<br>पापोऽहं पापकर्माहं पापात्मा पापसंभवः ।<br>त्राहि मां कृपया देव ! शरणागत वत्सल ! ।।<br>सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयः ।<br>सर्वे भद्राणि पश्यन्तु मा कश्चिद् दुःखभाग्भवेत् ।।<br>प्राणिनाम् सर्वजातिनाम्, कर्मपाशप्रभञ्जकम् ।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५</span>
+                <h2>सकाळची प्रार्थना</h2>
+            </div>
+            <div class="poem-content">प्रभात काळी जननी यशोदा,<br>उठी उठी बा म्हणे मुकुंदा ।<br>येति पुढे हे खग गोधनाचे,<br>उभे केले सत्वर केधवाचे ।<br>गोपाळ येति तुजला बहाति,<br>गोविंद दामोदर नाम घेति ।।१।।<br>प्रभात काळी सह्याचळासि,<br>उपहुड झाला प्रभु राउळासि<br>मुनिवृंद उभे रायांगणासि,<br>सुरवर दुंदुभी गर्जे आकाशी ।।२।।<br>प्रातःसमयी श्रीचक्रपाणि,<br>फलस्थ ग्रामी जनकाइ धामी ।<br>रंभाइसाचा निजप्रिय ताता,<br>जिवास चिंती सदा हितकर्ता ।।३।।<br>उषान्त काळी प्रभु रिद्धपुरी,<br>स्वच्छंदलीळा कृपया विहारी ।<br>नासौनि दुःखे विमळा कृर्मीचे,<br>करी प्राप्त स्वामी अधिकार त्यांचे ।।४<br>पश्चात प्रहरी तो राजविहारी,<br>चिंतित जिवा सदा हितकारी ।<br>नागांबा प्रश्ने प्रभु थाप चिंती,<br>रूपांबा प्रश्ने प्रभु जीव चिंती ।।५।।<br>हारौनि बाधा कुळपंचचार्या,<br>वामनपेंधी जिववी सुभार्या ।<br>श्रीमृत्युंजया विनवी पुजारी,<br>नासौनि दुःखे भवरोग हारी ।।६।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६</span>
+                <h2>दुपारची प्रार्थना</h2>
+            </div>
+            <div class="poem-content">पांचाळेशरी गौतमी तटतिरी मध्यान्ह काळी प्रभु।<br>नित्याने करी भोजन सुरपती त्या आत्मतीर्थी विभु ।<br>सायंकाळ प्रवर्तता गत करी मातापुरी पहुड हो ।<br>ऐसा खेळ करी सह्याद्री शिखरी सृष्ट्यंतरी नित्य हो ।।<br>मध्यान्ह काळी क्षेत्र पांचाळपुरी ।<br>नित्यानी येतो प्रभु रवी स्थिर काळी ।<br>जय जय शब्दी दुंदुभी गर्जे निराळी ।<br>प्रसन्न दृष्टी प्रभु संत मेळी ।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७</span>
+                <h2>संध्याकाळची प्रार्थना</h2>
+            </div>
+            <div class="poem-content">मला वाटते ऋद्धपुरासि जावे,<br>प्रभु चरणी मस्तक हे ठेवावे ।<br>तृषा लागली स्वामीचे तीर्थ घ्यावे,<br>लडीवाळ मी मागतो प्रेम द्यावे ।<br>महाद्वारी उभे श्रीप्रभु चरणचारी,<br>क्रीडे राजमठी त्रिपुरुषी आवारी ।<br>विचारु चिरा उखळी गुढयासी,<br>नमस्कार माझा जडा चेतनासि ।<br>चिरेबंदी वाडा प्रभु राउळांचा,<br>महाद्वारी थाट चहु साधनांचा ।<br>सखा नांदतो देव भक्तीजनांचा,<br>नमस्कार साष्टांग या सेवकाचा ।<br>जय जय दनुजारी देवदेवा मुरारी,<br>तुजविण भवसागरी कवण दासासि तारी ।<br>निशिदिनी बत मारी पावलो दंडभारी,<br>शरण चरण शौरी दैन्य माझे निवारी ।<br>तुजविण मज देवा रक्षिता कवण आहे,<br>सकळ जन विसावा बंधु तू बापमाये ।<br>कवण गत करीसि कवण ठायासि नेसि,<br>जयजय हृषिकेशी शिणलो गर्भवासी ।।०।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८</span>
+                <h2>कनवाळा, मोक्षदायी...</h2>
+            </div>
+            <div class="poem-content">कनवाळा, मोक्षदायी वेल्हाळा, तुजसि बा नमितो ।<br>नमितो बा, नमितो माझे बाबा, खचितचि हा दास ।<br>दास हा, खचितचि पापी महा, निष्हूर मतिमंद ।<br>मंदमती, निष्छूर मजसम जगती, जीव ना कोणी ।<br>कोणी ना, जीवउद्धारक भूवना, मजसि तुजविणा ।<br>तुजविणा, मजसि नाही राणा, नित्यही प्राणसखा ।<br>परमेशा, दयाब्धी तू अविनाशा, सच्चिदानंदा ।<br>प्राणसखा, नित्यही पाठीराखा, दयाब्धी परमेशा ।<br>आनंदा, सच्चित् मिळौनि कंदा, शोभे त्रयअंशी ।<br>त्रयअंशी, शोभे ईशर तुजसि, नाम या सृष्टी ।<br>सृष्टी या, नाम धरुनि राया, व्यक्त झालासि ।<br>झालासि, व्यक्त स्वयं स्वरूपासि, जीवाकारण ।<br>कारण, जीवा द्यावया दान, आनंद आपुला ।<br>आपुला, आनंद मज गरिबाला, हीच तृष्णा ही ।<br>तृष्णा ही, हीच एकली पाही, प्रेमदासाची ।<br>दासाची, प्रेम ही तृष्णा साची, मोक्ष कनवाळा ।<br>कनवाळा, मोक्षदायी वेल्हाळा, तुजसि बा नमितो ।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९</span>
+                <h2>धन्य धन्य स्वामिया...</h2>
+            </div>
+            <div class="poem-content">धन्य धन्य स्वामिया अवधूता, योगिया मुनिवरा ।<br>सकळ साक्षी तू अससि गुरुकुळा, चिदृप चिन्मयवरा ।।<br>पूर्ण ब्रह्म परधाम परात्पर, मुनिरंजन अच्युता ।<br>भवार्णवी बुडता तारी तू, संसृतिमुळछेदका ।<br>भक्ततिल्लका अत्रिकुमारा, वससि सह्यांगिरी ।<br>सकळ जना पावसि कृपाळा, प्रेम देई झडकरी ।<br>अगम्य अगोचर अनाम गुणमय, अगम्य पूर्णकृपा ।<br>देववृंद मुनिवृंद चिंतीति, पार नसे तवं रूपा ।<br>बद्रिकाश्रमी तत्वज्ञान तू, कथीसि योगीजना ।<br>स्नान काशीचे सारुनि राया, आत्मतीर्थी भोजना ।<br>मातापूर हे पवित्र स्थान, निद्रेला वारीसि ।<br>प्रेमसुखाचा दुर्ग उभविला, ठाव देई मजसि ।<br>हे कल्पदृमा अनुपमा, संकष्टी पाव आम्हा ।<br>भव ऋषीकुलोत्पन्ना, सुंदरा प्रेमधामा ।<br>दास तुझा मी ठाव द्यावया विसरू नको प्रभुवरा ।<br>भक्तवत्सला ब्रीद तुझे हे वदति गुणगंभीरा ।<br>हे अत्रिसुता गुरुदत्ता, पावसि जना अवधूता प्रभुवरा ।<br>हे पापताप दैन्याते, वारी भवारि दुःखाते प्रभुवरा ।<br>करुणाब्धी करुणावंता, हे प्रभो दयाघन त्राता प्रभुवरा ।<br>कैवल्यसुखाचा धाम, आत्मया राम, सकल जगतासि ।<br>गोविंददास चरणासि प्रभुवरा । अमृतदास चरणासि प्रभुवरा ।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १०</span>
+                <h2>हे जगद्‌गुरु महाराज...</h2>
+            </div>
+            <div class="poem-content">हे जगद्‌गुरु महाराज सुखाचा दानी, सुखाचा दानी ।<br>नांदतो सह्यांचळ स्थळ निर्मळ पाहुनि ।<br>ऋषी अत्री पिता अनसूया, जयाची जननी २।<br>तो पूर्णब्रह्म अवतार व्यक्तला अवनी ।।१।।<br>अतिशुभ्र उटी चंदनादि, परिमळ भरुनि २।<br>रेखिला टीळामृत नाभीज मिश्रित करुनि ।।२।।<br>तू प्रेमसुखाचा दानी प्रभुवरा ।<br>तवं पदी ठाव नित्यानी प्रभुवरा ।।३।।<br>हे भक्तवत्सला ज्ञानधनाचा तरणी २।<br>अज्ञानतमी करी प्रकाश तवं तेजानी ।।४।।<br>प्रार्थना</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-११" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ११</span>
+                <h2>प्रभो राजसी...</h2>
+            </div>
+            <div class="poem-content">प्रभो राजसी तामसी मी विकारी ।<br>विकल्पी आणि हिंसकु मीच भारी ।<br>भूता देवतादि पात्रांचा विक्षोभ झाला ।<br>क्षमा कर दयाळा, क्षमा कर दयाळा ।।१।।<br>कखाई असे निंदकु आत्मघाती ।<br>वरि वर्मस्पर्शी कुटिलादि दोषी ।<br>परतारकु अंतरी ना जिव्हाळा ।<br>क्षमा कर दयाळा, क्षमा कर दयाळा ।।२।।<br>भके पात्र विरागी मी ज्ञानियाला ।<br>करी मार्गद्रोह गुरु ईशराला ।<br>महाप्रसव नित्यनरकास गेला।<br>क्षमा कर दयाळा, क्षमा कर दयाळा ।।३।।<br>महानिष्ठुरा लाजहीना क्रूराचा ।<br>सदा भ्रष्ट रे वंचकु तस्कराचा ।<br>महादुर्गुणी वेल वाढीस गेला।<br>क्षमा कर दयाळा, क्षमा कर दयाळा ।।४।।<br>कृपाळु दयाळु तू औदार्यवंता ।<br>आभाळाहुनि थोर या दोषवंता ।<br>तुला अधमाचा जरी वीट आला ।<br>क्षमा कर दयाळा, क्षमा कर दयाळा ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १२</span>
+                <h2>मंगल आरती...</h2>
+            </div>
+            <div class="poem-content">जयतु मंगल मंगला । परममंगळरूपा ।। धृ.।।<br>जीव उद्धरण कारण आयो । आनंदमय स्वरूपा ।१।<br>द्वारावती प्रकट भयो। श्रीगौरवर्ण निका ।२।<br>तूही तात तूही मात । तूही मोरे मिता ।३।<br>दारवंठाइ दान मागे । दासानुदास तुका ।४।<br>दास तुझा पदी नमितो । प्रेमदान दे गा ।५।<br>सकाळच्या आरत्या</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १३</span>
+                <h2>ऊठ जाग कन्हैया..</h2>
+            </div>
+            <div class="poem-content">ऊठ जाग कन्हैयालाल नंद के प्यारे ।<br>गयी रैन निंद में छुपे चंद्रमा तारे ।।धृ।।<br>भयो प्रभात समयो उठो नंद के लाला ।<br>गयी रात जमीनपर पडे सुरज उजीयाला ।<br>ऋषीमुनी स्नान कर हात मे लेवे जपमाला ।<br>सुहृदय मंदिर मो तुम्हे जपत गोपाला ।<br>शिव विष्णु ब्रह्मादिक ध्यान करत है सारे ।।१।।<br>सब ग्वाल बाल मिल आए घर को तेरे ।<br>उठो श्याम कन्हैया मदनमूर्ती गुलजारे ।<br>निजभगत सतत गुण गावत श्याम तुम्हारे ।<br>ले खांदे कावरिया तीरथ बाट सुधारे ।<br>तजी पलंग दुलाई सेज छोड भय न्यारे ।।२।।<br>ऊठ बैठ पलंगपर श्यामसुंदर गोपाला ।<br>सीस मुकुट बिराजे गले कमल फुल माला ।<br>जरी जडाव गहना हिरा हिरकणी लाला ।<br>खुबसुरत कन्हैया गोपी मोहन गोपाला ।<br>जय करते सुरवर बैठे न्यारे ।।३।।<br>परब्रह्म पुरातन भक्तन के अधिकारी ।<br>दिये सुदामजी को अटल हेम की नगरी ।<br>करे नग्न सभा मे वसन खिंच भरभारी ।<br>दिये भांत भांत के चीर अनलजा प्यारी ।<br>दास आबा कारल्या चरण का दास तुम्हारे ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१४" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १४</span>
+                <h2>यशोदा म्हणे बा...</h2>
+            </div>
+            <div class="poem-content">यशोदा म्हणे बा कंसारि ऊठ बा सखया श्रीहरी ।।धृ।।<br>झरत्र सूर्य वर आला२, प्रकाश दाही दिशा पडला२,<br>दारी गोपाल हाका मारी ।।१।। ऊठ बा..<br>भर पक्षी किती उडतिर, मुखाने कृष्ण कृष्ण म्हणति २,<br>मोक्षाचा दाता गिरीधारी, प्रेमाचा दाता गिरीधारी ।।२।।<br>झणन्न वाजतसे वेणूर, ऊठ लवकर श्याम तनू२,<br>करी बा दहीभाताची न्याहारी २ ।।३।। ऊठ बा..<br>किसन म्हणे आठवा गोविंदार, चुकवी संसृतीचा फंदा२,<br>मोक्षाचा दाता गिरीधारी ।।४।। ऊठ बा..</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १५</span>
+                <h2>श्रीकृष्णनाथा झडकरी आता...</h2>
+            </div>
+            <div class="poem-content">श्रीकृष्णनाथा झडकरी आता जागे व्हा श्रीहरी । दयाळा उठा उठा लवकरी, प्रभुजी तुम्ही उठा उठा लवकरी ।।धृ<br>आईबाप स्वामी माझे नाम स्मरिता तव गुण तुझे ।<br>साधुसंत नाम घेति भक्तांचा तू होऊनि सारथी ।<br>द्रौपदीला तू वस्त्र पुरविले येऊनि या भूवरी ।।२।।<br>स्मरू किती रे देवा तुजला पाव तू झडकरी ।।१।।<br>तुझा पार्थ शरण तुजसि नित्य भक्तीचा छंद दे मजसि ।<br>हीच प्रार्थना तुझ्या चरणी पूर्ण करी रे त्वरी ।।३।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १६</span>
+                <h2>हे महाराज श्रीदत्त दिगंबर...</h2>
+            </div>
+            <div class="poem-content">हे महाराज श्रीदत्त दिगंबर सह्यांचल गिरी के वासी ।।धृ।।<br>बद्रिकाश्रम आदि ठिकाना गिरी गिरनार कुवल रस्ता ।<br>अत्रि ऋषी के पुत्र कहलाए अनसूया जिनकी है माता ।<br>त्रेतायुग अवतार लिनो जी भक्तीमुक्ती के परदाता ।<br>नाना भेख करत नित क्रीडार अलख निरंजन अविनाशी ।।१<br>कोल्हापूर की भिक्षा मागे अलख जगावे प्रथम प्रहरी ।<br>पांचाळेशर भोजन करके दिन मध्यान्ह पलक ठहरे ।<br>माहुर गढ की निद्रा सारे देवल ऋषी के वचन हरे । पवन स्वरूप करत नित क्रीडा २स्नान करत नित उठ काशी ।।२।।<br>अरलक के त्रय ताप निवारे गोरख को प्रबोध किया ।<br>सहस्रार्जुन को सहस्र भुजा शंकराचार्या वर पाया ।<br>परशराम को मिले दिगंबर कावडी कोंभ नजर आया ।<br>कोरी भुमी का दहन बतायो २ आदिभवानी परकाशी ।।३।।<br>दीनदयाल कृपाघन सागर पूरणब्रह्म कलाधारी ।<br>ज्ञान दियो यदुराजा तारे दत्त दिगंबर छबी न्यारी ।<br>निर्गुण स्वरूप अवतार लिनो जी भुक्तीमुक्ती के अधिकारी श्यामकरण शत पाच पठायो २पावन हो गये ऋचिक ऋषी ।।४।।<br>हे करुणेशा प्रणाम हमेशा अर्ज हमारी सुन लेना ।<br>हम दरबारी नोकर खासे तलब हमारी भर देना ।<br>रखो मेहर की नजर हमेशा ना जानू कब है मिलना ।<br>दास बहादुर शरण चरण पर२ टाल जन्म लख चौरांसी ।। ५ ।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १७</span>
+                <h2>बापा तू ऊठ बा...</h2>
+            </div>
+            <div class="poem-content">बापा तू ऊठ बा ऊठ दत्तात्रेया, अजी ऊठ स्वामीराया ।<br>जटामुकुट करी नीट माता अनसूया। बापा तू ऊठ बा ।। धृ ।।<br>प्रातःकाळ झाला अरुण आला उदया ।<br>सुरवर ऋषीवर दायक तिष्ठति रूप पहाया ।<br>इंद्रचंद्रादिक आले पुष्पे ओळगाया ।<br>हरिहरब्रह्मादिक आली चैतन्य माया ।।१।।<br>मातेचा वचनी श्रीदत्तात्रेय उठले ।<br>अवलोकिता जिवास भवबंधन तुटले ।<br>कल्पकाळीचे दोष त्यापासुनि सुटले ।<br>पवित्र पर्वत पाहाता सह्याद्री पर्वत पाहाता पापसिंधु आटले ।।२।।<br>दंड कमंडलू हाती चर्चुनि विभूतीचा गोळा ।<br>श्रीचरणी पादुका लेवा, जा मेरुवाळा ।<br>जळचर जड जीव पीडले येऊ द्या कनवाळा ।<br>तप्त तापले तुजविण कोण वेल्हाळा ।।३।।<br>वाराणसीचे स्नान कोल्हापुरी भिक्षा ।<br>गंगेतटी येऊनिया गोदेतटी येऊनिया स्वामींची भिक्षा ।<br>आत्मतीर्थ चरणांकित तटी मुठीची साक्षा ।<br>ध्यानस्थ बैसुनि स्मरणस्थ बैसुनि पर्वतासि लक्षा ।।४।।<br>अव्यक्तीहुनि व्यक्त झाला प्रार्थिला देव ।<br>सह्याद्री पर्वत पाहाता मनी ठसला भाव ।<br>ज्याचा जैसा भाव त्याला तू पाव ।<br>मागतो जगदीशा, प्रार्थितो परमेशा, द्या निज पदी ठाव ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१८" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १८</span>
+                <h2>उठा उठा श्रीदत्त दयाघन...</h2>
+            </div>
+            <div class="poem-content">उठा उठा श्रीदत्त दयाघन अरुणोदय प्रभु झाला हो२ । धृ<br>अनसूयेचा कुशी जन्मला परब्रह्माचा पुतळा हो २<br>नाम ठेविले श्रीदत्तात्रेय ऋषीकुळी आनंद झाला हो २<br>सुरनर मुनिजन भक्तमंडळी ओवाळिती प्रभुराया हो २<br>नरनारी येती धावुनि दर्शन देतो भक्ता हो २ ।<br>श्रीदत्तात्रेय नाम स्मरिता त्रिताप जातील विलया हो २<br>हेच मागणे तुम्हा दयाळा श्रीचरणी ठाव द्या मजला हो २<br>मी अपराधी खरा परंतु तारी दयासागरा हो २ ।<br>कवी मुरारी करितो विनंती प्रेमदान द्या मजला हो २</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १९</span>
+                <h2>उठोनि प्रातःकाळी...</h2>
+            </div>
+            <div class="poem-content">उठोनि प्रातःकाळी तुम्ही श्रीदत्तासि ओवाळा ।।धृ।।<br>प्रातः समयी उपहुड झाला, पद्मासनी देव बैसला ।<br>मिळौनि शक्ती कोडी एक्यांशी ओवाळीति आदि स्वामीला<br>जय जय शब्दी मंगल घोषे आरत्यांचा गजर झाला ।<br>तो तुम्ही स्वामी पाहा हो दृष्टी जाऊनि सह्यांचळाला ।।१।।<br>उत्तरपंथी भाक देउनि नित काशीचे करी स्नान ।<br>कोल्हापुरची भिक्षा मागुनि पांचाळेशरी भोजन ।<br>सायंकाळी निद्रा करितो देवदेवेशरी येउनि ।<br>यदुरायासि ज्ञान दिधले देउनिया प्रेमकळा ।।२।।<br>भोजनतेसि भोजन करुनि पंचदेउळ्या करी खेळ ।<br>वनसाळीचा भात जेवीति ऋषी मिळुनिया सकळ ।<br>ऋचिक ऋषी वारु मागता श्याम कर्ण दिले प्रबळ ।<br>अळकाचे त्रिताप हरिले शंबोली म्हणता त्रिवेळा ।।३।।<br>गोरक्षासि बोध करुनि शंकराचार्या वर दिधला ।<br>सहस्रार्जुना सहस्र भुजा देउनि राज्यी स्थापिला ।<br>परशुरामा भेट दिधली स्थापियले रेणुकेला ।<br>दोही देवा भेटी जाली अपूर्व केली त्वा लीळा ।।४।।<br>तो चहुयुगी राज्य करितो पर्वत सह्यांचळाला ।<br>नाना वेषे जीव उद्धरीसि देउनिया प्रेमकळा ।<br>रिलोप किंकर शरण तुजला तारी मजला दयाळा ।<br>कवी मुरारी करितो विनंती प्रेम द्यावे मज कृपाळा ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २०</span>
+                <h2>आरती मनोभावे...</h2>
+            </div>
+            <div class="poem-content">आरती मनोभावे, महाराजा श्रीदत्तासि ।<br>मंगल करू स्तवन, अनसूयाकुमरासि । आरती मनोभावे ।।धृ।।<br>उठोनिया प्रातःकाळी स्नान करी मेरुवाळा ।<br>जलचर जड जीवा नित्य पाहातिया डोळा ।<br>श्रीचरणी पादुका हो लेवे मग अवलीळा ।।१।।<br>विभूती चर्चुनिया अर्धचंद्र लल्हाटी ।<br>फुटा हो प्रावर्ण जटा हो श्रीमुकुटी ।<br>सोनेसळा कटोकटी वेष्टुनिया जगजेठी ।।२।।<br>जंबुकाभिदन पुरा भिक्षे जाए हृषिकेशी ।<br>मध्यान्ही आत्मतीर्थी आरोगणा होए त्यासी ।<br>सायंकाळी प्रवर्ततो सह्यांचळ पर्वतासि ।।३।।<br>आसनी उपविष्ट होतसे देवराणा ।<br>रेणुका दिव्य रूप नित्य येति दर्शना ।<br>पंचारती घेउनिया ओवाळीति ऋषीराणा ।।४।।<br>विनवी दास कृष्ण तुज प्रार्थी देवराया ।<br>अभयंकर माथा नित्य ठेवी स्वामीराया ।<br>प्रेम तुज मागे देई मज लवलाह्या ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २१</span>
+                <h2>ऊठ रे ऊठ बापा...</h2>
+            </div>
+            <div class="poem-content">ऊठ रे ऊठ बापा करी कृपा निजानंद स्वरूपा ।।धृ।।<br>उठोनी स्वामी प्रातःकाळी, जटाजूट श्रीमुगुट झळाळी ।<br>जीव पडले अनाथमेळी, कृपादृष्टीने तू सांभाळी ।<br>सखया निजरूपा२, निजानंद स्वरूपा ।।१।।<br>अविनाशी तू परात्पर, अलक्ष लक्षा न कळे पार ।<br>मायेपरता अगोचर, ऐसे बोलति सिद्धांत सार ।<br>तटस्थ जाहले अरूपा२, निजानंद स्वरूपा ।।२।।<br>चहुयुगी तू स्वामीराया, राज्य करीसि प्रताप सखया ।<br>जळचर जड जीव वंदीति पाया, अनाथनाथा करावी<br>दया येऊ दे तुजला अनुकंपा२, निजानंद स्वरूपा ।।३।।<br>नाम तुझे हे अनार्जित, नाही अर्जिले म्या किंचित ।<br>दास केशव शरणांगत, पूर्ण करावा माझा हेत ।<br>तन मन धन अर्पण तुज बापा २, निजानंद स्वरूपा ।।४</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २२</span>
+                <h2>सुंदर मूर्ती श्रीदत्ता...</h2>
+            </div>
+            <div class="poem-content">सुंदर मूर्ती श्रीदत्ता तुम्ही दावा मज नयनी ।<br>कशी बा खंत धरली मनी ।।धृ।।<br>बहु सृष्टीचा मी अन्यायी म्हणुनि झाले उदास ।<br>कशी पाहीना माझी वास ।<br>पुन्हा पुन्हा मज ज्ञान दिधले, मी दवडिले तयास ।<br>नाही मोडिले प्रसवास ।<br>गुरुवचनाचा भंग मी केला तेही झाले उदास ।<br>आता मी करू कवणाची आस ।<br>मार्गद्रोही पात्र दुखविले कठिण शब्द बोलुनि ।<br>कशी बा खंत धरली मनी ।।१।।<br>मी विषयासि जन्म दिधला नाही दिला स्वामीला ।<br>दोष मी बहुतांचा घेतला ।<br>ज्ञान भक्ती वैराग्य सांडुनि गेलो उपाधीला ।<br>धरुनि मी बसलो स्वग्रामाला ।<br>सहा वचनांचा आचार स्वामी सांगुनि मजला गेला ।<br>शेवटी तोही नाही झाला ।<br>भिक्षा विधी पंधरा वचने घडतील ज्या पुरुषाला ।<br>सोळावे प्रमाण त्या काल्याला ।<br>ऐसे जाणुनि इंद्रियार्थ घेतले मागुनि ।<br>कशी बा खंत धरली मनी ।।२।।<br>सव्वीस वचने त्याग बोलिले, अविद्येत राहुनि ।<br>सुख मानमान्यता भोगुनि ।<br>गडीसिडीची वचने सारी ठेविली बांधुनि ।<br>अष्टभोग सेवितो नित्यानी ।<br>चहु प्रकारे स्मरण बोलिले हृदयी आलिंगुनी ।<br>त्यात एक प्रहर दिला नेमुनि ।<br>तेव्हेळी मज निद्रा येते अविद्येची झडपणी ।<br>स्वामीची दृष्टी जाए फिरुनि ।<br>ती प्रकारी अयोग्यता जडली मुळीहुनी ।<br>कशी बा खंत धरली मनी ।।३।।<br>ऐसा मी अपराधी खोटा दगलबाज मी फार ।<br>दुखविले स्वामीचे अंतर ।<br>म्हणौनि माझी खंत आली मज केला अव्हेर ।<br>उतरला निडळावरचा कर ।<br>दया मया गुण ईशरी म्हणुनि अंगिकार ।<br>नाहीतर दुःखाचे डोंगर ।<br>घडवी दान, पुरवी भजन, चुकवी दुःख थोर ।<br>नाही कणवेची ठेविली उर ।<br>अळर्काचे त्रिताप हरिले दर्शन देउनि ।<br>कशी बा खंत धरली मनी ।।४।।<br>उदार होसि, जीव उद्धरीसि पैजा तू घेउनि ।<br>अंती मज भेट द्यावी येऊनि ।<br>तुजवांचुनि कोण तारील संकष्टापासुनि ।<br>श्रीचरणी मस्तक ठेउनि ।<br>बुडतो आता भवसागरी कोण आणू बोलाउनि ।<br>स्मरू कवणाचे नाव घेउनि ।<br>रिलोप किंकर विनवी स्वामीला चित्त मन लाउनि ।<br>कशी बा खंत धरली मनी ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २३</span>
+                <h2>प्रातःकाळी आठवा श्रीचक्रपाणि...</h2>
+            </div>
+            <div class="poem-content">प्रातःकाळी आठवा श्रीचक्रपाणि,<br>देईल प्रेम तिन्हीही दोष नासुनि ।।धृ।।<br>सृष्टी ही रचना करविली स्वामी मज साठी ।<br>देउनि ज्ञान२ सांगशी निज हित गोष्टी ।<br>विहित आचार२ दाविला की बा जगजेठी ।<br>त्यासि म्या भंग२ पाडिला की बा शेवटी ।<br>मज सम खोटा२ जगतीत नाही बा कोणी ।।१।।<br>सर्व अवयवी ओतीले पाप मज देही ।<br>जेवि पै मीना २ सुंदर भासतो पाही ।<br>रजतमग्रसित २ अंतरी सदा भरलोही ।<br>स्थान काळी२ पात्रही चुकविले नाही ।<br>कुमरत्वाचा२ पात्री म्या दोष कल्पोनी ।।२।।<br>पूर्वप्रसव मागील आला टाकीत ।<br>विशहननादि२ आर्जिल्या राशी अनंत ।<br>अशा क्रियेचार अनुताप नाही किंचित ।<br>कठिण दुर्भेद्य२ पत्थरापरीस अत्यंत ।<br>आता मज गती२ होईल कशी बा जगदानी ।।३।।<br>असा मी कुटील अधम पतित दुर्गुणी ।<br>आणिली खंतर श्रीपती तुम्हालागौनि ।<br>पाहासि ना मुख२ गेलासि मज सांडौनि ।<br>कुमर आवेराज२ प्रार्थितो जोडुनि पाणि ।<br>तुजवांचौनि२ तारिता नाही बा कोणी ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२४" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २४</span>
+                <h2>उठा हो उठा हो...</h2>
+            </div>
+            <div class="poem-content">उठा हो उठा हो, श्रीकृष्णा शुभअवतारा २ ।<br>वंदन आमुचे स्वीकारा २ । श्रीकृष्णा शुभअवतारा ।।१।<br>उठा हो उठा हो, श्रीदत्तात्रेय अवतारा २ ।<br>अमोघ दर्शन दातारा २ । श्रीदत्तात्रेय अवतारा ।।२।।<br>उठा हो उठा हो, श्रीमद्वारावतीकारा २ ।<br>अज्ञान आमुचे दूर करा २ । श्रीमद्वारावतीकारा ।।३।।<br>उठा हो उठा हो, श्रीप्रभुराजा अवतारा २ ।<br>भवबंधाचा नाश करा २ । श्रीप्रभुराजा अवतारा ।।४<br>उठा हो उठा हो, जयदेवा श्रीचक्रधरा २ ।<br>उठा कृपेच्या सागरा २ । साधनदाता सर्वेशरा २ ।<br>जीवजातीचा सोयरा २ । दीन दयाळा कृपा करा ।<br>दीन दयाळा कृपा करा। श्रीमंता श्रीचक्रधरा ।।५।।<br>उठा हो उठा हो, पंचकृष्ण शुभअवतारा २ ।<br>वंदन आमुचे स्वीकारा २, अमोघ दर्शन दातारा २ ।<br>अज्ञान आमुचे दूर करा २, भवबंधाचा नाश करा २<br>साधनदाता सर्वेशरा २, पंचकृष्ण शुभअवतारा ।<br>पंचकृष्ण शुभअवतारा, सर्वांचा उद्धार करा ।।६।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २५</span>
+                <h2>उठा उठा श्रीचक्रधर राया...</h2>
+            </div>
+            <div class="poem-content">उठा उठा श्रीचक्रधर राया, भक्त वाट पाहाती ।<br>पदरी घेउनि पवित्र करुनि भक्ती देइजो जी ।।धृ।।<br>धरणी आशंसी स्पर्श व्हावया आपुल्या श्रीचरणाचा ।<br>विरहाग्नीने तप्त जाहली शीतल किजो जी ।।१।।<br>प्राण उतटुनि कंठा आणी आर्त नाही तैसी ।<br>औदार्याचा सिंधु माझा प्रेम देइजो जी ।।२।।<br>प्रातःकाळी प्रभुजी उठले कृपादृष्टी वळली ।<br>तळमळ करिते भक्त तारिले तैसे तारिजो जी ।।३।।<br>अनंत सृष्टी हिंडत आलो बहु श्रम आला जी ।<br>कठिण कोरडा कधी मी तुमच्या पदरी पडेन जी ।।४।।<br>अनंत वेळा प्रमाद जोडुनि खंती आणिली जी ।<br>ऐसा मी अपराधी कैसा योग्य होईन जी ।।५।।<br>अनिमित्त बंधु महादानी तू औदार्य रावो ।<br>पाहू नका तुम्ही अपात्रता ही वरदान देइजो जी ।।६।।<br>कवीने आपुले सुगंधहीन हे पुष्प वाहिले जी ।<br>सुगंधहीन ते सुगंधी करुनि श्रीकरी घेइजो जी ।।७।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २६</span>
+                <h2>आरती मनोभावे श्रीचक्रधररायासि...</h2>
+            </div>
+            <div class="poem-content">आरती मनोभावे श्रीचक्रधररायासि ।<br>वंदन करु चरणा परब्रह्म स्वरूपासि ।।धृ।।<br>उपहुड प्रातःकाळी, राजमठी स्वामीराया ।<br>बाईसा लागे चरणी, उपानहौ ओळगाया ।<br>कवाडे उघडीति, दारखिळी फेडुनिया ।<br>नावेक उभे होति, दारसंका धरुनिया ।<br>उठवी नागदेवा, वक्षस्थळ दाटुनिया ।<br>भटोबास जागे होति, श्रीचरणी लागुनिया ।।१।।<br>लीळा करी स्वामी, लडिवाळे किंकरासि ।<br>देति श्रीचरण, हृदयी धरण्यासि ।<br>आलिंगीति नमस्करीति, लावीति निडळासि ।<br>श्रीचरणा मोमे देति, कैसे वर्णं त्या सुखासि ।<br>मागति पुन्हा पुन्हा, दुसऱ्या श्रीचरणासि ।<br>ऐसा वाडवेळ, खेळ करीति विलासे ।।२।।<br>परिश्रय सारुनिया, बीजे करी राजमठा ।<br>बाईसा उष्णोदक, बहिर्वास देति पुढा ।<br>दीप उजळुनि, अंगणी घाली सडा ।<br>पहा हो म्हणति कुठे, गेला वानरा बापुडा ।<br>आसनी उपविष्ट, भक्तीजन घाली वेढा ।<br>चरणोदक काढी, होए प्रसाद हा थोडा ।।३।।<br>अरुणोदय होता, स्वामी करीति सुलीळा ।<br>सुदंतधावन ते, मुखमार्जन गुळुळा ।<br>गोपीचंदनाचा, आडा रेखुनिया भाळा ।<br>श्रीकंठी गळदंडा, श्रीमुगुटी पुष्पमाळा ।<br>हातसरे बाहुभूषणे, ओळगवी पुष्पझेला ।<br>अष्टांग धूपदीप, पंचआरती ओवाळा ।।४।।<br>विनम्र होउनिया, विनवितो कनवाळा ।<br>प्रेम तुज मागे, अश्रु वाहतिया डोळा ।<br>पुरवी आर्त माझी, झाला जीव हा व्याकुळा ।<br>तुजसम नाही कोणी, जगती या कृपाळा ।<br>धूळ झाडोनिया, बोध देई उजाळा ।<br>प्रेम संचरी आता, वाढो अमृतकळा ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २७</span>
+                <h2>डोमेग्रामी पूजा त्रिकाळ आरती अवसरा...</h2>
+            </div>
+            <div class="poem-content">डोमेग्रामी पूजा त्रिकाळ आरती अवसरा,उठा उठा स्वामी श्रीचक्रधरा ।<br>श्रुती शास्त्र तुम्ही निरुपिले भट्टाला, प्रातः समयी यावे भेटीला ।। धृ।।<br>प्रातः समयी प्रभु उपहुडे । श्रीमूर्ती दैवी रुपडेदशदिशा अविधी दवडे ।<br>भट वक्षस्थळी श्रीचरण दाटी सकुमारा ।।१।।<br>उठा..<br>विधी विसर्जुनी प्रभु येति ।बाइसे श्रीचरण क्षाळीति ।<br>परिमार्जुनी आसनी ठेवीति ।श्रीमुख प्रक्षाळी उष्णोदके श्रीधरा ।।२।।<br>उठा..<br>उपविष्ट आसनी प्रभु होति ।महदंबाप्रश्न प्रभुसि ।<br>म्हणे आम्ही चिंतू स्वामीसि ।स्वामी राजवरा तुम्ही काइ चिंता दातारा ।।३।। उठा..<br>स्वामीराज वदे भक्तीजना ।आम्ही जीवा चिंतितो नाना ।<br>श्रीप्रभुंची थाप चिंतना ।श्रवणार्थ कृपे अघनाशीत भवहरा ।।४।।<br>उठा...<br>चारी वेद सहा शास्त्रांनी ।स्वामीराज कळे ना मुनी ।<br>ब्रह्मविद्या शास्त्र शोधुनी ।तव दास वदे शेवलीकर कुळी थोरा ।।५।।<br>उठा..</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२८" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २८</span>
+                <h2>तुम्हा स्नान घालितो ..</h2>
+            </div>
+            <div class="poem-content">तुम्हा स्नान घालितो श्रीचक्रधरराया ।<br>श्रीचक्रधरराया देवा माल्हनीच्या तनया ।। धृ।।<br>आरंभी तुम्हा मी गंध लावुनिया ।<br>प्रार्थना करितो नम्र होउनिया ।<br>भक्तीभावनेने तुझे गुण गाउनिया ।।१।।<br>दहीदूध साखर आणि मधुपर्क संग ।<br>सुगंधित उटण्याने मर्दितसे अंग ।<br>शीत उष्ण निर्मळ पाणी वरी घालुनिया ।।२।।<br>सुवासिक चंदनाची उटी उगाळुनि ।<br>अत्तरे सुगंधित त्यात मिसळुनि ।<br>हळुवार देवा तुमच्या अंगी लाउनिया ।।३।।<br>टिळा केशराचा भाळी लावुनिया ।<br>हार सुमनांचा गळा घालुनिया ।<br>फळे पान नारळ ऐसा विडा वाहुनिया ।।४।।<br>धूप दीप मंगल आरती तुला ओवाळुनि ।<br>गातो स्तुतीस्तोत्रे दामोदरमुनि ।<br>आवागमन चुकवी माझे कृपा करुनिया ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-२९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक २९</span>
+                <h2>चांपेगौर ती श्रीमूर्ती..</h2>
+            </div>
+            <div class="poem-content">चांपेगौर ती श्रीमूर्ती पाहुनि ।धानाइसा धरी हट्ट मनी ।।धृ।।<br>एक दिनी पैठणी पांडेयाच्या सदनी ।होत असे मादने स्वामीसि अंगणी ।<br>तेव्हेळी उघडी श्रीमूर्ती लक्षुनी ।धानाइसा धरी हट्ट मनी ।।१।।<br>हळदीने उटली ही प्रभु अंगकांती ।म्हणुनीचि गौरवर्ण झालासे अति ।<br>ती हळद लावा हो मज आणुनी ।धानाइसा धरी हट्ट मनी ।।२।।<br>काही केल्याने ऐकेना धाई ।म्हणिये करू न देति कोणासि काही ।<br>पाचारिले मग सर्वज्ञांनी ।धानाइसा धरी हट्ट मनी ।।३।।<br>काऊचिऊची सुंदर कहाणी ।सांगितली धाईला तेव्हा स्वामींनी ।<br>विसरून गेली हो त्याच क्षणी ।धरिला होता जो हट्ट मनी ।।४।।<br>दुपारच्या आरत्या</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३०</span>
+                <h2>विडा घ्या श्रीचक्रधरा..</h2>
+            </div>
+            <div class="poem-content">विडा घ्या श्रीचक्रधरा, स्वामी विडा घ्या श्रीचक्रधरा ।<br>भक्तीगंध हा लावुनि, भावपुष्प हे वाहुनि, करी मंगल पूजा ।।धृ।।<br>विशुद्ध सुंदर नागवेलीचे पान तयावरती ।<br>श्रीफळ पोफळ निर्मळ आलो घेउनि हाती ।।१।।<br>खारीक खोबरे बदाम जायफळ आणिक वेलदोडा ।<br>विभिन्न फळजातीसह करी अर्पण विडा ।।२।।<br>तन मन धन हेचि द्रव्यसंपदा चरणी अर्पित असे ।<br>स्वीकार करुनि घ्या प्रभु तुम्हा विनवित असे ।।३।।<br>साष्टांगे प्रणिपात करितो विनम्र होउनिया ।<br>दास दामोदर विनवी श्रीचक्रधराराया ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३१</span>
+                <h2>जय जय दत्तदयाल...</h2>
+            </div>
+            <div class="poem-content">जय जय दत्तदयाल करुणानिधी स्वामी, अजी करुणाघन स्वामी ।<br>करी भोजन जगवंदन, करी कृपा अत्रिनंदन, जय अंतर्यामी ।। धृ<br>उत्तम पत्र फलादि सुचीरस बनवारी ।<br>परसे व्यंजन षडरस खाटे मिठे खारी ।।१।।<br>कांचन सिंहासनपर बैठे जटाधारी ।<br>आरती करू भगवंदन तनमनधनवारी ।।२।।<br>सुरनर मुनीजन वेधत उच्चारी ।<br>चंदन अक्षत धूप घृत दीपक वारी ।।३।।<br>निर्गुण दृष्टी देव तुमप्रति यश गावे ।<br>कृपा करो निज जुठन ठाकुर द्विज भावे ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३२</span>
+                <h2>पंचअवतार तुम्ही..</h2>
+            </div>
+            <div class="poem-content">पंचअवतार तुम्ही आरोगणेला ।<br>बीजे करावे मम सदनाला ।।धृ।।<br>मी दीन दुर्बळ दास तुमचा हो ।<br>पावन करावे मज पतिता हो ।<br>विनंती माझी तुम्ही अंगिकरावी ।<br>आरोगणा मम नित स्वीकरावी ।<br>प्रसन्न होउनि मज प्रसाद द्यावा ।<br>अशुद्ध जीव मम शुद्ध करावा ।<br>आबाकुमर क्षिती भावी मनाला ।<br>येईल दैव कधी मम उद्याला ।<br>आबाकुमर क्षिती भावी मनाला ।<br>प्रेमदान द्या मज गरीबाला ।।० ।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३३</span>
+                <h2>नमो पंच अवतार..</h2>
+            </div>
+            <div class="poem-content">नमो पंच अवतार करा हो आरोगणा स्वीकार ।।धृ।।<br>मज गरीबाचे रूक्ष कदन्न । गोड करावे होउनि प्रसन्न ।<br>दाखवितो उपहार, करा हो आरोगणा स्वीकार ।।१।।<br>कृपादृष्टीने अवलोकुनि । उच्छिष्ट आपुला प्रसाद देउनि ।<br>घडवावा अधिकार, करा हो आरोगणा स्वीकार ।।२।।<br>अनंत जन्माचा अपराधी । अशुद्ध माझी क्रिया ही साधी<br>नका करू धिक्कार, करा हो आरोगणा स्वीकार ।।३।।<br>पतितपावन हे दीननाथा । पावन करुनि घ्यावे अनंता ।<br>आहे तुझा गुन्हेगार, करा हो आरोगणा स्वीकार ।।४।।<br>दामोदर हा सेवक आपुला । विनंती करितो पदकमलाला ।<br>नमितो मी वारंवार, करा हो आरोगणा स्वीकार ।।५।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३४" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३४</span>
+                <h2>म्हणे बाईसा सर्वज्ञांना..</h2>
+            </div>
+            <div class="poem-content">म्हणे बाईसा सर्वज्ञांना चला आरोगणेला ।मान द्या भक्तविनंतीला ।।धृ।।<br>तममोटाळा परि एक गुण ।गतीचि नव्हे सर्वज्ञाविण ।<br>भक्तअंगीच्या त्या गुणे प्रभु । न मोडी शब्दाला ।।१।। मान द्या...<br>भक्त भिक्षा मागुनि येति । बाईसाहाती झोळी देति ।<br>पदार्थ निवडुनि ताट करीति । बाईसा प्रभुला ।।२।। मान द्या...<br>कर्महरी बहु व्यापाराते । करविता सर्वज्ञ जीवाते ।<br>प्रभु आरोगणे विलंब होता । व्यापार थांबविला ।।३।। मान द्या...<br>दृष्ट षड्रस अन्न जरी हे ।अदृष्टे तरी निर्गुण परि हे ।<br>कदन्न सात्विक व्हावे यास्तव । स्वीकारा हो याला ।।४।। मान द्या...<br>सृष्ट्यंतरी या काही न आपुले ।आपुले जे ते देवे दिधले ।<br>निर्हेतुक ते अर्पिता मग । प्रभु दे प्राप्तीला ।।५।। मान द्या...<br>बाईसापरि भाव न माझा । तरि म्हणवितो भक्त मी तुझा ।<br>नागदेव म्हाइंभट रुपाई ।न्या त्यांच्या परीला ।।६।। मान द्या...</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३५</span>
+                <h2>भक्ती मुक्ती सुखदायक..</h2>
+            </div>
+            <div class="poem-content">भक्ती मुक्ती सुखदायक देवा, जय नमो पंचअवतारा ।<br>तुम्ही आरोगणा स्वीकारा, हो तुम्ही आरोगणा स्वीकारा ।। धृ<br>विदुरकण्यांचे भोजन केले मोठ्या प्रेमभराने ।<br>सुदाम पोहे आणि द्रौपदीची भाजी ती आवडीने ।<br>सेवन केले त्यासम आता श्रीकृष्णा अवतारा ।।१।।<br>राणी मदळसा नित्यदिनी घरी भिक्षा मागुनि येसि ।<br>आत्मऋषीची विनंती मानुनि दैनिक भोजन करीसि ।<br>तसेच आमुच्या रूक्षान्नाची श्रीदत्तात्रेय अवतारा ।।२।।<br>सहस्रभोजन विप्राचे परिपूर्णपणे स्वीकारिले ।<br>आणिक द्विजाचे श्राद्ध जेउनि त्यांचे पूर्वज उद्धरिले ।<br>कृपा करुनि त्यासम आता श्रीचक्रपाणि अवतारा ।।३<br>आबाइसाच्या गोड पुऱ्या तुम्ही आरोगिल्या प्रेमाने ।<br>तिकोपाध्याचे भोजन केले त्यांच्या घरी जाऊनि ।<br>तसेच आमुचे निर्गुण ब्रह्मा श्रीगोविंदप्रभु अवतारा ।।४।।<br>पाणीभात हा रूक्ष तरीपण स्वीकारिला बाइसाचा ।<br>बोणेबाइचा उपहार प्रतिदिनी अंगिकरिला त्यांचा ।<br>कृपा करुनि त्यासम देवा श्रीचक्रधर अवतारा ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३६</span>
+                <h2>हीन दीन मी मज..</h2>
+            </div>
+            <div class="poem-content">हीन दीन मी मज गरिबाची, आरोगणा करी तू प्रभुजी ।। धृ<br>बाइसाचा पाणीभात आवडीने जेवी तू प्रभुजी ।।१।।<br>आबाइसाचा उपहार स्वीकरिला त्यापरी स्वीकरी तू ।।२।।<br>निळंभटासि प्रसाद दिधला त्यापरी मज देई तू ।।३।।<br>वंचकादि बहु दोष अर्जिले विसरूनि दोषा तू ।।४।।<br>शशीबंधु हा दास विनवी हृदयासि मज धरी तू ।।५।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३७</span>
+                <h2>नित्य नेम मध्यान्ह..</h2>
+            </div>
+            <div class="poem-content">नित्य नेम मध्यान्ह दिनासि सारिसि आरोगणा,<br>ओवाळा आरती अत्रिनंदना ।। धृ।।<br>रम्य देश गंगातीर सुंदर दक्षिण गोदातिरी,<br>पूर्वपुण्यालय पांचाळेश्वरपुरी ।<br>गंगोदरी नित अशन प्रभूचे जागा अतिकुसरी,<br>घाली जलस्नान गौतमीवरी ।।<br>चालः उत्तर दक्षिण आसन प्रभूचे२<br>निर्मळ वाहे जळ गंगेचे २।<br>गाति पोवाडे मंगल वाचे २।<br>चालः- स्नान करूनी जन दान देति पुजीति<br>ऋषीमुनि जना ।।१।। ओवाळा...<br>रंगछिटाचे जरीबुट्ट्याचे गलफ चांदवे वरी,<br>शोभति मोत्यांचा झालरी ।<br>किनखापाचे लोड जोड अतिगोड शोभति वरी,<br>जडीत मंदील लागले शिरी ।।<br>चालः - जडीत चौकडा सुंदर करणी २।<br>शाल दुशाले अंबर वर्णी२।<br>मखमली तकया मंगल धरणी २।।<br>चालः - वाद्य थाट घनदाट फुटेना वाट प्रभूदर्शना ।।२।।<br>सुंदर अत्तर मृग मद केशर उटी चर्चित चंदना,<br>गुलाबी पुष्प शेज मंडना ।<br>केळी नारळ खजूर पोफळ धूपदीप निरांजना ।<br>स्तविती तव मंगल सुरगायना ।।<br>चालः- संत साधुजन अवसर करीति २।<br>चैत्र कार्तिकी यात्रा भरति२।<br>नरनारीचे मनोरथ पुरति २।<br>धीमाधीमी थै थै गण सरस्वती ताल धरीति अंगणा ।।३।<br>कलीयुगामध्ये पुण्यक्षेत्र हे आत्मतीर्थ सुंदर,<br>सकळ तीर्थाचेमोक्ष मंदिर ।<br>धन्य धन्य श्रीदत्त चिरायु वंदीति दिगंबर,<br>उद्धरी दास बाळ किंकर ।<br>चालः - दास बाळ हा प्रभुचा बंदा ।<br>विनवी कर जोडुनि गोविंदा ।<br>चुकवी मम संसृतीचा फंदा ।<br>एक वेळ दर्शवी अमळ तनु दीनाची प्रार्थना ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३८" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३८</span>
+                <h2>मेरुवाळा तटी..</h2>
+            </div>
+            <div class="poem-content">मेरुवाळा तटी भोजनता रम्य स्थळ जागा ।<br>आधी आरती करितो मी जेथे आसन श्रीरंगा ।।धृ।।<br>मेरुवाळाचे स्नान करुनिया शिंपणे खेळुनि ।<br>होए भोजन दोही देवांचे तेथे बैसोनि ।<br>गंगातिरीची भिक्षा स्वामी येतो मागुनि ।<br>षण्मासापर्यंत तेथे मूर्ती अवस्थानी ।<br>शेष श्रमला गुण वर्णिता जिव्हा दो भागा ।।१।। आधी आरती...<br>जागती ज्योत पुरवी मनोरथ नवस दुरुनि येति ।<br>खेळणे नि पाळणे आणुनिया किती एक वाहाति ।<br>मनोरथ गेले सिद्धी म्हणुनिया देउळ बांधवीति ।<br>निपुत्रिकासि दिधले पुत्र ते मिरवत येति ।<br>अवसर होति वाद्य वाजति नाद जाति स्वर्गा ।।२।।आधी आरती...<br>निर्धनासि दिधली लक्ष्मी करीति पासोडे ।<br>पान सुपारी केळी नारळ वाहाति दूध पेढे ।<br>कर्पुर लवंगा चिकन सुपाऱ्या आणिक वेलदोडे ।<br>बत्तीसा पानाचे बांधति देवासाठी विडे ।<br>उपहार होति बसल्या पंगती आव्हानीति मार्गा ।।३।।आधी आरती...<br>देवाभोवती शीतल सावली निंबा वृक्षाची ।<br>अखंड यात्रा उतरे तेथे माझ्या स्वामींची ।<br>चैत्र मासी यात्रा भरते साधुसंतांची ।<br>श्रीदत्ताचे नाम उच्चारी नको राहू उगा ।।४।। आधी आरती.<br>रात्रं दिवस होए गर्जना श्रीदत्तनामाची ।<br>रिलोप किंकर कर जोडुनिया करितो विनंतीसि ।<br>स्वामी माझा पुरवी मनोरथ भेट कधी देसि ।<br>तुजवांचौनि नाही सहोदर आहे मी परदेसी ।<br>तूच माझा मातापिता मज कधी उद्धरीसि ।<br>आता उशीर नको लावू माझ्या जिवलगा ।।५।। आधी</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-३९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ३९</span>
+                <h2>प्रभुराजा सृष्टीचा...</h2>
+            </div>
+            <div class="poem-content">प्रभुराजा सृष्टीचा अवतरला भुवनी, प्रभु प्रकटला धरणी ।<br>चहयुगी क्रीडतो त्रिविधा अवतारी ।।धृ।।<br>उत्तम धूपदीप सुगंध परमेशर हेतु ।<br>पुरविला सर्वत्र सद्भावे एक तू ।।१।।<br>सकळही तीर्थातीर्थी प्रभुचरण स्थानी ।<br>प्रेमानंद वस्तु श्रीचक्रपाणि ।।२।।<br>आदिसृष्टीचा दाता सर्वज्ञ स्वामी ।<br>ज्ञान बोध करी जीवास उद्धरी परधर्मी ।।३।।<br>निर्गुण चित्पर ब्रह्म झाले साकार ।<br>जीव उद्धरण्यासाठी आले महीवर ।।४।।<br>कृती शुक्लवर्ण, त्रेती आरक्त ।<br>द्वापारी नीलवर्ण, कलीमाजि पीत ।।५।।<br>किंकर मुनि राजेया शरणांगत स्वामी ।<br>देउनि सन्निधी प्रेम उद्धरी परधर्मी ।।६।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४०</span>
+                <h2>जय नमो अत्रितनुजनंदा..</h2>
+            </div>
+            <div class="poem-content">जय नमो अत्रितनुजनंदा, पुरवीसि भक्त काम छंदा ।।धृ।<br>पूर्ण परब्रह्म कामरहिता, प्रकटला वसुधेतळी वरुता ।<br>अत्रिरमणोदरी सुखभरता, व्यक्तला बद्रिनगावरुता ।<br>असा तू पूर्णब्रह्मरमणा२,<br>भक्तपालना, जीवोद्धारणा, ज्ञानिये खुणा,<br>जाणति तव पद सुखकंदा ।।१।। पुरवीसि...<br>क्षेत्र गोदेतटी ऋषीरमणा, पूर्वपांचाळेशरभूवना ।<br>आसन करी मध्यप्रहरी रचना, परम श्रीआत्मतीर्थ भूषणा ।<br>सारीसि नित्य भोजनासि २,<br>सकळ हे ऋषी, धरुनि मानसी, चिंतीति निशी,<br>दिनांतरी विनवितो जीव मंदा ।।२।। पुरवीसि...<br>वद्य चैत्रात सप्तमीला, नेम यात्रेचा असा ठरला ।<br>मिळाले पुण्य भक्त विमला,<br>करीति लोटांगण पदकमला ।<br>गर्जति भाट रंगभूवनी २,<br>संतऋषीमुनी, स्तवीति गायनी, धन्य त्रयजनी,<br>ध्याति तुज प्रेमानंद कंदा ।।३।। पुरवीसि...<br>मिरवला गलफ हरित जरीचा, मर्दिला गंध केशराचा ।<br>जडीत वर लोड जोड विभूचा, गाइला प्रभु मंगलवाचा<br>स्तवीति तवं दास बाळ गोविंद२,<br>नाशी भवबंध, प्रेममुळकंद, अनसूयानंद,<br>देई मज कवितेचा छंदा ।।४।। पुरवीसि...</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४१</span>
+                <h2>पंचमगोत्र परमेशर...</h2>
+            </div>
+            <div class="poem-content">पंचमगोत्र परमेशर ओवाळू श्रीदत्ताला ।।धृ।।<br>सह्यागिरी क्रीडा करी, दर्शन देतो अमोघ ।<br>कुंदा कुटका मुगुट जटा, विभूतीने भरले अंग ।<br>खांदी कावड पारधी वेष, मुखी विडा सुरंग ।<br>तो श्रीहरी क्रीडा करी, जीव उद्धरी, नाना परी ।<br>ऋषीवंशी प्रभु जन्मला ।।१।। पंचम गोत्र...<br>सहस्रार्जुना वर दिधला, धूप दाविता करकमळी ।<br>सहस्र भूजा दिल्या नेमुनि, प्रसन्न झाले तेव्हेळी ।<br>ऋचिक ऋषी श्यामकर्ण, पाचाश्याची आरोळी ।<br>प्रसन्न झाले, पाचशे दिधले, चरित्र बोले,<br>ठक पडिले हरिहराला ।।२।। पंचम गोत्र...<br>कोल्हापुरी भिक्षा करी मध्यान्ही गंगातीरी ।<br>सुंदर वाळवंटी गंगा, जागा पाहुनि कुसरी ।<br>आत्मतीर्थी भोजन करितो, नित्यनेम दोन प्रहरी ।<br>श्रीदत्त पवित्र, केले चरित्र, ऋषीपुत्र,<br>निद्रा सह्यांचळाला ।।३।। पंचम गोत्र...<br>चैत्र मासी चतुर्थ दिवशी, भक्त ओवाळति दीपज्योती ।<br>केशर कस्तुरी जवादि चंदन, कापुराची नाही गणती ।<br>पत्र पुष्प आणिक फळ, दोन्ही करी ओळगवीति ।<br>वाद्य वाजंत्र, सुटति यंत्र, एकचि गोत्र<br>उत्साह जाहला मार्गाला ।।४।। पंचम गोत्र...<br>दत्तमूर्ती आर्तदानी दावी तु मजला श्रीचरण ।<br>दीन उदारा दयासागरा, मी काय वर्ण मतिहीन ।<br>कवी बोले जनार्दन, धन्य धन्य ऋषीनंदन ।<br>तुजवांचौनि, नाही कोणी, आर्तदानी<br>प्रेम द्यावे या राघोला ।। ५ ।। पंचम गोत्र...</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४२</span>
+                <h2>तो श्रीदत्त, प्रभु समर्थ..</h2>
+            </div>
+            <div class="poem-content">तो श्रीदत्त प्रभु समर्थ कृपावंत राज्य करितो सह्याद्री<br>पर्वती चला मिळुनिया जाऊ स्वामीला करू जी आरती ।।धृ।।<br>अव्यक्तीहुनि व्यक्त झाला माझा दातार,<br>चहुयुगामध्ये क्रीडा करितो पर्वतावर<br>दंड कमंडलू विभूती चर्चुनि कासे पितांबर<br>जटाजूट मंडित शोभति श्रीमुगुटावर<br>अनंत शक्ती पुढे धावति, खांद्यावरति कावड घेति<br>जडा चेतना संबंध देति, नेति निजप्राप्ती ।।१।। चला..<br>अनंत सृष्टी हिंडता हिंडता मला श्रम आला<br>मनुष्य जन्मामध्ये येउनि नाही लाभ झाला<br>ज्ञान देउनि श्रीचक्रपाणि टाकुनिया गेला<br>विखो सेविला म्हणुनि माझी खंत आली तुजला<br>खंत धरुनि, अंतःकरणी, श्रीचक्रपाणि, गेले टाकुनि,<br>निशीदिनी तुज ध्याति ।।२।। चला मिळुनिया...<br>आशा मनिषा तृष्णा कल्पना यांच्या संगतीने ।<br>या चौघीच्या पायी गं झाली जिवित्वाची हान ।<br>कामक्रोध मदमत्सर रिपुला शरण जाऊन ।<br>अधःपात बुडालो असा मी कर्माचा हीन ।<br>कर्महीन, म्हणुनि शान, अधोमतीने फसलो येऊन,<br>पडलो अधोगती ।।३।। चला मिळुनिया...<br>सहा चार दहा आणिक पहा चौदा चौसष्ट ।<br>इळा पिंगळा उन्मनी तंतू मार्गाची वाट ।<br>बुद्धी शहाणी अवघे मिळुनि केला एकवट ।<br>तुमच्या गं पायी हा जीव चुकला कैवल्याची वाट ।<br>तुम्ही गं याला, या जीवाला,<br>नेउनि घाला पर्वताला दत्तशिखराप्रति ।।४।। चला...<br>चित्त मनाचा पहा कनकाचा परियेळ केला ।<br>दंभ अहंकार आत्मा दीपक लाविला ।<br>पत्र पुष्प केळी नारळे भावार्थे भरिला ।<br>उदरभऱ्याचा मतिमूढ आत्मा ओवाळितो तुजला ।<br>मी अनवाळी, तू सांभाळी,तुज ओवाळी, करी दीपवाळी, अनाथाप्रति ।।५।। चला मिळुनिया...</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४३</span>
+                <h2>जय जय अवधूत प्रभुराया..</h2>
+            </div>
+            <div class="poem-content">जय जय अवधूत प्रभुराया। वंदीन तुमचे पाया ।।धृ।।<br>ऋषीवंशी प्रभु अवतरलासि । भक्त तारावया ।।१।।<br>परमार्गासि आदिगुरु जो । तो श्रीदत्तात्रेया ।।२।।<br>खांद्या कावड पारधी वेष । त्रिताप जातील विलया ।।३<br>सहा चार अठरा वर्णीति तुजला । श्रमली वेदमाया ।।४।<br>कुमरांकित मुनि कृष्ण सुधाकर । संतु लागे पाया ।।५</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४४" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४४</span>
+                <h2>श्रीदत्तराज महाराज गाजतो..</h2>
+            </div>
+            <div class="poem-content">श्रीदत्तराज महाराज गाजतो बाजू राख माझी ।।धृ।।<br>दर्शन तुमचे होता मजला भरू द्या आनंद ।<br>दत्तशिखरी राज्य करितो पढताति ब्रीद ।<br>दशमस्कंदी स्तुति करिता श्रमले ते वेद ।<br>दग्ध जीवासि साकार झाला स्तुती करीन तुझी ।।१।<br>तनमन तुमच्या चरणी माझे लागू द्या चित्त ।<br>तर्क धरी रे प्राण्या अंतरी स्मरावा दत्त ।<br>तरले तुमच्या नामी ऐसे बोलताति संत ।<br>तरला अळर्क भक्त निवाला, उतरली ओझी ।।२।।<br>राहता अवधूत वेष तुमचा सह्यांचळी थारा ।<br>रात्रंदिवस ज्ञान दिधले त्या काशीशरा ।<br>रानामध्ये भेट दिधली परशुराम वीरा ।<br>रानी रेणुका स्थापुनि शरीरा कोरी भूमी केसी ।।३।।<br>जगपर श्रेष्ठ नाम तुमचे कळले हे मज ।<br>जरी तुम्ही धराल हाती संकट निवाराल सहज ।<br>जन्मा येऊन नफा नाही अंतरले मज ।<br>जय जय भीऊ प्यारा बोले, स्तुती करीन तुझी ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४५</span>
+                <h2>जयदेव जयदेव वृष्णिपति..</h2>
+            </div>
+            <div class="poem-content">जयदेव जयदेव वृष्णिपति कृष्णा, यादवपती कृष्णा ।<br>शरणागत तवं चरणा, निरसी भवतृष्णा ।।धृ।।<br>मायापूर त्रिविधा परी, अवलंबून दानी ।<br>कालिंदीतट निकट, प्रगटे प्रभु धरणी ।<br>ध्वजवज्रांकुश रेषा, सर्वही शुभ चिन्ही ।<br>सुदर्शन सुशोभित, अभयकरपाणि ।।१।।<br>आनंदाभिद दानी, चिन्मयपतिरमणा ।<br>जीवउद्धारण धरणी धरी विग्रह नाना ।<br>लीळा संबंध ग्रहणा अनुभूती परीदाना ।<br>वेधुनि बोधुनिया पुत करी जीव नाना ।।२।।<br>दनुजादिक मातुल मागध रिपु दमले ।<br>दुर्घट संकट नासुनि पांडव उद्धरिले ।<br>साधुजन सनकादिक निजपदी बैसविले ।<br>अगणित चरित्र गणिता शेषादिक श्रमले ।।३।।<br>वंकट कटी धनुष्याकृती कुब्जा उज्जरिली ।<br>उद्धवदेवा धवधनी प्रेमामृत केली ।<br>अनाथबंधु माधव, निशीदिनी माउली ।<br>दत्तात्मज ओंकारे हृदयी ध्यायिली ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४६</span>
+                <h2>जय सुखाब्धी सुखपरधामा..</h2>
+            </div>
+            <div class="poem-content">जय सुखाब्धी सुखपरधामा, आरती करू परब्रह्मा ।।धृ।।<br>जो पराहुनि परुता, अवरामध्ये ज्याची सत्ता ।<br>जो ज्ञानशक्तीचा दाता, औठ मात्रेच्या वरुता ।<br>निर्मळ गावीचा राहता, आवडलासि माझ्या चित्ता ।<br>कर जोडुनिया प्रणिपाता, विनवितो श्रीचरणी माथा ।<br>मी रंक कोणत्या कामा२ ।।१।।<br>बहु जन्म घेता प्राणी, झालो दुःखी तुजवांचौनि ।<br>गाई गोपाळ वृंदावनी, उद्धरिले जड जीव प्राणी ।<br>नसे थारा तुजवांचौनि, विनवितो श्रीचक्रपाणि ।<br>शिवविष्णु पद भोगुनि, क्षिराब्धी आलो पाहुनि ।<br>तू वेदशास्त्र अगम्य २ ।।२।।<br>गोकुळी यदुकुळ वंशी, जन्मले श्रीहृषिकेशी ।<br>वसुदेव देवकीपासी, पहुडले बहु सायासी ।<br>आले सुरवर दर्शनासि, दुंदुभी वाजे आकाशी ।<br>झाला आनंद नरनारीसि, पुष्प वर्षति आकाशी ।<br>धन्य गोकुळ नगरी महिमा२ ।।३।।<br>जय चिदानंद आनंदा, ओवाळू बाळमुकुंदा ।<br>ऊद कापूर तुज गोविंदा, करू आरती चरणारविंदा ।<br>मम या विन यास्तव छंदा, केली प्राप्ती राधेनंदा ।<br>नित्य घडो मज ऐसा धंदा, फळ पत्र पुष्प सुगंधा ।<br>शिवबा म्हणे सुख दे आम्हा२ ।।४।।<br>संध्याकाळच्या आरत्या</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४७</span>
+                <h2>ओवाळू आरती तुजला..</h2>
+            </div>
+            <div class="poem-content">ओवाळू आरती तुजला श्रीकृष्ण प्रेम द्या मजला ।।धृ।।<br>तव अगाध अनुपम लीळा, विख्यात असे जगताला ।<br>वर्णिता शेषही श्रमला, नेती नेती म्हणति बा तुजला ।।१।।<br>जरी अससील निर्गुण थोर, तुझा युगायुगी अवतार ।<br>घेतोसि परात्पर, जीवालागी त्रास बा तुजला ।।२।।<br>कोस द्वादश अग्नी गिळिला, त्वा गोवर्धन उचलिला ।<br>कंसचाणूर ठारचि केला, ब्रह्मादिक शरण बा तुजला ।।३।।<br>भारती महायुद्धाला, प्रवृत्त केले पार्थाला ।<br>बोधुनि गीताशास्त्राला, प्रेमदास वंदितो तुजला ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४८" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४८</span>
+                <h2>आरती कुंजबिहारी की..</h2>
+            </div>
+            <div class="poem-content">आरती कुंजबिहारी की जय बोलो कृष्ण मुरारी की ।।धृ।<br>गले मे वैजयंती माला, बजावे मुरली मधुर बाला ।<br>कानो मे कुंडल, झलकती मंडल, नंद के नंदबिहारी की ।।१<br>कनकसम मोरमुकुट विलसे, देवता दर्शन को तरसे ।<br>बजावे चंग, और मृदुंग, ग्वालिनी संग, लाज राखो गोपकुमारी की ।।२।।<br>गगनसम कांती झलक काली, की मूर्ती चमक रही बिजली ।<br>भ्रमरसम अलख कस्तुरीतिलक, ललित छबी कृष्ण मुरारी की ।।३।।<br>चहु दिशी गोप ग्वाल धेनु, बाज रही यमुनातट वेणु ।<br>हसत मुखमंद, कटत यमफंद, प्रित हे गोपकुमारी की ।।४।<br>जहा से प्रकट हुइ गीता, की अर्जुन वीर हुआ श्रोता ।<br>दिखाया विशरूप, हुआ मन खुष,मिटाइ सब भ्रांती उनकी ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-४९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ४९</span>
+                <h2>जय अत्रीकुमारा...</h2>
+            </div>
+            <div class="poem-content">जय अत्रीकुमारा सकुमारा,भवदोष क्लेष त्रयतापहरा ।।धृ।<br>निजकृपे ज्ञान दे यदुराया,गोरक्ष बोधी दावुनि माया,<br>सहस्रार्जुना वरकर दिधले, रेणुकजा मही दाउनि वहिले ।<br>ऋचिकासि पंचशत अर्पी हया ।करउनि शुभनिक्षेप ।।१।।<br>जगी मान्य करुनि शंकराचार्या, याचका पुरवीसि शुभकार्या,<br>मदळसा वाचवी शुभभार्या । त्रयतापी अर्कक शांतविला,<br>निगदाचार्या पटी स्थापियला । निर्मितसे परपंथ ।।२।।<br>काशीशर नृपतीवचनाला, दे मान स्नान करी काशीला,<br>ले टिळा अक्षता निढळाला, बद्रिकाश्रमी मग जाऊनि,<br>कर्णितसे बहुमत निजश्रवणी, ऋषीमुखी पुराण ।।३।।<br>जंबुकाख्य नगरी करी भिक्षा, पांचाळपट्टनी कमलाक्षा,<br>मग येणे होए हो जगसाक्षा, आत्मतीर्थी गंगोदरी बसुनि,<br>भोजन सारितसे नित्यानी, गमन करी तेथून ।।४।।<br>मातापूर शयनी करी निद्रा, जो वंद्य जगत् हरि विधी रुद्रा,<br>जय करुणाघन प्रभु परचंद्रा, शिवप्रिय बंधु भिद विनवितो,<br>वरमती द्या मज जयरूप स्तवितो वंश परांडेकार ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५०</span>
+                <h2>जय जय आरती करुनि..</h2>
+            </div>
+            <div class="poem-content">जय जय आरती करुनि ओवाळा । प्रभोविभो द्वारावतीकारा ।<br>वंदुनि पदकमलाला, जय जय आरती करुनि ओवाळा ।। धृ<br>आनंदमय रूप अवतरले जगी फलस्थपुरी द्विजवंशी ।<br>जनकनायक जनकाइसा कुशी नटले मानववेषी ।<br>उभय शक्ती स्वीकरौनि तयाने उद्धरिले जगताला ।।१।<br>द्वारावतीला वास सदोदित गोमतीच्या तिरी त्यांचा ।<br>बावन पुरुषा विद्या देउनि बोध करी अवराचा ।<br>खेळक्रीडा प्रभु करुनिया बहु दाखवी अनुपम लीळा ।।२।<br>श्रीचक्रपाणि कैवल्यदानी ऋषीमुनी ध्याती तयाते ।<br>देवी देवता गुणान्मोदुनि स्तवीति नित्य पदाते ।<br>धन्य अशा परब्रह्मा पूजुनि वाहू सुमनमाला ।।३।।<br>भक्ती निरांजन भाव प्रकाशुनि उजळुनि धूपदीप ज्योती ।<br>पंचारती ओवाळू तयाला आळवुनि मंगलमूर्ती ।<br>दामोदर म्हणे समुदायाने करू प्रणिपात तयाला ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५१</span>
+                <h2>धूपदीप चंदन सुगंध..</h2>
+            </div>
+            <div class="poem-content">धूपदीप चंदन सुगंध दाउनि ओवाळितो तुजला ।<br>आरती द्वारावतीकारा, आरती द्वारावतीकारा ।।धृ।।<br>जनकाइसाचे भाग्य आगळे, परब्रह्म हे उदरी आले ।<br>फलस्थपूरत्या पवित्र धामी, प्रकटसि तू चित्परा ।।१।<br>सर्वस्वाचा त्याग करोनि, मातापुरी त्या पवित्र स्थानी ।<br>श्रीदत्तात्रेयप्रभुंपासुनि, करी शक्ती स्वीकार ।।२।।<br>मातापुराहुनि गमन सारिले, द्वारावती येउनि राहिले ।<br>क्रीडा करुनि निशीदिनी केले, जीवांचा उद्धार ।।३।।<br>द्वारावतीला क्रीडे जगदानी, राज्य करितो श्रीचक्रपाणि ।<br>विद्यादान बावन पुरुषासि, करी स्वामी दातार ।।४।।<br>कार्य संपता अवताराचे, निमित्त मानुनि कामाख्याचे ।<br>पतित उठवी हरिपाळाचे, भरवसपूरनगरा ।।५।।<br>अशा करोनि अनंत लीळा, जीव उद्धरीसि स्वामी दयाळा ।<br>दासी मालती तव पदकमला, वंदितसे ईशरा ।।६।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५२</span>
+                <h2>जय जय गोविंद..</h2>
+            </div>
+            <div class="poem-content">जय जय गोविंद जय प्रभुराज २<br>आरती करितो तुम्हा मी आज ।।धृ।।<br>अनंतनायक नेमाइसा कुशी नटुनि मातुलग्रामी ।<br>ऋद्धपुरासि अखंड विचरसि गुंडम योगीराज ।।१।।<br>निर्गुण ब्रह्म परात्पर रूपा अगाध तव गुण महिमा ।<br>आर्यवेष नट धारण करुनि पुरवी जनाची काज ।।२।।<br>साठ जीवांची मूळ अविद्या प्रतिदिनी तू छेदुनिया ।<br>ब्रह्मपदी पाठवी कृमीला लीळा करुनि सुरराज ।।३।।<br>अनिमित्त बंधु तू आर्तदानी परमानंद सुखदाता ।<br>विनम्र भावे चरणी शरण हो आलो तुम्हा मी आज ।।४।।<br>जयतु मंगला परम मंगला देवा मंगलरूपा ।<br>दामोदर तुज आरती ओवाळी राख सख्या मम लाज ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५३</span>
+                <h2>जय जय स्वामी..</h2>
+            </div>
+            <div class="poem-content">जय जय स्वामी श्रीप्रभुजी मंगलवेषा<br>तुज प्रार्थितो पुरवावी माझी आशा ।। धृ।।<br>अनाथनाथा दीनबंधु कृपासागरा<br>व्यक्त झाला कैवल्यदानी दातार<br>चित्वेषाचा करुनि अंगिकार<br>काणव शाखी श्रीप्रभु धरी अवतार<br>गुंडम नाम ठेविले जगन्निवासा ।।१।।<br>धन्य धन्य श्रीप्रभूजी चक्रपाणि।<br>प्रेमानंदा केवळही अमृतवाणी।<br>जीवजातीसी उध्दरी बा चौकदानी।<br>मोक्षदाता नाही बा तुजवांचुनी ।<br>चित्ब्रम्हासी तू अगोचर भवनाशा ।।२।।<br>चौसष्ट चवदा चोवीस चार अठरा ।<br>बावन सोळा बत्तीस दोन तीन तेरा।<br>तेहतीस अठ्यांशी आठ नव सहा बारा।<br>चौघी जणी त्या अवघ्याहुनी चातुरा।<br>दोघी म्हणति त्वां नमो जी सर्वही शेषा ।।३।।<br>द्राविड देशाहुनी आला तो ब्राम्हण ।<br>त्याने पाहिले भविष्यपुराण ।<br>तेथे तुमचे उमटले की केवळ ज्ञान।<br>ऋध्दपुरी अवतरले श्रीभगवान ।<br>दर्शन होता वेधले की आर्यवेषा ।।४।।<br>ऋध्दपूर ही जगाआगळी काशी।<br>कलीयुगात आमुची ही वाराणशी।<br>तिये स्थानी रहिवास पूर्वजासी।<br>हरिश्चंद्रासी उपनाम कुळी संन्यासी।<br>मज कृपाळा वरदान द्यावे वर दासा ।। ५ ।। तुज प्रार्थितो...</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५४" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५४</span>
+                <h2>मातुलग्रामी काणव..</h2>
+            </div>
+            <div class="poem-content">मातुलग्रामी काणव शाखी प्रभु अवतार धरीतो<br>की आरती श्रीप्रभुला करीतो ।।धृ।।<br>होते निराकार निर्गुण २,<br>जीव उद्धरण्यासाठी आले कर्मभूमी लागुन ।<br>द्विजगृही श्रीप्रभुन २,<br>काणव शाखी अवतार धरिला आईबापाचे वृद्धपण ।।<br>वाढविले मामामावश्यानं २,<br>ऋद्धपुरी मुंजीबंधन केले बोपदोपाध्यानं ।<br>उडीवे स्थानी पहुड स्थान २,<br>प्रकाश पाहूनि प्रतिती घडिली गेले गृहात घेऊन ।<br>साठ वरुषे अवस्थान २,<br>दुसरे स्थानी दधिभोजन २ ।<br>गुळ आंबा आरोगण २, पुढे आसन पद्मासन २ ।<br>पहा उत्तरेचे स्थान २ ।<br>आमुचा स्वामी श्रीप्रभुला वस्त्र ओळगवितो<br>की आरती श्रीप्रभुला करितो ।।१।।<br>या कलीयुगामध्ये सार २,<br>अवघ्याहुनि मज थोर वाटते हे परमेशरपूर ।<br>झाले श्रीप्रभुअवतार २,<br>लीळाचरित्रे अगणित केले वर्ण मी कुठवर ।<br>केले राज्य वरुषे शंभर २,<br>आणिक पंचवीस त्यावर झाले सव्वाशे करार ।<br>जीव उद्धरिले अपार २,<br>नित्य साठीचा नेम सत्तावीस नेम लक्षाचा सुमार ।<br>हे कैवल्यदानाचे २, यावेगळे तिन्ही दानाचे २,<br>जीव उद्धरिले भाग्याचे २, होते अधिकार पूर्वीचे २,<br>तसा अधिकार मजला नाही म्हणून तुला प्रार्थितो ।<br>की आरती श्रीप्रभुला करितो ।।२।।<br>किती आठवू तुमचे गुण २,<br>तू अगाधाचा अगाध स्वामी श्रीप्रभु निर्गुण ।<br>तू जगत्जगजीवन २,<br>अंतःकरणी उल्लेख होता येत होते धावून ।<br>सुनेप्रति पय वाढूणं २,<br>घे घे मेली घेना म्हणे हे तुमचे भाषण ।<br>भोजन करिता स्वामीनं २,<br>दुडवुड दुडदुड धाव घेतली दिला कंटक मोडून ।<br>तुझे कृपाळु हे पण २,<br>तुझे मातेचे लक्षण २,<br>दुःखापासून जीव सोडवून २,<br>दिले सुखफळी बसवून २<br>अघटित लीळा श्रीप्रभुंची कृमी ब्रह्मपदी बसवितो ।<br>की आरती श्रीप्रभुला करितो ।।३।।<br>अनंता सृष्टीचे हे दोष २,<br>एकाइसाचेनि न्याये उदास मी केले श्रीप्रभुस ।<br>काही नाही भजावयास २,<br>पूर्वप्रमादी वंचकत्व घडले या जीवास ।<br>म्हणोनि प्रार्थितो प्रभुस २,<br>बंदेशरी अगणित द्रव्य दिधले ब्राह्मणास ।<br>तसे द्यावे या जीवास २,<br>माझ्या मनामध्ये हेतु स्वामी भजावे मार्गास ।<br>मी मुळीचा कर्महिन २, आता काय होईल प्रार्थन २,<br>गेले श्रीप्रभु टाकून २, मातेवांचून बाळ केविलवाणं २,<br>तुझा राजमठ पाहून मजला मनी हुरहूर वाटते<br>की आरती श्रीप्रभुला करितो ।।४।।<br>धन्य धन्य ऋद्धपूर २,<br>दीड योजन पवित्र भूमिका ऋद्धपुराचौफेर ।<br>तेथ मार्ग मिळाला अपार २,<br>चतुर्विध साधन हमेशा होतो जयजयकार ।<br>नित वाजति रणतुर २,<br>महाद्वारी अवसर होतो आरत्यांचा गजर ।<br>उजळा आरती कापूर २,<br>उजळुनिया पंचआरती श्रीप्रभु दातार ।<br>पाहुनि हर्ष वाटतो २, जीवज्योती ओवाळितो २,<br>सेज पुष्पाची करितो २, श्रीचरणी ठाव मागतो २,<br>विजापूरकर आत्मा स्वामी दास प्रभुचा म्हणवितो<br>की आरती श्रीप्रभुला करितो ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५५</span>
+                <h2>नमो जयजय..</h2>
+            </div>
+            <div class="poem-content">नमो जयजय देवा श्रीचक्रधरा<br>मंगल आरती योगेशरा ।।धृ।।<br>चांपेगौर वपू तुझी सुंदर अति ।<br>अवलोकुनि आनंद वाटे चित्ती ।<br>आलो तुम्हा शरण चरणी अर्जुनि मन ।<br>तुझे पूजन करितो परमेशरा ।।१।।<br>गंध टिळा कपाळावरी लावुनि ।<br>मधुपुष्पांच्या माळा गळा घालुनि ।<br>हाती हातसरे बांधुनि साजरे ।<br>शिरी लावितो मधु फुल गुच्छ तुरा ।।२।।<br>भाव पंचारती उजळुनि मनी ।<br>भक्तीनिरांजन दीप पाजळुनि ।<br>उदबत्ती धूप लावुनिया अमुप ।<br>तुज ओवाळितो मी जगदीशरा ।।३।।<br>हीन दीन पुजारी तुझा सानुला ।<br>फल पक्वान्न उपहार दावी तुला ।<br>नम्र अभिवंदुनि दामोदरमुनि ।<br>करी आरती देवा कमलावरा ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५६</span>
+                <h2>आरती ब्रह्मरूपा..</h2>
+            </div>
+            <div class="poem-content">आरती ब्रह्मरूपा, श्रीचक्रधर स्वरूपा ।।धृ।।<br>तुझे लागू दे ध्यान करोनि स्थिर मन ।<br>हृदयी साठवू दे परमानंद रूपा ।।१।।<br>ज्ञान प्रेमासि दिधले जीवासि उद्धरिले ।<br>कैवल्यसुख दिधले येथेच केली कृपा ।।२।।<br>देवादिकासि न कळे मायेचे झाके डोळे ।<br>तेथे मानव भोळे पाहाति पररूपा ।।३।।<br>नागदेवा स्थापुनि करी रूपासमान ।<br>प्रकटे ब्रह्मज्ञान जगजेठी अमुपा ।।४।।<br>दास चरणी लोळे ठेवोनि निजभाळ ।<br>मागणे हेचि देवा, देई शुद्ध स्वरूपा ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५७</span>
+                <h2>जयतु मंगलमय..</h2>
+            </div>
+            <div class="poem-content">जयतु मंगलमय पूरधार्या, जीवउद्धारण कार्य कराया ।<br>तुजविण न च प्रभुराया। जयतु मंगलमय पूरधार्या ।।धृ।<br>गुर्जर देशी भरवस नगरी प्रकटुनि तू हृषीकेशी ।<br>निजस्वरूपाची दावुनि माया भवभय दूर करीसि ।<br>अष्टभोग परिपूर्ण असुनि त्यजियले त्या सुखठाया ।।१।<br>विदर्भदेशी ऋद्धपूर काशी येउनि श्रीप्रभुपासी ।<br>उभय शक्तीचा स्वीकार करुनि सालबर्डी ससेयासि ।<br>सुखानंद देउनि तयासि अजरामर करी काया ।।२।।<br>भिल्ल गोंडाच्या जाउनि नगरी पतित जीवासि तारी ।<br>यतिमुनिचा वेष धरुनि भिक्षाभोजन सारी ।<br>भांडारेकार निळंभट्टासि ज्ञानार्पूनि धरी छाया ।।३।।<br>आंध्रप्रदेशी हासूबाईला दिधले प्रेमसुखासि ।<br>योग्य करूनि नागुबाईसा दिधले प्रेमपदासि ।<br>तैसेच तुमचे प्रेमचि मजला द्या श्रीचक्रधरराया ।।४।।<br>व्यसनभूत श्रीचक्रधरराया गंगातीर प्रांती या ।<br>क्रीडा करी जीवहेतु धरूनि भूमिका पूत कराया ।<br>नागदेवासि करूनि आचार्या असतिपरी आचराया ।।५।<br>डोमेग्रामी श्रीचक्रधरस्वामी क्रीडा करी निष्कामी ।<br>म्हाइंभटासि बोध करूनि दूर करी त्यांची उर्मी ।<br>अगणित नेले जीव निजधामी रविभिद लागे पाया ।।६।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५८" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५८</span>
+                <h2>जय हो मौनदेवा..</h2>
+            </div>
+            <div class="poem-content">जय हो मौनदेवा, प्रभु जय हो मौन देवा।<br>भाव धरूनि ओवाळू भावार्थे ओवाळू तन मन धन ठेवा ।।धृ।<br>जगदात्मा जगदीश्वर, जगव्यापक प्रभु जो।<br>निराकार निर्गुण पण धरी रूप गुण तो ।।१।। जय हो.<br>ऋध्दपुरामध्ये येऊन ज्ञान प्रगट केले।<br>प्रधान-सुत-तनुधारी स्वयं जो शांत ।।२।।<br>जगतारण जगकारण प्रभु भडोच नगरांत ।<br>तळेगावी त्या दिवशी वास्तव्य झाले ।।३।।<br>तिथून क्रमाने आले विंध्य पर्वतात ।<br>विरक्त अवस्था धारून बसले मौन्यस्थ ।।४।।<br>म्हणून तत्कालीन जन मौनदेव म्हणति ।<br>दर्शन वंदन सारून आनंदे डुलति ।।५।।<br>ज्या स्थानी प्रभु बसले ते हे मौनतीर्थ ।<br>पाहून गदगद वाटे स्थान गुणातीत ।।६।।<br>प्रभुविरहाने माझे अंतःकरण उलले ।<br>सांग महातीर्था तू प्रभु कोठे गेले ।।७।।<br>दुर्लभ दर्शन घडले मुक्ताबाईस ।<br>आज सफल तप झाले दाटे उल्हास ।।८।।<br>वृक्षाखाली आसन शशक शरण आला ।<br>जानूतळी राखिला अजरामर झाला ।।९।।<br>तीर्थत्रयीचे वंदन हर्षभरे केले ।<br>'ऋषी' मुनी जन सारे आनंदे डोले ।।१०।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-५९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ५९</span>
+                <h2>जय नमो विघ्नमर्दना..</h2>
+            </div>
+            <div class="poem-content">जय नमो विघ्नमर्दना कनाशी राजा ।<br>कर जोडुनिया प्रणिपात करी मम काजा ।।धृ।।<br>श्रीपती पूर्ण भगवान मही अवतरले ।<br>मुनिवेष धरुनि जीवहेतु वाघळी आले ।<br>तव पुढा मार्गी चालता जनी देखियले ।<br>अनुपम्य मूर्ती पाहून मन विस्मित झाले ।<br>त्या मळा नांदणी आसनी निश्चळ ठेले ।<br>निजकिंकर वेष्ठित अवलोकित भवताले ।<br>श्रीनगर कनाशी अपूर्व कळले द्विजा ।<br>तो सत्वर येउनि विनवितो महाराजा ।।१।।<br>द्विजराज प्रभुला घेउनि आले सदना ।<br>मर्दना स्नान करी वस्त्र भुषणी नाना ।<br>लल्हाटी चंदन कस्तुरी तिल्लक जाणा ।<br>सर्वांगी चर्चुनि उटी जानवी पवना ।<br>दे षड्स भोजन पुष्पशेज करी शयना ।<br>बहु सुवास कर्पुर विडा रंगला वदना ।<br>अर्चना करूनी मग जोडी द्वय करकंजा ।<br>मी अनाथ स्वामी पूर्ण हेत करी माझा ।।२।।<br>विप्रासि प्रसन्न होउनि मागा म्हणति ।<br>तव दृष्टचि मागे वेवन्याय मग वदति ।<br>पहा अपूर्व ओटा चहु देशामध्ये कीर्ती ।<br>किनखापी गलप उपकरणे शोभति ।<br>भरजरी चांदवा तकया लोड गादी ।<br>वरि शहामृगाची अंडी शोभा देति ।<br>उद कापुर आरती त्रिकाळ गरूडध्वजा ।<br>घनघोर घड्याळे मृदंग नौबत बाजा ।।३।।<br>शुद्ध चैत्रमास पौणिमेस यात्रा भरति ।<br>होति झांगड वाद्ये महंत मिरवत येति ।<br>घनदाट थाटले अपार अवसर होति ।<br>यंत्राचे सुटति तडक धडक बहु होति ।।<br>हत्ती गाडे घोडे पुत्र मनोदय पुरति ।<br>महारोग दोष नासुनि लागती पंथी ।<br>नित जळतो नंदादीप होतसे पूजा ।<br>गोविंद बाळ प्रार्थितो नाशी भवबीजा ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६०</span>
+                <h2>श्रीआबासाहेबा बाबासाहेबा..</h2>
+            </div>
+            <div class="poem-content">श्रीआबासाहेबा बाबासाहेबा मंगल आरती स्वीकारा ।<br>ही मंगल आरती स्वीकारा ।।धृ।।<br>सह्यगिरीच्या शिखरावरती दोही देवाचे स्थान ।<br>पंचक्रोशीतील भक्त सांगति परंपरेचा मान ।।१।।<br>अव्यक्तीहूनि प्रवृत्ती झाली अवतार धरण्याची ।<br>दीन पतित अनाथ जीवाचा उद्धार करण्याची ।।२।।<br>फलस्थपुरीहूनि त्याग करूनि आला तो अवतार ।<br>नाम तयाचे श्रीचक्रपाणि नेई जीवा भवपार ।।३।।<br>पवित्र स्थानी वंदन करिता रजतम विलया जाति ।<br>संकट टळते मनोरथ पुरति नवसही पूर्ण होति ।।४।।<br>माघ महिना महाशिवरात्री यात्रा भरते मोठी ।<br>चतुर्विध साधन मिळाले भक्तजनाची दाटी ।।५।।<br>परमार्गाचे साधक येति अनुष्ठान करण्यासि ।<br>माहुरदर्शन घेउनि हृदयी श्रीदत्त स्मरण्यासि ।।६।।<br>दीनदयाळा विनंती करितो तुजला विनम्र भावे ।<br>प्रेमपद मज देउनि देवा निजप्राप्तीला न्यावे ।।७।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६१</span>
+                <h2>आरती करू विदर्भवरा..</h2>
+            </div>
+            <div class="poem-content">आरती करू विदर्भवरा । नेमाइसाच्या निजकुमरा ।।धृ।।<br>काटसुरेयासि अवतरे, मामा मावशीचे भाग्य खरे ।<br>प्रेमाचे वाढति असे तुरे २ । अहो..<br>प्रभु आमची ही अविद्या मारा ।।१।।<br>जन म्हणति राउळ वेडे, अशा देवासाठी भक्त रडे ।<br>प्रेमाचा अधिकार त्यासि घडे २ । अहो..<br>त्याचा चुकला हा संसारफेरा ।।२।।<br>मानववेषे प्रभु क्रीडति, घरोघरी भोजन करीति ।<br>भाग्यवान जीवास ते लाभति २ । अहो..<br>तसा मला प्रभु द्या आसरा ।।३।।<br>देउळवाडा अचलपूर, काटपूर आणि शिरपूर ।<br>पवित्र केले ऋद्धपूर २। अहो..<br>पुनरपि आताही पवित्र करा ।।४।।<br>सर्वज्ञ गेले उत्तरपंथासि, प्रभुजी गेले निजधामासि ।<br>कवी झाला असा बेवारसी २ । अहो..<br>कुणी तरी बुडत्या जीवाला तारा ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६२</span>
+                <h2>च्यारी मासामध्ये..</h2>
+            </div>
+            <div class="poem-content">च्यारी मासामध्ये पर्वकाळ पवित्याचा ।<br>बीडी अवस्थान श्रीजगदीशा अवसर गजराचा ।।धृ।।<br>नाना परी गोदातिरी उद्धरी जीवराशी ।<br>डोमेग्रामी नगर सोडूनि विचरत वसुधेसि ।<br>महाअपूर्व वर्धन नगरी आले हृषीकेशी ।<br>लक्ष्मीच्या देउळी स्वामी राहिले वेदमासी ।<br>परसनायक पुढे बैसले विनवित देवासि ।<br>वोटक दिधला स्वामीकारणे उपविष्ट गुणराशी ।<br>कर जोडुनि विनवी स्वामीला धन्य तो दैवाचा ।।१।<br>परसनायक पुढे बैसले देउनिया स्थित ।<br>आनंद झाला अंतःकरणी बहु सुख वाटत ।<br>लक्ष्मीचा चौकी चांदवा होता लोंबत ।<br>तुमचे ब्रह्म म्हणुनि बोलले परसनायकास ।<br>नागदेवे प्रश्न केला ब्रह्म कव्हणास (म्हणावे) ।<br>चांदव्याचा दृष्टांत देउनि बुझविले त्यास ।<br>दीनदयाळु तू कृपाळु स्वामी विशाचा ।।२।।<br>चार मास राहिले की स्वामी पर्वकाळ आला ।<br>समस्त भक्तीजन होते आनंद वर्षला ।<br>सडा घालुनि रंग भरूनि समारंभ केला ।<br>पत्र पुष्प केळ नारळे भावार्थे भरिला ।<br>बहुमोलाचे वस्त्र आणुनि ओळगवी स्वामीला ।<br>स्तुती करीत बहु अतिविनोदे वितर्क मावळला ।<br>ओळगविले वस्त्र हेत काय पुरला बासाचा ।।३।।<br>नाना परीची पुष्पे आणुनि गुंफियले हार ।<br>कटीभर दोन्ही बाहुदंड हाती हातसर ।<br>गळदंडा मिरवे कंठी ऐसी श्रीमूर्ती सुंदर ।<br>तो अवसर पाहूनि मजला मनी हर्ष थोर ।<br>सुरनर किन्नर गायन करीति वर्णीति अपार ।<br>आगम निगम भुलून गेले न कळे निर्धार ।<br>सुर दाटले गगनी वर्षाव करीति पुष्पांचा ।।४।।<br>लक्ष्मीचा देउळी स्वामी राहिले येऊन ।<br>वेदाची परिमिती तिये स्थळी अवस्थान ।<br>पूर्वज आमचे तिये स्थळी राहिले येऊन ।<br>दैव त्यांचे योग्य हेच पडले उपनाम ।<br>श्रीवर्धनस्थ बीडकरासि म्हणति तेथून ।<br>गुह्यार्थ होता उक्त केला बहुता कारण ।<br>सारंगधरसुत संतु दास किंकर श्रीहरीचा ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६३</span>
+                <h2>आरती प्रभु मेरे..</h2>
+            </div>
+            <div class="poem-content">आरती प्रभु मेरे तन मन धन की,<br>दीजो प्राप्ती मुझे अपने चरण की।।धृ।।<br>और तेरेसे कुछ नही मंगना, मै बंदेका सवाल इतना ।।१।।<br>गुन्हेगार मैं तेरे चरण का तेरे बिना मुझे डर न हो किसीका ।।२।।<br>हात जोड कहे आबाकुमरजी गुन्हा माफ कर लो मेरी अर्जी ।।३।।<br>निद्रेच्या आरत्या</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६४" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६४</span>
+                <h2>आता हो स्वामी सुखे हो..</h2>
+            </div>
+            <div class="poem-content">आता हो स्वामी सुखे हो निद्रा करावी अवधूता ।<br>चिन्मयपर सुखधामा जाउनि पहुडावे त्वरिता ।।धृ।।<br>वैराग्याचा कुंचा घेउनि चौक झाडिला ।<br>तयावरती सुप्रेमाचा शिडकावा दिधला ।।१।।<br>पायघड्या घातल्या हो स्वामी नवाविधा भक्ती ।<br>ज्ञानाच्या समया उजळुनि लाविल्या ज्योती ।।२।।<br>भावार्थाचा मंचक हृदयी आकाशी टांगिला ।<br>सुमनाची सुमने तोडुनि केले शेजेला ।।३।।<br>आशा मनिषा दुष्ट कल्पना सांडुनि गलबला ।<br>दया क्षमा शांती दासी उभ्या सेवेला ।।४।।<br>अद्वैताचे कपाट सांडुनि स्वतंत्र केले ।<br>दुर्बुद्धीच्या गाठी छेदुनि पडदे सोडिले ।।५।।<br>अलक्षलक्षा उन्मनी घेउनि नाजुक दुशाला ।<br>निर्गुणवासी सगुण विलासी सेजे पहुडला ।।६।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६५</span>
+                <h2>घेई झोप प्रभु आता..</h2>
+            </div>
+            <div class="poem-content">घेई झोप प्रभु आता, हालवी अनसूया माता ।<br>थकले गाणे तुझे गाता, तू श्रीदत्ता झोप घेई आता ।। धृ।<br>झाली रात्र चहुकडे, कुठे ना पक्षी आता उडे ।<br>आला चंद्र ढगाकडे, पडले तेज चहुकडे ।<br>चमके नभी तारे, तू श्रीदत्ता झोप घेई आता ।।१।।<br>झोपले मानव हे सारे, करोनि काम धंदा त्वरे ।<br>सुटले मंदगती वारे, झोपले पशुपक्षी सारे।<br>झोपले बाळ स्तन पिता, तू श्रीदत्ता झोप घेई आता ।।२।<br>गाति ऋषीमुनी रोज, करोनि पुष्पांची शेज ।<br>प्रार्थी दास कृष्णराज, करी तव चरणाची खोज ।<br>दिसेना कुठे मज आता, तू श्रीदत्ता झोप घेई आता ।।३</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६६</span>
+                <h2>निद्रा घ्या आता..</h2>
+            </div>
+            <div class="poem-content">निद्रा घ्या आता, निद्रा घ्या आता ।<br>जीव उध्दरूनी शीणलासी त्राता ।। धू ।।<br>पहिले नमन श्यामतनुला ।<br>धनंजयाला उपदेश केला ।<br>प्राप्तीस नेले पंडुसुताला ।<br>निद्रा घ्या आता ।।१।।<br>दुसरे नमन अत्रिसुताला ।<br>मातेने त्याचा सांभाळ केला।<br>दिधले दर्शन तिन्ही देवाला ।<br>निद्रा घ्या आता ।।२।।<br>तिसरे नमन श्रीचक्रपाणिला ।<br>च्यारी वेदाचा अभ्यास केला ।<br>निद्रा घ्या आता ।।३।।<br>बाळपणामधी पुर्ण हो झाला ।<br>चवथे नमन श्रीचिद्धवाला ।<br>वाजेशरासि नवस केला ।<br>खिचपुरीचा अवसर केला ।<br>निद्रा घ्या आता ।।४।<br>पाचवे नमन चक्राख्य त्याला ।<br>महदंबा प्रश्न करी स्वामीला ।<br>आचार्य केले नागदेवाला ।<br>निद्रा घ्या आता ।।५।।<br>सहावे नमन चहु साधना ।<br>आठ भक्त चहु ज्ञानी ते जाणा ।<br>गुरूचा उपकार ध्यानासी आणा ।<br>निद्रा घ्या आता ।।६।।<br>नाना रूपी धरी अवतार देव ।<br>आनंद देण्याची आली हो कीव ।<br>चहुयुगामध्ये उद्धरी जीव ।<br>निद्रा घ्या आता ।।७।।<br>कंसासी मर्दोनि जनक जननी ।<br>सुखफळाते पाठवी दोन्ही ।<br>मातेचे उपकार आणुनी ध्यानी।<br>निद्रा घ्या आता ।।८।।<br>दास प्रभाकर जोडुनि पाणि ।<br>गुर्जर वेली प्रभुसि नमुनी ।<br>नित्याचि वेली नासा हो स्वामी।<br>निद्रा घ्या आता ।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६७</span>
+                <h2>निज बा निज..</h2>
+            </div>
+            <div class="poem-content">निज बा निज दत्ता अवधूता ।अनसूयेच्या सुता ।।धृ।।<br>नित्य काशीचे स्नान करुनिया । कोल्हापुरासि जाता ।।१।।<br>पांचाळेशरी भोजन करुनि ।माहुरी निद्रा करिता ।।२।।<br>वेद थकले पुराण श्रमले । नारद तुंबर गाता ।।३।।<br>दास माधव करी विनंती । चरणी ठाव द्या आता ।।४।।<br>मूर्तीवर्णन</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६८" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६८</span>
+                <h2>जय श्रीअच्युता कृपा..</h2>
+            </div>
+            <div class="poem-content">जय श्रीअच्युता कृपा करी मजवरी चिन्मयवरा ।<br>एक वेळ श्रीमूर्ती तुझी मज दाखवी गुणगंभीरा ।। धृ।।<br>श्रीचरणद्वय आरक्त तळवे रातोत्पल लाजति ।<br>ध्वजवज्रांबुजअंकुश चिन्हित ऋषीमंडळ चिंतीति ।<br>टंक वर्तुळा उंच धुरा वर सरळ अंगुळ्या अति ।<br>नखेऽरक्त सोज्वळे उडुगणे नित चरणी ओळगति ।<br>चाल - नारायण मनी विस्मित २ । लक्ष्मी जया वेधत२ ।<br>त्रिकोण गुल्फ राजत२ । ब्रीदभार पदी गर्जत २ ।<br>अवलंबित पोटऱ्या मनगटे कमळाकृती सुंदरा ।<br>द्वय गुडघे चक्रांकित विलसित वेधित ऋषीअंतरा ।।१।<br>जानू उभय कर्दळीस्तंभ द्वय जघन प्रांत शोभत ।<br>विशबीज अतिसुंदर वर्तुळ नितंब द्वय राजत ।<br>कटीनागर नागांतक लक्षुनि मनी होउनि लज्जित ।<br>माजि पितांबर वेष्ठित शोभत चपलापरी तळपत ।<br>चाल - श्रीदोंद दीर्घ वर्तुळ२, अतिसखोल नाभीस्थळ २,<br>उभी रेष कूर्च श्यामळ२, ते तुंग पवित्र केवळ २,<br>जीवदोषा सामावित उदरी नाशित भवदुर्धरा ।<br>स्वीकार खूण त्रिविधा परी दावित सरळ त्रिवळी नागरा ।।२<br>उंच वक्षस्थळ हीन कुंभस्थळ गज भावुनि न्यूनता ।<br>कुचयुगल चक्राकृती बरवे तप्त कनक साम्यता ।<br>आजानबाहू आटीव मुडपे तळी वोहरत सरळता ।<br>सरळ आंगुळ्या करतल कोमल कुंकुमसम उपमिता ।<br>चाल - दशनखे पूर्ण शोभले२, मुद्रिका खडे चमकले २,<br>मनगटी हिरे झळकले२, उडुगणे सकळ लाजले२,<br>पांचजन्य करी घोर गर्जना रिपु कांपत थरथरा ।<br>सुदर्शन करी देखुनि दानव लंघित गिरीकंदरा ।।३।।<br>ग्रीव शंखाकृती कौस्तुभ हृदयी वैजयंती शोभति ।<br>अर्धचंद्र हनुवटी पेशला गिरामृत वर्षति ।<br>ओष्ठपुट आलोहित पातळ दशन प्रभा फाकति ।<br>पुरुषार्थावर मिसुर सरळ वर नासिक वंशाकृती ।<br>चाल - मृगनेत्र नयन शोभत२, रातोत्पल दल तुच्छित २,<br>भव विलोकूनि नाशित२, भृवंकट धनुष्याकृत २,<br>अतिनितळ भाळस्थळ तिल्लक मृगनाभिज साजरा ।<br>श्रवणयुग्मी मकराकृती कुंडल वैर करीत भास्करा ।।४।।<br>पृष्टभाग सम शोभत बरवा मुकुट थोर वर्तुळ ।<br>इंद्रनीळ कीळ फांकत तेवि कुरळ सरळ श्यामळ ।<br>वीरगुंठीमधी जवादी कुसुमे घवघवकरी परिमळ ।<br>जडित मुकुट किळ फांकत वरुते सेवित नभमंडळ ।<br>चाल - आसनी मूर्ती बैसली२, घनदाट सभा थाटली२,<br>पांडवादिकी अर्चिली२, सुरवरी पुष्पे वर्षिली२,<br>सिंहासनी नवरत्न लागले तेज पडत अंबरा ।<br>ब्रह्मादिक दाटले विमानी नितअवसर मुनिवरा ।।५।।<br>सौंदर्यान्वित सर्व गुणान्वित कलुषांतक सावळा ।<br>सर्वांगी हरिचंदन बावन उटी चर्चित परिमळा ।<br>पूर्णशशी स्मितवदन मिरवला मुखी तांबुळ घननिळा ।<br>दिव्यांबर परिधानी पितांबर वर शोभत पिवळा ।<br>चाल - अनुपम्य मूर्ती देखुनि२, स्मर गर्वगळित होऊनि २,<br>गोविंदबाळ चरणी२, नित प्रार्थी कर जोडूनि२,<br>व्युत्पन्नाभिद मुकुंदनंदन तुज याचित श्रीधरा ।<br>बीज नासुनि संसृती चरणी ठाव देई मज किंकरा ।।६।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-६९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ६९</span>
+                <h2>चांपेगौरा विशालनेत्रा..</h2>
+            </div>
+            <div class="poem-content">चांपेगौरा विशालनेत्रा सुरवेधक सुंदरा ।<br>शरणागतासि वज्रपंजरु जय जय श्रीचक्रधरा ।। धृ।।<br>सर्व शक्तीयुक्त चैतन्यापर अवतरले भूवरती ।<br>भवसंतप्ता वरदायक नित राजस तेजस मूर्ती ।<br>सकळ जीवांचा रक्षक आणि उद्धारक श्रीधरा ।।१।।<br>शरणागतासि...<br>सरळ पोटऱ्या जघन मनोहर नाभीरंध्र सखोल ।<br>प्रहसित श्रीमुख लंबकर्ण ते बरवे उंच कपोल ।<br>चंद्रबिंबसम नख श्रीकराचे आणि उंच धुरा ।।२।।<br>शरणागतासि...<br>लल्हाट नितळ आजानबाहू वक्षस्थळ सुविशाल ।<br>पंचवीसा सत्तावीसाभितरी वय भासे त्रय काळ ।<br>त्रिरेषा श्रीकंठी मिरवे आणि श्रीरेषा उदरा ।।३।।<br>शरणागतासि...<br>भाळप्रदेशी टिळा राजतो गोपीचंदनाचा ।<br>प्रसन्न दुटीने भाग शोभतो कटीप्रदेशाचा ।<br>गुणधर्मी युक्त अंगी सुंदर सुहृद सर्वेशरा ।।४।।<br>पाळणा</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७०</span>
+                <h2>प्रभु कृष्ण नामाने...</h2>
+            </div>
+            <div class="poem-content">प्रभु कृष्ण नामाने प्रकटले हो, प्रभु कृष्ण नामाने प्रकटले ।<br>प्रकटताचि विज्ञान खेळिनले२, वसुदेव चकितचि झाले ।। धृ<br>जन्मताचि देवकी मातेसि चतुर्भूज दर्शन दिले ।<br>दुथडी यमुना पार करुनि यशोदेचे बालक झाले ।<br>गोकुळ नगरी गोपगोपिका२, मोहनि वेडेचि झाले ।।१<br>मानव सोडा पशुपक्षीही जळचरे वेधुनि गेली ।<br>कृष्णवियोगे वृंदावनीची झाडे सुकूनचि गेली ।<br>कंस चाणूर मर्दन करुनि२, मातापिता मुक्तचि केले ।।२।<br>ज्ञानशक्तीचा स्वीकार करुनि उद्धवासि प्रेम देउनि ।<br>एका खांबाची सुवर्णनगरी वसविली समुद्राभितरी ।<br>विचित्र लीळा करुनि तयाने २, जग विस्मितचि केले ।।३।<br>सोळा सहस्र अंतापुरासि सप्त पट्टराण्यांसि ।<br>विज्ञानमूर्तीचा योग अवघ्यासि रुक्मिणी प्रेमपदासि ।<br>छप्पन कोटी यादव सारे२, अवघे अभागीचि ठेले ।।४।<br>चक्र सुदर्शन करी घेउनि शिशुपाळ वध करुनि ।<br>अग्रपूजेचा मान घेउनि क्षीरभोजन वाढुनि ।<br>प्रभुने ऐसी लीळा करुनि२, नम्रतेचे धडेचि दिले ।।५<br>अर्जुनदेवा निमित्त करुनि, गीतामृत पाजुनि ।<br>काळांतरीचा नष्ट झालेला योग शुद्ध करुनि ।<br>भगवद्गीतेत द्वैत मांडुनि२, संसारविषचि बोले ।।६।।<br>कुंतीएसि प्रेम दिधले पांडव उद्धरुनि नेले । कविने आपुले वेडेवाकडे काव्यपुष्प वाहिले । प्रसन्न होउनि प्रेमचि देतील ऐसेचि मनोरथ केले ।।७</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७१</span>
+                <h2>मथुरेमध्ये अवतार झाला...</h2>
+            </div>
+            <div class="poem-content">मथुरेमध्ये अवतार झाला देवकीपोटी कृष्ण जन्मला ।<br>वसुदेवाला हर्ष दाटला झाला दरवाजा अवचित खुला ।।१।<br>जो बाळा जो जो रे जो ।।<br>गळति बेड्या हातामधुनि<br>वसुदेवाने संधी साधुनि ।<br>बाळ मुकुंदा कडे घेउनि<br>देवकीला हो बंदी ठेउनि ।।२।। जो बाळा..<br>यमुनाजळी पद स्पर्शिला<br>बाळकृष्णाला रस्ता दिला ।<br>गेले वसुदेव नंदाचा घरा<br>यशोदेपासी बाळ ठेविला ।।३।। जो बाळा..<br>साऱ्या गोकुळी आनंद झाला<br>म्हणे यशोदेला पुत्र हो झाला ।<br>नंदराजाने सोहळा केला<br>गोकुळात श्रीकृष्ण जन्मला ।।४।। जो बाळा..<br>पहिल्या दिवशी आगळा छंद<br>गोपीगौळणी झाल्या त्या धुंद ।<br>खेळे पाळण्यात बाळ मुकुंद<br>खेळ खेळणी देति हो साद ।।५।। जो बाळा..<br>दुसऱ्या दिवशी दुसरा पाढा<br>ढोल सनई बाजे चौघडा ।<br>वेसी जाऊनि नारळ फोडा<br>बाळबाळंतीण दृष्टही काढा ।।६।। जो बाळा..<br>तिसऱ्या दिवशी तिसरा प्रकार<br>गुळ सुंठोडा वाटी खोबरं ।<br>गोप गौळणी आल्या सत्वर<br>नाच नाचुनि धरति पोरं ।।७।। जो बाळा..<br>चौथ्या दिवशी चंद्रपूजेचा<br>धरी उपास बाळराजाचा ।<br>करी यशोदा धावा देवाचा<br>प्रकाश पडे महाली चंद्राचा ।।८।। जो बाळा..<br>पाचव्या दिवशी पाटापूजन<br>दारा बांधिले फुले तोरण ।<br>काढी रांगोळ्या शोभे अंगण<br>गोड पक्वान्न ठेवा वाढून ।।९।। जो बाळा..<br>सहाव्या दिवशी सटवीचा मान<br>हळदी कुंकवाची देऊनि वान ।<br>हाती सवाष्णी घेतिया पान<br>साडी चोळीची करा आठवण ।।१०।। जो बाळा..<br>सातव्या दिवशी सटवीचा फेरा<br>बाळंतिणीला जपून जरा ।<br>सांजच्या वेळी करी अंगारा<br>लिंबू नारळ काढा उतारा ।।११।। जो बाळा..<br>आठवी दिवशी आठवी रीत<br>गाति यशोदा बाळाचे गीत ।<br>गोपीगौळणी पुढे नाचत<br>बाळ मुकुंद कडेसी घेत ।।१२।। जो बाळा..<br>नवव्या दिवशी माता यशोदा<br>करी नवस साऱ्या देवांना ।<br>लाभो आयुष्य माझ्या बाळाला<br>सोन्याचांदीने मढवीन तुला ।।१३।। जो बाळा..<br>दहाव्या दिवशी दहावा थाट<br>बसे पंगती टाकिले पाट ।<br>गोकुळवासी गर्दी अफाट<br>पंचमिठाई वाढिले ताट ।।१४।। जो बाळा..<br>अकराव्या दिवशी न्याराच रंग<br>बाळ पाळण्यात शोभे श्रीरंग ।<br>झाल्या गौळणी पाहुनि दंग<br>लाभो ईशरा तुझा हा संग ।।१५।। जो बाळा..<br>बाराव्या दिवशी बारसे झाले<br>त्रैलोकी देव पाळणी हाले ।<br>यशोदा घरी पाळणा झुले<br>श्रीकृष्ण नाव बाळास दिले ।।१६।। जो बाळा..<br>कवी ब्रीजलाल यशोदा घरी<br>गातो पाळणा देवाची थोरी ।<br>हाले पाळणा रेशीम दोरी<br>गाती अबला गोपी सुंदरी ।।१७।। जो बाळा..<br>स्तवन</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७२</span>
+                <h2>प्रायश्चित्त चौक</h2>
+            </div>
+            <div class="poem-content">श्रीचक्रधरा स्वामिया अनंता प्रार्थितो मी तुजला ।<br>अपवित्राते पवित्र करुनि द्या निजगती मजला ।।धृ।।<br>सर्व दोष कुश्चळ मी पामर कुटील मृतकाया ।<br>अनंत राशी अर्जिल्या नाही त्या उसंत भोगाया ।<br>किती वदने करू कथन लिहिता न पुरे वसुधा या ।<br>बहुत दुःख भोगिता शिणलो कोणी न सोडाया ।<br>कनवाळु कृपाळु दयाळु असुनि देवराया ।<br>कठिण बहु निष्वर जाहला दुःख न समजाया ।।<br>चाल मी सर्वापरी अधम राशी२ ।<br>सर्व योग्य हे प्रेमपदासिर ।<br>अधिकरणसन्निधी सुकाशी२ ।<br>नित्यलता अर्जिल्या मी राशी२ ।<br>चाल - देखुनि आत्मकृत्याते परि म्हणे ममोत्तम चर्या ।<br>वर्णार्थी गौणता असता परि भासे मी नरवर्या ।<br>पुरुषार्थ अंगी ना काही परि म्हणतो मी जगशौर्या ।<br>तनु अंगी बरवेपण ना परि म्हणे ममोत्तम काया ।<br>चाल - महापात्र ईशरा तोषा२ । काढिले दोष अशेषा२ ।<br>जाणतो पुढील गतवेषा२ । आठवण नाही परमेशा२ ।<br>चाल करी निंदा दोष शून्यता,<br>विविध पात्रता, न जाणे काही ।<br>अवसरी सदा तमतम,<br>भोगी अधम, असा मी वाही ।<br>हे दैवरहाटी पात्रता,<br>भोगिता रजा, क्षिती मज नाही ।<br>ना कधी नम्रता असे, बाह्यता नसे, भिक्षुमात्राही ।<br>चाल - बाह्यता दिसे गोडसा जसा बकध्यानी हो ।<br>अंतरी काटलो परधर्मी रिग नाही हो ।<br>घातले चिन्ह काष्टासि जेवि बुजवणी हो ।<br>अभिमान चाळी नित्यसा सर्वथा न गणी हो ।<br>चाल अहो राया हो मम नरकलता वाढली ।<br>अहो राया हो मी असंख्य दुःखे अर्जिली ।<br>अहो राया हो ईशरा खंती आणिली ।<br>अहो राया हो मज सृष्टीशून्य जाहली ।<br>चाल - कवण गती अधमा पापिया ईशर दूर केला ।<br>परमार्गा शिणवली आता गती वाजत नरकाला ।।१।।<br>असंभवी संभवा धरितसे परतारक ऐसा ।<br>आत्मस्वार्थ लोभिया वंचकु नगतोद्भव तमसा ।<br>हृद्ध्यानी ईशरा नाठवी आचरण सम कनुसा ।<br>हितानहिता सुहृद सांगता तापून घे दोषा ।<br>परमार्गी इउली बुद्धी ना दंड न करी सरिसा ।<br>आचरण ना निज शुद्ध दोष घे नित पुढील तोषा ।<br>चाल - अंतर्बाह्य सर्व व्यापिला२,<br>कोण मी ऐसे न कळे मजला२<br>स्वार्थसुखे परमार्थ बुडविला२,<br>अहंता मुळकंद वाढिला २<br>चाल - स्तुति करिता परमार्गाची व्यावृत्ती करी सर्वांची<br>अवढाळ नरक अर्जिले से मात्र नाही धर्माची ।<br>जे कर्म बुडविले महता नच शुद्धी निजधर्माची ।<br>हिंसाकृत लव ना चुकलो संग्रामयुक्त कर्माची ।<br>चाल - विपरीत गोविले पोटी२, अनुचित कृत्य अनुष्ठी २<br>विवरौनि दृष्टी चातुष्टी२, जे अपाड न वदे ओष्ठी २<br>चाल - निमित्त दोष चाळिले दोष घेतले स्वपक्षा पाळा<br>जो गुरुसाम्य अधिकरण मान्यताहरण केली अवलीळा<br>जो करी शब्दसाधन ठेवी दूषण मतिचा चाळा ।<br>आपणासि म्हणे ना जरा अंध पामरा कळे ना राळा<br>चाल - मज साम्य कोण थोरसा वदे पापखाणी हो ।<br>भ्रमताचि कृमी अमेध्य तेचि सुख मानी हो ।<br>दुर्भेद्य कानवाथरा खता तो न गणी हो ।<br>पुढीलाची चर्या उत्तम करी नित सानी हो ।<br>चाल-अहो राया हो केशाग्र नखाग्रावरी ।<br>अहो राया हो आतलो दोष निर्भरी ।<br>अहो राया हो हिंसकी जशी मार्जरी ।<br>अहो राया हो विवरौनि पहा अंतरी ।।<br>चाल- अन्य तीर्थक्षेत्रादिक देखौनि करी हेळण त्याला ।<br>निज सेव्य सेवका द्रोहिया कृतघ्न घातक मी ।<br>कोण जाणे देवताक्षोभ हा मज टाकीत आला ।।२।।<br>मनालया निश्चळ पातकी जाणुनि कुकर्मी ।<br>अन्य तदा सामग्री देखुनि विपरीत घे धर्मी ।<br>महत्पात्र देखता बोलता करी ताडन वर्मी ।<br>शब्दबाण खंडना दंडना करी जाणून मर्मी ।<br>कखाइया विशास घातकी अंतरी ना शर्मी ।।<br>चाल - अंगिकार अधिकरण मुळीचे २,<br>निजांतर मी पोळवी त्यांचे २<br>पराभवी उत्तमा विधीचे २,<br>साधन आचरे सदा सुखाचे२ ।<br>चाल अवसरी कदा न झटलो,<br>परि मंगळ काळी चुकलो ।<br>सात्विक काळ पाहुनिया,<br>बहु तमसाद्भूत मी नटलो ।<br>धन दारा पदार्था वांछी इच्छा गत मिळता न टळलो ।<br>अधिकार हीन लक्षुनिया परि मंगळ करणा हटलो ।<br>चाल - ईशरपरायण साचे२, चैतन्य पोळिले त्यांचे २<br>साधले हनन मूर्तीचे२, अर्जिले पात्र नित्याचे २<br>चाल करी वर्मस्पर्श देखता स्वामी द्रोहिता प्रतीशर झाला<br>अधिकरण शब्द अव्हेर भेदी जिव्हार शब्दगुण भाला ।<br>अनहित हित स्वामिया दाखवी भयाभूत ग्रामाला ।<br>जे तया जांघी जन्मुनि व्यर्थ वाचुनि शिणविले त्याला ।<br>चाल - नित्यसा जोडी मी पाप सदा दिनरजनी हो ।<br>ही चतुर्विध साधने दूषिली अवनी हो ।<br>तव कर्मरहाटी पात्रास हेळिले वदनी हो ।<br>आगमिक विग्रहादिक देवता कर्मी हो ।<br>चाल अहो राया हो देवतापात्रे क्षोभली ।<br>अहो राया हो तनु अंगी दुःख लागली ।<br>अहो राया हो साधनी बुद्धी निरसली ।<br>अहो राया हो मम बुद्धी भ्रष्ट जाहली ।<br>चाल - क्रिया प्रसव अधमती आपुले करी मेळवी मतीला<br>बहुत दुःखसाधनी क्षोभली अभिमानिनी मजला ।।३।।<br>परचक्रचालका नियामका सर्वशक्तीमंता ।<br>नित्यमुक्त अमूर्त आत्मका चिन्मय तनु धरिता ।<br>कर्मक्षिती वयनार्पितजीवना मनुजदेहयुक्ता ।<br>शुद्ध बुद्ध अनुपम्य कमनिया अघजीव उद्धरिता ।<br>स्वानंदे आद्यंत मध्य ना सर्वे साक्षी असता ।<br>परावरा देखता निर्मळा सुखमज्जित करिता ।<br>चाल - उत्तराई वयनार्पून झाला२,<br>दवडुनि ज्ञान धर्म सांडिला २<br>मनोधर्म विकल्प अर्जिला२,<br>अनंत सृष्टी टाकित आला२<br>चाल - जे पूर्वसंचिता गाठी आचरता पुढारा येति ।<br>गतसृष्टी प्रायश्चित्त नाही ते बीज अंकुर निघति ।<br>भंगला आत्मघाते हो अनुकूळा साह्य ना करीति ।<br>घेरिला सर्व वैऱ्यांनी उत्कर्षे नरक भोगवीति ।<br>चाल - विनंती परायणवृंदा२, प्रार्थितो आनंदकंदा २ ।<br>ऐकूनि तुमचिया शब्दा२, चुकवावे नरक भवबंधा२ ।<br>चाल - मी सर्व पापमुळकंद छेदी भवबंध कृपाळा बापा<br>तुजविण कोण ये मही दुःख सर्वही निवविता तापा ।<br>मी थोर नरक अर्जिले नाही वर्जिले सुसंता शापा ।<br>चाळिले जायबावीसी महत्पात्रासि कोण करी मापा ।<br>चाल करी गर्व मठारा जरा लाज ना धरली हो ।<br>साधिता मरुनि ऐशर्य शुद्धता नुरली हो ।<br>अनृत्य भाषण सदा कुपरी उरली हो ।<br>विपरीते सबीज अक्षरे निर्बीजे केली हो ।<br>चाल अहो राया हो निर्वाणसत्य पंचमा ।<br>अहो राया हो निरुपम्य दुःख अवगमा ।<br>अहो राया हो भोगणे नित्य अधमा ।<br>अहो राया हो निरवधी सृष्टी नच सीमा ।<br>चाल - कृत अत्रिज प्रार्थना नामना वर्धन कुळी आथिला ।<br>श्यामवदन जाहले जीवेशर अंतरला मजला ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७३</span>
+                <h2>डोमेग्रामी महाराज..</h2>
+            </div>
+            <div class="poem-content">डोमेग्रामी महाराज राजमठी शिरताज ।<br>सखया राजमठी शिरताज।।धृ।।<br>कृपालक्ष घालुनिया सुखदानी ।<br>चहुमध्ये तो देखिला दीनवाणी ।<br>सुखानंद द्यावा धरी हेतु मनी ।<br>सुखाआड कुवस्तु आहे म्हणुनी ।<br>अव्यक्तीहुनि व्यक्त झाला, जीवउद्धरण्यासाठी २<br>राजमठामध्ये येऊनिसेनी, अवस्थान भितभंगी२ ।।१।।<br>ओटा उत्तरेदक्षिणे लांब रुंदी ।<br>वरी उपकरणे कळ्या लोड गादी ।<br>आरोगणस्थानासि स्तंभ त्रहाटी ।<br>उसा उंबरा वक्ष श्रीचरण दाटी ।<br>उंबरओटा पश्चिमेसि, पूजा दुपारी जाणा सखया२ ।<br>पूर्विल मालगंठी अवसर, दाखवी भक्तीजना२ ।।२।।<br>द्वय सोंडिया मर्दना स्थान पूर्वे ।<br>वेढे स्थान रायांगणामाजी मिरवे ।<br>लोपेस्थान उंबर ओटा चरणचारी ।<br>द्वय सोंडिया उंचमठा विहारी ।<br>दोन्ही स्तंभामध्ये ओटा, पाषाणी मठ सारा२ ।<br>अग्नेय खिडकी नमस्करा हो, वायव्य कोनी दादरा २ ।।३<br>उडियाचे स्थान पन्हिवा मठाचा ।<br>उंबरवट तो सिंहनारायणाचा ।<br>महाद्वार ते दक्षिणे मुख ज्याचे ।<br>सुएरे पहा पूर्व दिशे तयाचे ।<br>तिमणाचा तो विशेष कोनटा, तांबुळ त्या खिडकीसि२ ।<br>पश्चिमेसि लघुपरिश्रय, अवस्थान औदास्य सखया२ ।।४।<br>औदास्य स्वीकारी कळे नागदेवा ।<br>दुटी दाविता इंद्र प्रसादसेवा ।<br>प्रसन्न मढी स्वामी प्रसन्न झाले ।<br>म्हणौनि प्रसन्न मढा नाम आले ।<br>काष्टाचे मठ दोन बांधले, रायांगणी पटीशाळा२ ।<br>संन्यासी हरिदास प्रार्थितो, पुरवी मनोरथमाळा२ ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७४" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७४</span>
+                <h2>ईशरासि जडले..</h2>
+            </div>
+            <div class="poem-content">ईशरासि जडले नाते जीवस्वरूपाचे ।<br>उद्धरण होईल जीवाचे ।।धृ।।<br>पूर्णब्रह्म परमेशर प्रभु आनंदाचा पुतळा ।<br>निरानंद हे जीव पाहुनि आला उमाळा ।<br>आनंद द्यावा मम स्वरूपीचा हेतु असे मनीचे ।।१।।<br>मायेकरवी शीघ्र करविली सृष्टीची रचना ।<br>वयन देऊनि योग्य करण्या समग्र जीवांना ।<br>युगायुगी प्रभु कार्य करीतसे ज्ञानदानाचे ।।२।।<br>कृतयुगामध्ये हंसरूपाने धरिला अवतार ।<br>संदेहाने ग्रसित होते ब्रह्मयाचे कुमर ।<br>ज्ञान देऊनि फेडी संदेह सनकादिकाचे ।।३।।<br>त्रेतायुगी श्रीदत्तात्रेय प्रभु आरक्त तनु धरिता ।<br>अळर्काचे त्रिताप हरिले शंबोली म्हणता ।<br>यदुरायासि ज्ञान दिधले मुक्तीमार्गाचे ।।४।।<br>अवतरले श्रीकृष्ण प्रभु द्वापारामाझारी ।<br>अर्जुनासि गीता कथिली युद्धभूमीवरी ।<br>कुंती उद्धवा सौख्य दिधले स्वात्मस्वरूपीचे ।।५।।<br>श्रीचक्रधर अवतार कलीयुगी झाले महीवरुता ।<br>प्रेम दिधले बाईसा अन् महादोबा भक्ता ।<br>नागदेवासि केले निरुपण परावराचे ।।६।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७५</span>
+                <h2>पूर्वजोड ही..</h2>
+            </div>
+            <div class="poem-content">पूर्वजोड ही फळास आली ।<br>भाग्य उजळले त्वरी । प्रभुजी आले बाईसा घरी ।।धृ।।<br>द्यावे प्रेम बाईसा म्हणौनि, सिंहस्थाचे निमित्त करूनि ।<br>अवस्थान मेघंकरी असता, धरी प्रभु तो मनात चिंता ।<br>बीजे पैठणी करी, प्रभुजी आले बाईसा घरी ।।१।।<br>नागुबाई नगरातुनि जाता, भेटी झाली श्रीदीननाथा ।<br>सदनी आपुल्या घेऊनि आली, बैसविले मग ओट्याखाली पायपुसण्यावरी, प्रभुजी आले बाईसा घरी ।।२।।<br>दुधीकरट्यामध्ये आरोगणेसि, पाणीभात देई स्वामीसि ।<br>ते आनंदे स्वीकार करूनि, व्याळीसि भिक्षान्न सेवुनि ।<br>पहूड देउळी करी, प्रभुजी आले बाईसा घरी ।।३।।<br>बाईसाचे त्रिदोष नासुनि, कृपादृष्टीने अवलोकूनि ।<br>प्रेमशक्ती संचरी, प्रभुजी आले बाईसा घरी ।।४।।<br>देवा भक्ता भेटी झाली, नागुबाई परधर्मी लागली ।<br>दोन दिवस ऐशापरी तो प्रभु कृपाळू, करुणासिंधु दीन दयाळु ।<br>जीवाते उद्धरी, प्रभुजी आले बाईसा घरी ।।५।।<br>ऐशापरी क्रमुनि, काय करी मग तो जगदानी ।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७६</span>
+                <h2>वंदन करितो श्रीचक्रधरा..</h2>
+            </div>
+            <div class="poem-content">वंदन करितो श्रीचक्रधरा ।<br>जगदुद्धारक जगदीशरा ।। धृ।।<br>पारधीयापासुनि ससियाचे, रक्षण केले प्रभुनी त्याचे ।<br>केले त्यासि अविनाशा, जगदुद्धारक जगदीशरा ।।१।<br>भेटूनि मुक्ताबाईला, प्राथूनि तिने श्रीचरणाला ।<br>मम भोजन हो अंगिकरा, जगदुद्धारक जगदीशरा ।।२।।<br>नागदेवासि ज्ञान दिले, अनंत जीवासि उद्धरिले ।<br>थोर दयाळु तूच खरा, जगदुद्धारक जगदीशरा ।।३।।<br>बाईसासि प्रेम दिले, तरि का मजसि मोकलिले ।<br>कवी मुरारी वंदी तुला, जगदुद्धारक जगदीशरा ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७७</span>
+                <h2>जगतीत नसे बा कोणी..</h2>
+            </div>
+            <div class="poem-content">जगतीत नसे बा कोणी, तुजवांचुनि मोक्षदानी, प्रेमदानी । धृ।<br>सन्निधी नागदेवांनी केला प्रसन्न, चक्रपाणी २।<br>व्यसने सप्त त्यागौनि आग्रहे, प्रेम मागौनि २।<br>ज्या बळे अनुसरविले२, स्वदास्य सदा करविले२,<br>दिधले वयन परखाणी ।।१।। तुजवांचौनि..<br>जिसी नाम असे महदंबा, ती जणू जगी जगदंबा २।<br>परमार्ग आधारस्तंभा, उपमिली की त्वा प्रारंभा २।<br>बाईसा प्रेमपद दाता २, मंडळीकाची अघहंता२,<br>ऋषीजन्म ज्याचे स्वीकरौनि ।।२।। तुजवांचौनि..<br>षड्वाक्य आचरणी ज्यांचे,<br>ते साधक अतिदैवाचे, अतिभाग्याचे ।<br>मज रज न मिळे पायाचे,<br>तिळभरही अशा पुरुषांचे २।<br>जन्म हा वृथाचि गेला २,<br>हा प्राणी जिताचि मेला २ ।<br>जड चेतन कुसंगाने ।।३।। तुजवांचौनि..<br>परमार्थ स्वार्थ मज नाही, गुंतलो प्रपंचिक डोही २ ।<br>योग्यता न जोडे काही, अपराध दिनाचे साही २ ।<br>तारिता कोण मज आता २, जयताख्य विनवितो त्राता २ ।<br>पाही बा नेत्र उघडोनि ।।४।। तुजवांचौनि..</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७८" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७८</span>
+                <h2>स्मरण करतील..</h2>
+            </div>
+            <div class="poem-content">स्मरण करतील जे लीळा आठवुनि ।<br>त्यासिच नेतील प्रभु सन्निधानी ।।धृ।।<br>क्षुद्रानदीसि सेतु बांधविता ।<br>गदोनायकाची जाया वस्त्रपूजा करिता ।<br>खडकुलियेसि भक्ता सिमुगा सिंपोनि ।<br>एळापुरासि खेळ खेळवुनि ।।१।।<br>एकांकी सुडा कटीप्रदेशा ।<br>ओशत्थमुळी इंद्रेया प्रशंसा ।<br>महात्मा कुमारियेसि खाजे देववुनि ।<br>वडनेरा भुजंगासि संबंध देऊनि ।।२।।<br>आजानबाहू महादोबा म्हणति ।<br>देवाभटासि आलिंगन देति ।<br>डोमेग्रामासि पिंडस्पर्श करौनि ।<br>पूजाअवसरी हातसरे स्वीकरौनि ।।३।।<br>नागाराउळी हातकडे फेडिले ।<br>छायागोपाळी बाइया दोरे ओळगविले ।<br>जात्यंधक्रिडे लघुत्व प्रकट करौनि ।<br>राहेरी पाणिपात्र स्वीकरौनि ।।४।।<br>पंचकौळाचार्या ग्रहोनिवृत्ती ।<br>भांडारेकारासि बोध करीति ।<br>पटीशाळे साधासि पाणिपात्र देऊनि ।।५।।<br>घोडाचुडी शिष्याचा त्याग करौनि ।<br>ओती सारंगपंडिता श्रीकर देणे ।<br>राणाइसासि डोणी बैसविणे ।<br>देमतीसि कुष्टधर्म निरोपुनि ।<br>साष्टांगी इंद्रोबा तुळसी वाहुनि ।।६।।<br>गदोनायकाची पूजा स्वीकार ।<br>छायागोपाळी बाई घाली अलंकार ।<br>सारंगपंडितासि तारांगुळी खेळौनि ।<br>महादाइसासि प्रायश्चित्त देऊनि ।।७।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-७९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ७९</span>
+                <h2>मज दीनाचे कोटी..</h2>
+            </div>
+            <div class="poem-content">मज दीनाचे कोटी दंडवत, प्रभु रे करूणाकरा ।<br>अनाथ मी अपराधी देवा, स्वामी श्रीचक्रधरा ।।धृ।।<br>गंगे बुडता साधा तारिले,<br>जसमाईसाचे काऊर दवडिले ।<br>दीनदयाळा भक्तवत्सला, कृपेचिया सागरा ।।१।।<br>सर्पदंशी माळिया रक्षिले, अभयदान त्या सशास दिधले ।<br>विनंती माझी तव पदकमला, तारी मज पामरा ।।२।।<br>काळस्फोट लळिताइसि ग्रासिले,<br>कृपासिंधू तुम्ही धावुनी गेले ।<br>कृपा करूनि दुःख निवविले, देवा सर्वेश्वरा ।।३।।<br>अनंत सृष्टी तुज शिणविले, दिले ज्ञान ते मी दवडिले ।<br>वेणुधरासि का अव्हेरिले, कृपा करि गुर्जरा ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८०</span>
+                <h2>श्रीचक्रेशा त्राही त्राही..</h2>
+            </div>
+            <div class="poem-content">श्रीचक्रेशा त्राही त्राही दीनपाळा,<br>निज सुखानंद द्या मजला ।।धृ।।<br>सर्वा अधम मी अनंता कर्मी, असे असुनि जरा ना शर्मी<br>परधर्माते विसरूनि रत अधर्मी, विषयांध असे कुकर्मी ।<br>रज भोगीतसे नित्यानी२, दुखविले पात्र शब्दानी २ ।<br>साम्यता नसे मज कोणी२,<br>मज काय गती होइल बा या काळा ।।१।।<br>गुरू निमित्तासी हेळीतसे नित्यानी, अधिकवृत्ती आचरोनि ।<br>विकल्प विकार आंगवितो हर्षानी, मार्जरी सम हिंसा करूनि<br>वर्मादि दोष काढिले २, ईशरासि मी दुखविले २ ।<br>गुरू निमित्तासि शिणविले २,<br>चांडाळ जगी काळ मुखिया झाला ।।२।।<br>उपसर्ग सदा निमित्त सुहृद स्थानी, घेई नित्यनर्क अर्जुनि<br>परमार्गी सदा उर्मी दावी नित्यानी, जीवधर्म भोगी दिनरजनी<br>विनवितो दास लवलाही२, हो प्रसन्न वर मज देई२,<br>तुजविण ठाव मज नाही२,<br>अनलजापतिभिद प्रार्थी स्वामीला ।।३।।<br>जीवेशर संवाद-</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८१</span>
+                <h2>अतिश्रमला जीव..</h2>
+            </div>
+            <div class="poem-content">अतिश्रमला जीव माझा तुजविण बा श्रीधरा ।<br>तुजविण बा श्रीधराऽऽऽ करी कृपा सागरा ।।धृ।।<br>अविनाशा व्यक्त होसि जीवहेतु कारणा ।<br>हरिपाळा सगुण रूपा करी देहधारणा ।<br>स्वीकरौनि उभय ज्ञान बोधीसि दीन जना ।<br>परिपूर्णा नागदेवा आचार्य स्थापून ।<br>मुनिवेषा स्वात्मरामा भक्ताच्या अंबरा ।।१।।<br>श्रीमंता ज्ञानदाता कृपेच्या सागरा ।<br>ब्रीद गाति व्यसनाचे जीवदोषा दूर करा ।<br>म्हणवीसि भक्तपाळा का गेला श्रीवरा ।<br>सर्वासि दंडदाता पररूपा तस्करा ।<br>तरी हरीना दोष माझे का पाहासि सुंदरा ।।२।।<br>श्रुत अवघे दोष माझे तरी मज का आणिले ।<br>रिक्त तमी मी स्वस्थ होतो बंधन का लाविले ।<br>मूळ सृष्टी प्रेमदाता ज्ञानचि का दिधले ।<br>भुलविले जीव सारे वनवासा लाविले ।<br>तरि तुजला सोडीना मी जिंकूनिया भवनरा ।।३।।<br>गाऱ्हाणे देसि माते कर्मी का गुंतला ।<br>मजसम ते विघ्नरूपा अंतरी का भासला ।<br>सांडुनिया विषयांधे व्यापिला ।<br>ज्ञानाते धरूनिया संभवाते अतिगर्वे दाटला ।<br>परसुखाची नाही आशा वरदानी प्रितीवरा ।।४।।<br>न कळेचि स्वरूप माझे यास्तव बोधिले ।<br>जरि आहे आस माझी करी माझे म्हणितले ।<br>परदुर्गी राजपुत्रा पटी तुजला स्थापिले ।<br>सर्वांना मान्य होसि स्वप्रभु हे बोलिले ।<br>गोविंदा बाळकाते दे पदी आसरा ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८२</span>
+                <h2>निशीदिनी आठवा..</h2>
+            </div>
+            <div class="poem-content">निशीदिनी आठवा हो श्रीगोविंदप्रभुना ।<br>स्मरोनिया त्यांच्या अगम्य लीला ।।धृ।।<br>रांधवनहाटी प्रभु खेळक्रीडा करीति ।<br>सेंगुळबुरड्याची चवी प्रभु चाखति ।<br>स्वामीकडे फेकुनि म्हणतिर घे घेना याला२ ।।१।।<br>पाठीवरी थाप हो श्रीप्रभु देति ।<br>निरंतर स्वामी ती आठवीति ।<br>मेली जाए चक्रा होशी २। म्हणति स्वामीला२ ।।२।।<br>माहेरीचे नव्हते कोणी सासुरवासिणीला ।<br>मायबाप होऊनि तिचा ताप निवविला ।<br>जीवा सुखदानी ऐसा२ श्रीप्रभु झाला२ ।।३।।<br>येथुनि हो तुम्हा आता गोविंदगती ।<br>श्रीचक्रधर स्वामी आउसाला म्हणति ।<br>येथीचे श्रीगुरु म्हणुनि२ भजा श्रीप्रभुला२ ।।४।।<br>नागदेवासवे सर्व भक्तीजन आले ।<br>करुनिया सेवा त्यांनी प्रभु तोषविले ।<br>विनय म्हणे आठवा हो२ श्रीगोविंदप्रभुला२ ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८३</span>
+                <h2>कैसी अगम्य लीळा..</h2>
+            </div>
+            <div class="poem-content">कैसी अगम्य लीळा तुमची हो नंदलाला ।<br>मी काय वर्ण पामर जिथे शेष तोही श्रमला ।। धृ।।<br>स्वच्छंद जो विहारी का बाळ त्याने व्हावे ।<br>त्या बंदीशाळेमाजी जन्मास काय यावे ।<br>वसुदेव देवकीच्या जीवनी आनंद फुलला ।।१।।<br>वसुदेव डोई घे कृष्णा उघडली ती कवाडे ।<br>काळ्या भयाण रात्री नभी वीज ती कडाडे ।<br>पर्जन्यवृष्टी होता करी मेघ गर्जनेला ।।२।।<br>फण शेष वरती धरिता थेंबासि लागू देना ।<br>पाहे पुढा ती वाहे दुथडी भरून यमुना ।<br>दुभंगुनि उफाळे चरणास चुंबण्याला ।।३।।<br>पुतना ये गोकुळासि स्तन भरुनिया विषाने ।<br>म्हणे बाळकृष्ण मारू पय पाजण्या मिषाने ।<br>शोषून दूध सारे मातृत्व फळ दे तिजला ।।४।।<br>उखळासि बांधतांना का यशोदेसि न कळे ।<br>बांधू नको गे आई दुखतील हात कोवळे ।<br>बांधून घे स्वतः जो करी बंधमुक्त सकळा ।।५।।<br>परब्रह्म निर्विकारी गोपीसि न कळावे ।<br>पण झोंबुनि तयांना छळोनि त्वरी पळावे ।<br>जो तृप्त नीत्य असता चोरी दहीदूध गोरसाला ।।६।।<br>कंसा कचासि धरुनि धरणीवरी जो आपटी ।<br>लत्ताप्रहारे मारुनि करी पिष्टचूर्ण मुष्टी ।<br>ज्या बाळकृष्ण वधिले मदमस्त त्या खळाला ।।७।।<br>का भूक लागे इतुकी हिसकून घेसि पोहे ।<br>अधदृष्टी अश्रुबिंदु गळति सुदाम पाहे ।<br>कांचन नगरी देउनि स्वरूपी विलीन केला ।।८।।<br>औदार्य ऐसे जर तर मजलाच का दुरावा ।<br>म्हणे बाळकृष्ण जीवनी मज एक तूचि व्हावा ।<br>अमृत पाजवा हो शमवील जे विषाला ।।९।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८४" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८४</span>
+                <h2>श्रीदत्तराया साह्य कराया..</h2>
+            </div>
+            <div class="poem-content">श्रीदत्तराया साह्य कराया असो कृपेची छाया<br>आम्हावरी असो कृपेची छाया ।।धृ।।<br>अज्ञानी मी अन्यथाज्ञानी ।<br>नाही लागलो ईशरधर्मी ।<br>अन्य देवते शरण जाऊनि ।<br>दुःख भोगिले हे देवराया ।।१।।<br>अनेक जन्म आलो फिरुनि ।<br>परि न ओळख तुमची अजुनि ।<br>तूच कृपेचा सागर असुनि ।<br>दर्शन देई हे देवराया ।।२।।<br>श्याममंडळची हीच आशा ।<br>पुरवी स्वामी श्रीजगदीशा ।<br>चुकलो जरी आम्ही सेवा कराया ।<br>घेई पदरी श्रीदत्तराया ।।३।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८५</span>
+                <h2>श्रीचक्रधर स्वामी ते सोडुनि..</h2>
+            </div>
+            <div class="poem-content">नागदेव आचार्यांच्या मनी दुःख थोर झाले ।।धृ।।<br>श्रीचक्रधर स्वामी ते सोडुनि गेले ।<br>सर्वज्ञाविण नागदेव ते उदास झाले त्यासमयी ।<br>विरहान्नी भडकला भयंकर शांत होईना तो हृदयी ।<br>सुख चैन नाही मनी तळमळतो ।<br>जळाविण मासा जसा तडफडतो ।<br>जणू काही त्यांच्यावरती आकाश पडले ।<br>सौख्य जीवनाचे ते छिन्नभिन्न झाले ।<br>ईशरध्यासामध्ये तयाला देहभान ना राहिले ।।१।।<br>स्वामीविना कधी आन येईना नामही त्यांच्या मुखामधी ।<br>दैनंदिनी श्रीचक्रधर द्या म्हणुनि उरके भिक्षाविधी ।<br>खानपान त्यांच्या जीवा आवडेना ।<br>लोचनातले ते अश्रु आवरेना ।<br>नागदेव झाला ऐसा देवाविण वेडा ।<br>क्षिण होत चाले पहा त्यांचा देह गाढा ।<br>शरीराचे दश इंद्रिय सारे शिथिल अतिशय जाहले ।।२।।<br>उत्कंठे अनुराग अनास्थे भ्रमण करीतसे नित्यदिनी ।<br>अचळ होउनि जाउनि पडले भानखेडीच्या रम्य वनी ।<br>पंचप्राण त्यांच्या कंठी एकवटति ।<br>निघोनिया जाऊ पाहे जीवज्योती ।<br>नागदेव आचार्य ते विस्मृत पडले ।<br>देह वाळवीने सारे व्यापून गेले ।<br>गोवळीयाने मुखी कुरंधने पिळुनि तयासि राखिले ।।३।।<br>महदंबा ती ऋद्धपुरासि आली धुंडाळित भट्टासि ।<br>नागदेव तो कोठे गेला विचारिले तिने श्रीप्रभुसि ।<br>सांगितली खूण प्रभुनेही तिजला ।<br>मेली जाए म्हणे भानखेडीयाला ।<br>निघाली रूपाई अतिशीघ्रतेने ।<br>गोरक्षकासि आधी विचारुनि तिने ।<br>अतिप्रयत्ने आचार्यासि शोधुनिया तिने काढिले ।।४।<br>विविध प्रकारे उपाय करुनि सावध केले त्यास त्वरी ।<br>महदंबा वदे नागदेया ऊठ देव आहे चल ऋद्धपुरी ।<br>नागदेव म्हणे तो नाही देव माझा ।<br>श्रीचक्रधर स्वामी कैवल्याचा राजा ।<br>महदंबा म्हणे तुज निरोविले श्रीप्रभुला ।<br>अशी देववाणी का तू विसरून गेला ।<br>दामोदर म्हणे सुबोध करुनि ऋद्धपुरासि आणिले ।।५।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८६</span>
+                <h2>श्रीचक्रधरा तुज भेटाया..</h2>
+            </div>
+            <div class="poem-content">श्रीचक्रधरा तुज भेटाया<br>जीव तळमळतो किती सांगू तुला ।।धृ।।<br>भवसिंधुमधुनि ताराया ।<br>मज काही सुचेना प्रभुराया ।।१।।<br>मज कोणी न दुसरा जगती या ।<br>जसे पाडस चुकले हरिणीचे ।<br>तशी माझी गती हे गुरुमाते ।<br>तत्वज्ञानामृत हे पाजा या ।।२।।<br>गणगोत्र असे हे पैशाचे ।<br>या सर्व उपाध्या सोडाया ।।३।।<br>नसे भाऊबंध हे कोणाचे ।<br>अतिमंद मती मी बावरला ।<br>मुरलीधर सेवक प्रभुराया ।<br>द्या ठाव मला प्रभु चरणी या ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८७</span>
+                <h2>आज्ञा मी भंगिली..</h2>
+            </div>
+            <div class="poem-content">आज्ञा मी भंगिली तुझी स्वामीराया ।<br>म्हणुनिया खंती धरुनि गेले सांडुनिया, गेले टाकुनिया ।।धृ।।<br>मजचि कारणे केला हा विस्तार ।<br>देउनिया ज्ञान विहिला आचार ।<br>परि अनाचारिया मी ईशरद्रोहिया ।।१।।<br>विकार विकल्प हिंसा आंगवुनि ।<br>गुरुसुहृदाते हेळितो नित्यानी ।<br>मना इंद्रियांचा दास झालो मी पापिया ।।२।।<br>मायबापाविण बाळ केविलवाणे ।<br>निराश्रित होउनिया फिरे रानोरान ।<br>गती माझी तैसी देवा तुजवांचुनिया ।।३।।<br>विनंती करितो श्रीचक्रधराराया ।<br>भेट कधी देशील आता दास संतोषिया ।।४।।<br>खंती निरसावी कृपा करुनिया ।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८८" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८८</span>
+                <h2>श्रीचक्रधराराया जळते मन..</h2>
+            </div>
+            <div class="poem-content">श्रीचक्रधराराया जळते मन विझवावे ।<br>मज शांतविण्यासाठी तुम्ही माघारी यावे ।।धृ।।<br>कशी खंत आली तुजला ।<br>अशक्त अदक्षासि षड्रिपुहाती सुदला ।<br>का वियोग असा दिधला ।<br>परधर्मासि कैसे आता मी राखावे ।।१।। मज..<br>मी अनाथ दीन दुबळा नसे कोणता आधार ।<br>तुम्ही हात दिला नाही तर घेईन माघार ।<br>म्हणे हात धरुनि मजला तुज संगतीने न्यावे ।।२।। मज..<br>जे सांगितले ते मी कधी ऐकियले नाही ।<br>निष्क्रिय सदा होउन साह्याची वाट पाही ।<br>दीन मुख हे पसरौनि तुज काय मी मागावे ।।३।। मज..<br>जो हट्ट मी धरिला मनी तो काही न कामाचा ।<br>अधिकार मला घडवी प्रभु तू तुझ्या प्रेमाचा ।<br>सन्निधी तू नसतांना तुज कैसे मी आठवावे ।।४।। मज..<br>मज ठाऊक नाही हे कधी येणार स्वामी पुन्हा ।<br>मग दुःख अंतरीचे तुजविण मी सांगू कुणा ।<br>विनंती दयाळा ही पदरी मजला घ्यावे ।।५।। मज..</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-८९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ८९</span>
+                <h2>मज दर्शन द्या हो..</h2>
+            </div>
+            <div class="poem-content">मज दर्शन द्या हो श्रीचक्रधरा अविनाशा ।। धृ।।<br>सृष्ट्यानुसृष्टी मज ज्ञान तुम्ही दिधले ।<br>पण पापिया मी तुच्छ तया मानिले ।<br>विकल्पा शरण जाउनि मी सर्व गमविले ।<br>अधमती ही माझी कारण झाली विनाशा ।।१।।<br>किती सुयोग तुमच्या कृपेचा लाभला ।<br>पण त्यजुनि परिसा दगड हाती घेतला ।<br>विकारवशे मी वृथा जन्म धाडिला ।<br>दुर्दशाच होईल कोण तारील जगदीशा ।।२।।<br>किती विरक्त मुनिजन दुखविले अंतरी ।<br>भेदुनि टाकिले हृदय ठेवीना उरी ।<br>मज दीनाते तारी तारी श्रीहरी ।<br>हे पतितपावना करुणा करी परमेशा ।।३।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९०" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९०</span>
+                <h2>सेंदुर्जन गावासि एकांकीच्या..</h2>
+            </div>
+            <div class="poem-content">सेंदुर्जन गावासि एकांकीच्या काळासि ।<br>एका भाग्यवान बाईसी स्थिती देण्यासि ।।धृ।।<br>गोपाळाचा देउळी मासोपवासिनी।<br>व्रतस्थ बैसल्या सर्व मिळोनी ।<br>स्वामी आले त्या द्वारासि ।<br>त्यातून एकी उठोनि लागे चरणासि ।।१।।<br>अवलोकन केले त्यासि ।<br>मुखीचे तांबुळ द्यावे स्वामींनी ।<br>म्हणुनि विनंती केली बाईंनी ।<br>जन म्हणतील काही ।<br>ना जी तैसे काही नाही ।<br>तांबुळ घेताचि स्थिती झाली तियेसि ।।२।।<br>कर्म विसरली तहानभूक हरली ।<br>पिसे लागले म्हणुनि उचलोनि नेली ।<br>अद्भूत प्रेमशक्ती ऐसी ।<br>जवळ पाहे सर्वज्ञांसि ।<br>बारा वरुषे सुखानंद भक्तासि ।।३।।<br>बारा वर्षांनी स्थिती गेली भंगौनि ।<br>एकसरे उठिली ऐसी बोबाउनि ।<br>चांपेगौर मूर्त आणा ।<br>निघाला तो बंधुराणा ।<br>वृक्षातळी आसन गोसावियांसि ।।४।।<br>दंडवत केला चरणी लागला ।<br>विनवून स्वामीसि घरा घेउनि आला ।<br>पूजा आरोगणा झाली ।<br>परत स्थिती सुभर झाली ।<br>शोभे चाफ्याचा वाडा हे नाम स्थानासि ।।५।।<br>पूर्वार्धात सेंदुर्जनात पिंपळातळी येऊन बसले आसनस्थ ।<br>ब्राह्मण एकु तेथे आला, त्याने देव ओळखिला ।<br>प्रेमाची स्थिती त्या द्विजवर्यासि ।।६।।<br>जी जी आवारासि बीजे करावे ।<br>पूजा आरोगणा तुम्ही स्वीकरावे ।<br>स्वामी आले त्या वाड्यासि ।<br>पावन केले ब्राह्मणासि ।<br>संबंध देउनि पवित्र केले स्थानासि ।।७।।<br>पिंपळातळी नित येउनि बैसे ।<br>स्वामीची मूर्त तयासि दिसे ।<br>आले देव फिरुनि तेथे ।<br>पाहेच ना तो तयांते ।<br>म्हणे जवळीच आसन स्वामीरायासि ।।८।।<br>खांदे चुरताचि स्थिती गेली भंगौनि ।<br>करुणानिधीसि विनंती केली ।<br>पुन्हा घरा घेउनि आला ।<br>त्याने उत्सव थोर केला ।<br>ब्राह्मणाचा वाडा हे नाम स्थानासि ।।९।।<br>दादा ओंकार आले, भोजराज आले ।<br>जीर्णउद्धाराचे कार्य पूर्ण केले ।<br>कवी म्हणे प्रभुसि<br>भक्ती द्यावी आम्हासि ।<br>करुणा गुणाने न्यावे हो प्रेमपदासि ।।१०।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९१</span>
+                <h2>श्रीचक्रधरा स्वामीराया..</h2>
+            </div>
+            <div class="poem-content">श्रीचक्रधरा स्वामीराया आरती तुज ओवाळितो ।<br>पंचवाती पंचप्राण धूप आत्मा जाळितो ।।धृ।।<br>गंध टीळा सर्व भावे भाळी ऊर्ध्व रेखिला ।<br>श्रीफळासह पान पोफळ चित्त विडा वाहिला ।<br>वाक्पुष्पी हार गुंफूनि शुद्ध भावे अर्पितो ।।१।।<br>हे अनंता हे कृपाळा हे प्रभु करुणाकरा ।<br>तूच माझा मायपिता तूच बंधु सोयरा ।<br>ज्ञान देउनि प्रेम देई हेचि आता मागतो ।।२।।<br>सृष्टीचक्र हिंडता हिंडता जीव सारे भागले ।<br>त्या जीवा उद्धारण्याचे व्यसन तुज रे लागले ।<br>वेळोवेळी अवतरौनि तूच रे प्रतिपाळितो ।।३।।<br>नाही आठवण नाही सिमरन नाही केले चिंतन ।<br>नाही आवडी नाही गोडी नाही केले पूजन ।<br>पश्चात्ताप होई आता अश्रु कोरडे ढाळितो ।।४।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९२" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९२</span>
+                <h2>कोटी हमारे तुम्हे..</h2>
+            </div>
+            <div class="poem-content">कोटी हमारे तुम्हे प्रणाम जय यदुनंदन जय घनश्याम ।।धृ।।<br>एक बार भारत मे आके दर्शन हमे दिलावो ।।१।।<br>बिगड रहा है भारत सारा। प्रभु तुझे कोई न माने।<br>स्वार गरूड पे जल्दी बनाके । भ्रांती हमारी मिटावो ।।२।<br>शाममंडल को सुबुद्धी दे दो। गुण तेरे हम गाये ।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९३" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९३</span>
+                <h2>क्षणभर उघड नयन..</h2>
+            </div>
+            <div class="poem-content">छोड दे अपना धाम मुरारी। दर्शन हमे दिलावो ।।३।।<br>क्षणभर उघड नयन देवा ।।धृ।।<br>करावया तव मंगल पूजा ।<br>देहदीप मी जाळीन माझा ।<br>भावभक्तीचा हा नजराणा ।<br>स्वीकरुनि घ्यावा ।।१।।<br>धूप दावीन विरहाग्नीचा ।<br>सुगंध पसरीन मंगलतेचा ।<br>कोमल पद हृदयावर ठेवून ।<br>प्रभु माझा यावा ।।२।।<br>काव्य नाही ओवी नाही ।<br>मुक्या जीवाने कशी रे गावी ।<br>लोचनातले अश्रु करतील ।<br>अखेरचा धावा ।।३।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९४" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९४</span>
+                <h2>श्रीमूर्तीच्या लीळा..</h2>
+            </div>
+            <div class="poem-content">श्रीमूर्तीच्या लीळा आठविता<br>तारून नेईल तो अघहंता ।। धृ।।<br>काटोल उधळीनाथासि भेटी, धानाइसा प्रभु सांगति गोष्टी<br>रेमनायक मूर्ती पाहाता, विस्मयो मूर्ती प्रकाशी राउता ।।१<br>देवाची उघडी मूर्ती पाहाति, डोळ्या पारणे राहिया म्हणति<br>उमाई राउळाचे नाव घेता, भेटीसि आले रूपाइचे पिता ।।२<br>एकांकी श्रीचरणी उदक घालीति,<br>महादाइसाचे अंग चुरति भटासि क्षेउर जगदानी म्हणता,<br>लाहामाइसा ज्वरी पडिताळिता ।।३।।<br>पागडे पुरुषोत्तमदेवाचे स्वीकरीति, चरणोदकाचे प्रसाद घेति,<br>खडकुलीएसि सिमुगा सिंपिता,<br>उमाइसासि अंगुठा लाविता ।।४।।<br>यंत्रासनपूजा महादाश्रमाची, चोरी प्रकटीति मार्कंडेयाची ।<br>पौळी सिळा वाणे हातु लाविता, भक्ताकरवी सांडोवा बांधविता ।।५।।<br>कामाइसा भेटी नामकरणे,<br>भट लखुबाइसासि भांडणे ।<br>भांडारेकार देह सोडिता,<br>सोभागाच्या मुखी केळ घालिता ।।६।।<br>रुसले देव बुझावू धाडणे,<br>पर्वती ससेयाचे रक्षण करणे ।<br>उद्धवार्जुनाचा अभिमान घेता,<br>जानू थापटिली तै भगवंता ।।७।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९५" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९५</span>
+                <h2>श्रीचक्रधरराया चरणी द्या..</h2>
+            </div>
+            <div class="poem-content">श्रीचक्रधरराया चरणी द्या हो थारा ।<br>अव्हेरू नका प्रभु तुमचाचि आसरा ।। धृ।।<br>मुळीचीच अविद्या मतित्रयाने ।<br>वाहातचि आलो अनिष्ट अविधीने ।<br>अनंत वेळा प्रमादचि घडला ।<br>भेटेल कसा देव या अधमाला ।।१।।<br>ज्ञान असोनि ओखटेच झाले ।<br>निर्लज्ज होउनि पुन्हा पाप केले ।<br>पुन्हा पाप पुन्हा दुःख चक्रात पडला ।<br>रजातमाने व्यापून गेला ।।२।।<br>खाण हिरेयाची खणत खणता ।<br>दरडीच पडली स्वामी जगन्नाथा ।<br>सूप आणि चाटू गहाण ठेवी पिता ।<br>आळ पुरवीसि श्रीचक्रधर माता ।।३।।<br>अनाथांच्या नाथा अनार्जित दाता ।<br>वरदान देउनि उद्धरी आता ।<br>ठकलो स्वामीराया भ्रमणात पडला ।<br>ठक फेडुनि प्रेम द्यावे कवीला ।।४।।<br>स्तोत्रसंग्रह</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९६" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९६</span>
+                <h2>अनुताप व्यंजक प्रबंध</h2>
+            </div>
+            <div class="poem-content">स्वानंदरूपा परमेशरासि ।<br>देखोनि दुःखे कृपाळुवासि ।<br>येउनि दाता कर्मक्षितीसि ।<br>देवोनि ज्ञान मज दोषियासि ।।१।।<br>तो ज्ञानदाता करुणा गुणाब्धी ।<br>सांगोनि तेणे मजला त्रिशुद्धी ।<br>स्वामीद्रोही मी विषयी कुबुद्धी ।<br>तेणे करुनि न वचेचि सिद्धी ।।२।।<br>जाणोनि ज्ञानासिही आचरेना ।<br>धिक्कार ऐशा मज भाग्यहिना ।<br>कुवासना ते मज सांडवेना ।<br>तो बोल काइ जीव उद्धरेना ।।३।।<br>करी नच त्याग कुवासनेचा ।<br>पुरेच ना स्वार्थही इंद्रियांचा ।<br>द्रोह करी मी परसाधनाचा ।<br>विपरीत किंदू मज पापियाचा ।।४।।<br>मूर्खा जीवा का भ्रमे भुललासि ।<br>स्वार्थे करुनि बहु वेष्ठलासि ।<br>सर्वस्व अंती त्यजुनिच जासि ।।५।।<br>कखाय वर्मे चित अन्य जाळी ।<br>तारुण्यामध्ये विषयादि मेळी ।<br>हिताहिता का सुविचारीनासी ।<br>हे दोष माझे मुळचेच मुळी ।<br>मी योग्य नव्हे कवणेच काळी ।।६।।<br>बाळत्व गेले अज्ञान दोषे ।<br>तारुण्यामध्ये विषयादि पिसे ।<br>वृद्धत्व आले मग होई कैसे ।<br>हे रात्रंदी मी बहु चिंती ऐसे ।।७।।<br>मुळाधिकारु फळासि आला ।<br>अव्हेर शास्त्राचरणेच केला ।<br>कुबुद्धी दोषे मज काळ गेला ।<br>तू पाही स्वामी करुणादि दृष्टी ।।८।।<br>अन्यायी जी मीच अनंत कोटी ।<br>ऐशाच गेल्या अनंत सृष्टी ।<br>ते दोष माझे सामाये पोटी ।<br>उदास झाला सुरराज तोही ।।९।।<br>जिवोनि जोडू किती मी अनिष्टा ।<br>तो ज्ञानदाता मज सांगे इष्टा ।<br>पापीच मी बेउपकारी नष्टु ।<br>दोषी सदाचार विहिन दुष्टु ।।१०।।<br>अनंत पापे मज याच देही ।<br>सृष्ट्यंतरीची गणतीच नाही ।<br>येथौनि गेलेया मग उर नाही ।<br>म्हणुनि विनवी तुज जी दयाळा ।।११।।<br>करी न शब्दा तुज तारकाच्या ।<br>न साधुसंगा धरी सज्जनांच्या ।<br>आश्रय करी मी घरबारीकांच्या ।<br>देखुनि स्वार्थ विषयेंद्रियाचा ।।१२।।<br>मी गुंतलो जी कर्मादि फासा ।<br>होईल माझा प्रभु अंत कैसा ।<br>तुझी कृपाळा करीताए आशा ।<br>का पावशीना जगन्निवासा ।।१३।।<br>निष्ठर त्या देखुनि विशमूर्ती ।<br>देहान्त काळी मज जाचिताति ।<br>याहून पुढा बहु दुःख देति ।<br>म्हणूनि येतो तुज काकुळती ।।१४।।<br>त्वा दूषिले जी जीवदेवतेसि ।<br>कृपा गुणादि नच त्याज पाशी ।<br>निष्ट्शूर का तू मज दोषीयासि ।<br>प्रार्थ आता मी आणिक कुणासि ।।१५।।<br>द्रव्यादिकांची मज ना हो आशा ।<br>ध्यानी मनी जी तूचि हो परेशा ।<br>हे मागतो मी तुज दोषनाशा ।<br>सन्निधी देई कृपा विलासा ।। १६ ।।<br>तो क्रूरबुद्धी द्विजराज आला ।<br>देऊनि प्रेमा निजभक्त केला ।<br>जाणोनि विनवी तुज जी दयाळा ।<br>अव्हेर नेदी मज पापियाला ।।१७।।<br>ती पूतनादि रिपुवर्गजाती ।<br>सामाये दोषा विसरौनि खंती ।<br>देऊनि संबंधु करीसि मुक्ती ।<br>अनंत लीळा नच वर्णवेति ।।१८।।<br>बंधु निमित्तेविण तू अनंता ।<br>हे दोष माझे समजौनि आता ।<br>स्वीकार केलासि अनाथनाथा ।<br>ती लाज माझी तुजसि समर्था ।।१९।।<br>बुद्धस्वरूपा अनिमित्त दानी ।<br>कृपाळुवा जी प्रभु चक्रपाणि ।<br>सृष्टानुसृष्टी तुज खंती आणी ।<br>म्हणौनि गेलासि बीजे करौनि ।।२०।।<br>आनंदकंदा तू समर्थ होसि ।<br>प्रभो तरि का उबगौनि जासि ।<br>माझ्या जीवीचे दुःख जाणतोसि ।<br>चैतन्यबंधा के सोडवीसि ।।२१।।<br>तो शिशुपाळ रिपुजात भाळी ।<br>दे तुजलागी शत एक गाळी ।<br>सामाउनि दोष तुवा अवेळी ।<br>देसीच मोक्ष मग यज्ञ काळी ।।२२।।<br>पुरे पुरे हा भवसिंधु आता ।<br>भोगू किती हे कृपया समर्था ।<br>सृष्टीत नाही तुजविण दाता ।<br>रक्षी प्रभु तू शरण अनंता ।।२३।।<br>संसारदुःखे बहु पीडलो रे ।<br>देवा दयाळा मज सोडवी रे ।<br>हा काळ वैरी मज पीडतो रे ।<br>कृपाळुवा धावूनि वेगी ये रे ।। २४।।<br>सृष्टानुसृष्टी तुज शिणविले ।<br>ते पाप माझे फळासि आले ।<br>जाणौनि तेणे मज मोकलिले ।<br>जळो जळो जन्म वृथाचि गेले ।।२५।।<br>अहो दंदिया मीच या देवतांचा ।<br>तुम्हाविण नाहीच आश्रय कुणाचा ।<br>नको अंत पाहूस या दोषियाचा ।<br>करी अंगिकारु गुर्जर सुताचा ।। २६ ।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९७" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९७</span>
+                <h2>प्रातः पूजावसर</h2>
+            </div>
+            <div class="poem-content">शार्दूलविक्रीडित<br>श्रीकृष्णा यवंशदीपकवरा विज्ञानलीळाकरा ।<br>श्रीदत्ता ऋषीवंश अत्रिकुमरा श्रीचक्रपाणिपरा ।<br>श्रीमद्वारावतीचरा प्रभुपरा, निर्लेप जीवोद्धरा ।<br>श्रीमच्चक्रधरा कृपागुणवरा, सर्वावतारा नमो ।।१।।<br>श्रीमच्चक्रधरांघ्री पंकजरता संवित्कलास्वादिता ।<br>प्रेमामोद सुसार नित्य निरता स्वानंद आल्हादिता ।<br>चिद्ब्रह्मादि फलौघ पुष्पजनितानंदादि सारोज्झिता ।<br>सद्धर्मोक्ती सुरंझिता मधुकरा श्रीनागदेवा नमो ।।२।।<br>वसंततिलका<br>जो वेदतर्क चतुरागम योगशास्त्रा ।<br>षड्दर्शना गिवसिता न कळे परात्मा ।<br>तो केवि मी मतिलवाल्प विवेक अंशे ।<br>वर्णीन सर्व विषया कुळकर्मसक्तु ।।३।।<br>तत्रापि तो सुरनरा स्तवनीय सर्वा ।<br>जीवस्वभाव गुणसिंधु न वर्णिता पै ।<br>जीवा मनासि रसना श्रवणा कदापि ।<br>नाही पवित्रपण हो कथितो म्हणौनि ।।४।।<br>जो सर्वशक्तीनिधी केवळ सौख्यदाता ।<br>स्वानंदद्बोधरत तो भवपाशहंता ।<br>चिद्ब्रह्म मुख्य विबुधा न कळे समस्ता ।<br>स्वच्छंदलीळ सकृपा प्रकटे स्वभक्ता ।।५।।<br>गंगातटी विपुल दक्षिणभाग देशी ।<br>डोंबाभिधान नगरी वरराजहर्मी ।<br>स्वेच्छावशे यतिमुनीशर वेषधारी ।<br>श्रीमंत चक्रधर राज्य करी स्वभक्ती ।।६।।<br>नागांबिका मुनिवरेशर वानरादि ।<br>भक्ती सदातिसगुणी परिवारिला जो ।<br>क्रीडे कृपागुणवशे गहना पवित्रा ।<br>प्रेमामृता प्रतिदिनी शुभचित्र लीळा ।।७।।<br>जे सर्वदा शुभमने स्मरता सुकर्णी ।<br>आइकता सुवदने कथिता त्रयासि ।<br>सत्सौख्यदा सकळ तापकुळ प्रहारा ।<br>जीवा म्हणौनि कथि का वचना पवित्रा ।।८।।<br>प्रातः प्रहरसमयी प्रभु उपहुडे ।<br>जो खाकरी परिकरे सकृते सुनादे ।<br>नागांबिका सुजगरा करुनि प्रणामु ।<br>उपानहौ प्रतिपदी मग मेळविती ।।९।।<br>बीजे करी नरनटे सुपरिश्रयासि ।<br>नागांबिका तव करी सुकपाट मुक्त ।<br>नागार्जुना निजहदी परचक्रपाणि ।<br>ठेवी पदांघ्री सुखदायक संगमात्रे ।।१०।।<br>जे नेणिजे सुरवरी सुख सर्वकाळी ।<br>चिद्ब्रह्म मुख्य अपरी परि पाविजेना ।<br>ते भोगिजे सुनमनादिक षट्प्रकारी ।<br>नागार्जुने मुनिवरे परभाग्यवंते ।।११।।<br>जो निष्कळंक मळजाळविमुक्त शुद्ध ।<br>नृवेषे सुमळमूत्र विसर्जुनिया ।<br>उष्णोदके विमळ शौच विधानकर्ता ।<br>वेढी वरांबर विधूत सुराधिराजा ।।१२।।<br>एरीकडे सुभूवनी प्रभुमंदिरी पै ।<br>नागांबिका उजळीजे शुभदीपकाते ।<br>पद्मासनाप्रति रची शयनासनाते ।<br>भंगौनि पै तव परेश निजासना ये ।।१३।।<br>ध्यानस्थ निश्चळ असे तव नागमाता ।<br>पुसे सुचिंतन सदाऽपण काय कीजे ।<br>सांगे कृपानिधी गुरु प्रभुताडनाते ।<br>चिंती सदा सकळ जीव अभीष्टचिंता ।।१४।।<br>सूर्योदयी नवल गुर्जरराजलीळा ।<br>जिव्हा सुदंतमळ जो सिलिका प्रहारी ।<br>उष्णोदके सुगुळळा करीजे परेशे ।<br>प्रक्षाळिजे मुख करे मग मार्जिजे पै ।।१५।।<br>नागांबिका चरण धूनि निजांबरांशे ।<br>संमार्जिजे सुचरणोदक दान भक्ता ।<br>जे निर्जरा न पविजे कवणे प्रकारे ।<br>ते सेविजे अघविनाश सदा सुभक्ती ।।१६।।<br>भाळी मनोहर टीळा मिरवे सुहावा ।<br>कंठी वरांग मुकुटी शुभपुष्प माळा ।<br>पंचार्तिया परिकरा वरि धूपयुक्ता ।<br>ओवाळिजे परममंगळ मूर्ती शब्दी ।।१७।।<br>नागांबिका परमसात्विक भावयुक्ता ।<br>निरार्जिजे निजकरी परमेशराते ।<br>साष्टांगपूर्वक नमस्करणोपचारी ।<br>तो वंदिजे सगुण सुंदर सर्व भक्ती ।।१८।।<br>कर्पूरमिश्रित विडा मिरवे सुवक्त्री ।<br>नागार्जुने कथित सामक मंत्रमाळा ।<br>ज्ञानोत्तमाप्रति सुमंडळीके स्वदास्ये ।<br>पै सांघिजे प्रतिदिनी तिथीवारसंज्ञा ।।१९।।<br>ऐसा सपूजित परिस्थित आसनी जो ।<br>सर्वांग सुंदर गुणाब्धी सुभक्तवृंदी ।<br>तो कै मनोहर जगी नयनी पवित्रु ।<br>देखैन मी प्रतिदिनी मनी हीच चिंता ।।२०।।<br>।। इति प्रातः पूजावसर संपूर्ण ।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९८" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९८</span>
+                <h2>मध्यान्ह पूजावसर</h2>
+            </div>
+            <div class="poem-content">एवं प्रपूर्ण घटिका अथवा तदर्थ ।<br>पद्मासनी स्थित असे मग अंगणा ये ।<br>अंगी फुटा अतिसुसार सुरंग टोपी ।<br>वस्त्री पवित्र सगुणी मिरवे परात्मा ।।१।।<br>सर्वा अमंगळ दिशा निजदृष्टीपाते ।<br>सन्मंगळा करुनिया पुसे सेवकाते ।<br>कव्हणीकडे गमन आज कीजैल खेळा ।<br>कव्हणा प्रवृत्ती न कळे विन नागदेवा ।।२।।<br>नागेंद्रपाणि धरुनि स्वकरे परेशु ।<br>बीजे करी विहरणा निजसेवकासि ।<br>पद्मासनी स्थित कही परशास्त्र बोले ।<br>व्यापारवी अनुचराऽखिलकर्महंता ।।३।।<br>पाषाणभेदन झुंजे दरपूरणादि ।<br>पूरप्रवेश बहुधावन भूसमत्व ।<br>इत्यादि किल्मिषहरा परमोक्षकारा ।<br>क्रीडा करी प्रतिदिनी प्रभु जीवबंधु ।।४।।<br>उष्णोदके कर विसर्जुनि आदिनाथे ।<br>तांबुळ संत्यजुनि दान दिजे स्वभक्ता ।<br>गंगोदके प्रभु करी गुळळा तदन्ती ।<br>विडा सुरंगित सुगंध मुखारविंदी ।।५।।<br>बीजे करी स्वनगराप्रति देवरावो ।<br>शुद्धात्म सेवक जनी परिवारिला जो ।<br>पुतःस्वधाम वर राजमठी प्रवेशे ।<br>पद्मासनी विरचिते करुणाब्धी बैसे ।।६।।<br>नागांबिका विमळ उष्णजळे पवित्रे ।<br>प्रक्षाळिजे चरणयुग्म सुलक्षणार्थे ।<br>ते पादतीर्थ परमामृत सेविजे पै ।<br>भक्ती सदा सुरनरा न लभे कदा जे ।।७।।<br>गंडूष केळी परिसारुनि सर्व शुद्धा ।<br>प्रक्षाळिजे सुमुखपंकज पाणियुग्मा ।<br>सर्वांग मार्जन कही सपुरांचळे पै ।<br>कर्पूरवासित विडा वदनी पवित्री ।।८।।<br>आडा ललाटफळकी वरचंदनाचा ।<br>रेखी सुरेख बरवा प्रभुदासिका ते ।<br>स्तंभादि सात्विकयुता वरी नागमाता ।<br>मुक्ताक्षती परिकरे प्रभु अर्चिचे पै ।।९।।<br>धूपारती बहळ गंधवती सुदीपी ।<br>ओवाळिजे परममंगळ धूपदीपी ।<br>साष्टांगपूर्वक यथोचित सर्व भक्ती ।<br>तो वंदिजे परमवंद्य चिदादि सर्वा ।।१०।।<br>नागांबिका कृत सुपाक नवातिचित्रा ।<br>आरोगिजेऽमृत वराशन राजलीळा ।<br>शुद्धोदके मग कीजे गुळळा परेशे ।<br>तांबुळ वक्त्रकमळी मिरवे प्रभुचा ।।११।।<br>नागेंद्रकिंकर सुपाणि धरी स्वहस्ते ।<br>वेढे करी शतपदी परमांगणी जो ।<br>नागांबिका विरचितु शयनासनी जो ।<br>पहुडे स्वात्मरमणी प्रभु देवराजा ।।१२।।<br>नागांबिकादिक सुभक्तजनी समस्ती ।<br>प्रसाद भोजन किजेऽमृतवर्यरूपे ।<br>पूतः प्रपूत सुरसाळ रसा समस्ता ।<br>नित्यातिनित्य फळदायक शुद्धभावे ।।१३।।<br>जे निर्जरा परमदुर्लभ वांछिजे पै ।<br>उत्कंठिते वरमने परि लाहिजे ना ।<br>ते पूर्वसंचित गुणेऽनुचरी समस्ती ।<br>की सेविजे प्रतिदिनी प्रभुभुक्तशिष्टा ।।१४।।<br>नागांबिका प्रभुपदांघ्री सरोजयुग्मा ।<br>प्रक्षाळुनि मृदु करी संवहान कीजे ।<br>विश्रामकेळीकृत ईश परात्ममाया ।<br>शय्याधिरूढ परमात्म सुखाभिराम ।।१५।।<br>निद्रा विसर्जुनि मळापहरुनि शौचा ।<br>शुद्धी स्वीकार करुनि प्रभु निर्मळात्मा ।<br>बीजे करी परम उंचमठा पवित्रा ।<br>पद्मासनी स्थित परावर शास्त्रवक्ता ।।१६।।<br>नागार्जुनादि मुनिराज सुभक्त सर्वे ।<br>परस्परे प्रतिविवेक कथा स्वकीया ।<br>सर्वेशराऽखिलविदाप्रति सांगता पै ।<br>कुत्रापि खंडन कदापि तदंगिकारु ।।१७।।<br>कदापि अन्यकथने श्रवणे समस्ता ।<br>शिक्षापुनि प्रभु कथी स्वकथा महात्म्य ।<br>नागार्जुनाप्रति कही कथुनि त्रिशुद्धी ।<br>पावी परावर विवेक सुनिश्चयाते ।।१८।।<br>यानंतरे प्रभु कृपा करी सेवकाते ।<br>माधुकराटन विधीप्रति पाठवी पै ।<br>ते भैक्ष्य केवळ सुधा प्रभुदृष्टपूत ।<br>स्थापुनि मंगळ विधान विलोकिजे पै ।।१९।।<br>तो जीवजीवन सुपूजित सर्व भक्ती ।<br>कैवल्यमूर्ती गुणधाम सुगौर कांती ।<br>वेगा प्रसन्न वदने मज दृष्ट होता ।<br>प्रत्यक्ष तैच पुरति जीवीची अवस्था ।।२०।।<br>इति मध्यान्ह काळ पूजावसर संपूर्ण</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-९९" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक ९९</span>
+                <h2>सायंपूजावसर</h2>
+            </div>
+            <div class="poem-content">संध्या सुवेळ समयी परचक्रपाणि ।<br>बीजे करी अनुचरा समवेत सर्वा ।<br>गंगातटी विरचितु स्थित आसनी जो ।<br>भिक्षा सुपाक विविधा स्वीकरी परात्मा ।।१।।<br>ते सत्प्रसादित परेशरदृष्टपूत ।<br>भिक्षान्न भोजन किजे परसन्निधानी ।<br>बीजे करी स्वनगराप्रति भक्तकाजा ।।२।।<br>संतृप्त पूत करुनि प्रभु सेवकाते ।<br>संमार्जनादि कृती सारुनि रंगमाळा ।<br>नागांबिका सुस्नात मार्जन कृत्य शुद्धा ।<br>सर्वेश राजभूवनी उजळी प्रदीपु ।<br>पद्मासनी परिकरे प्रभुराव बैसे ।।३।।<br>आडा सुभाळफळकी वरकस्तुरीचा ।<br>सर्वांगी रेखित सुभौरी सुकर्दमाची ।<br>श्रीशेखरी मुकुटमाळ विराजमान ।<br>श्रीकंठमंडित सुवर्ण विचित्रमाळा ।।४।।<br>कर्णद्वयी झळंबुके वरबाहुभूषा ।<br>सौरभ्य पुष्पकळिकासर हस्तकी पै ।<br>प्रौत्फुल्ल पुष्पित करी स्तबक प्रशोभे ।<br>ओवाळिजे परममंगळ धूपदीपी ।।५।।<br>नागांबिकाद्यनुचरी नमिजे परात्मा ।<br>ग्रामस्थ लोक मग पाठविजे कृपाळे ।<br>व्याळी घृतोदन सितापययुक्त किजे ।<br>तांबुळ वक्त्रकमळी मिरवे परेशा ।।६।।<br>रात्री परावरकथा कथिता उजेडे ।<br>तै विस्मिते मुनिवरे पुसिजे प्रभुते ।<br>सामर्थ्य वेधक महा निजदर्शनाचे ।<br>सांगे सुवेधपति राजकथा प्रसंगे ।।७।।<br>तो सर्वजीव सुपिता निजमातृमित्रु ।<br>अनिमित्त बंधु सुहृदादिक सर्व गोत्रु ।<br>लीळावशे परमशुद्ध सुबोध दाता ।<br>देखावया मज मनी बहु पै अवस्था ।।८।।<br>ऐसी वेधक बोधका भवहता आनंदसंकारका ।<br>शार्दूलविक्रीडित<br>कैवल्यादिक दानदायक सदा शुद्धात्मका निर्मळा ।<br>सर्वा साधन कारणा प्रतिदिनी लीळा करी अच्युतु ।<br>त्या जीवा स्मर मानसी वद मुखे आइक कर्णी सदा ।।९<br>मालिनी<br>जय परममहंता जीव देहातिरिक्ता ।<br>जय हतभवदर्पा, सच्चिदानंदरूपा ।<br>जय सुरवरयुक्ता, ज्ञानविज्ञानवंता ।<br>जय गुणगणदीपा, नान्त धर्म्यस्वरूपा ।।१०।।<br>जय परतर ब्रह्माऽनंदरूपादि नामा ।<br>जय अविकरशीळा अच्युताव्यक्त लीळा ।<br>जय गणितविहिना, आदिमध्यान्तशून्या ।<br>जय परमसुबोधा, नित्यमुक्ता विशुद्धा ।।११।।<br>जय गतअभिमाना, केवळा सर्व भिन्ना ।<br>जय परमकृतार्था, चित्परा साक्षीभूता ।<br>जय निरुपमरूपा, सर्वस्वात्मस्वरूपा ।<br>जय विविधविरुद्धा, चित्रशक्ती प्रसिद्धा ।।१२।।<br>जय सकळ अवेवाऽकार शून्यप्रभावा ।<br>जय परमकृपाळाऽनादि साकार लीळा ।<br>जय परतर देवा, सर्व जीवस्वभावा ।<br>जय सकळ हितार्थाऽपूर्वरूपाभिव्यक्ता ।।१३।।<br>जय नरवपुधारा, जीवधर्मांगिकारा ।<br>जय चिद्वर वेषा, नेत्रविद्योपदेशा ।<br>जय धृतपरचित्रा, जीव सत्प्रेम पात्रा ।<br>जय कृतचरितार्था, सर्व बंधापहन्ता ।।१४।।<br>जय जय सुखदानी, सर्व साध्यावसानी ।<br>जय सुरतिसुदत्ता, नित्य संपूर्ण युक्ता ।<br>जय अभिमुख नामा, सर्व भावार्चितात्मा ।<br>जय गहन चरित्रा, ख्याती कीर्ति पवित्रा ।।१५।।<br>जय कमनीय मूर्ती, हेम गर्भाग कांती ।<br>जय सुरनमितांघ्री, चित्पदाद्या भवारि ।<br>जय विलसित मध्याऽनंग जन्मोद्भवाद्या ।<br>जय सुकमळनाभा, कांती वक्षादि शोभा ।।१६।।<br>जय सरळ सुपाणि, भक्त कैवल्यदानी ।<br>जय प्रहसित वक्त्रा, ब्रह्मविद्या उदारा ।<br>जय सकळ कटाक्षा, प्रेमसंचार लक्षा ।<br>जय सुमुकुट दीप्ती, सर्व सौंदर्यमूर्ती ।।१७।।<br>जय अप्रतिमरूपा, पूर्ण लावण्यदीपा ।<br>जय अनिमित्त बंधु, पूर्ण सौभाग्यसिंधु ।<br>जय अतिबरवंटा, ध्वस्त कंदर्पताठा ।<br>जय गतिमतिरुद्धा, मूर्ती संवेधबोधा ।।१८।।<br>जय त्रिभूवन किर्ती, सर्व मांगल्यमूर्ती ।<br>जय सुरनर शोभा, जीव सर्वस्व लाभा ।<br>जय परगुणधामा, आर्त संपूर्ण कामा ।<br>शुभअवतारा, त्राही चक्रेशरा जी ।।१९।।<br>जय इति अनुदिनलीळास्तोत्र चक्रेशराचे ।<br>जिवन स्मृतिशिळाचे प्रत्यही शुद्धभावे ।<br>श्रवणपठणयोगे चिंतने जीवशुद्धी ।<br>करुनि परसुखाची प्राप्ती निभ्रांत साधी ।।२०।।<br>इति सांयपूजावसर संपूर्ण ।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१००" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १००</span>
+                <h2>ऋद्धिपूर पूजावसर</h2>
+            </div>
+            <div class="poem-content">शार्दूलविक्रीडित<br>कंदर्पादिकदर्पकंदनकरा गोवर्धनाद्रि धरा ।<br>शार्दूलाद्रि मनोहरात्रिकुमरा जो वंद्य सुरासुरा ।<br>श्रीद्वारावती सूर्पमार्जनीधरा, श्रीगुंडमाख्या नमो ।<br>सर्वज्ञा अतिसुंदरा प्रभुवरा, पंचावतारा नमो ।।१।।<br>वसंततिलका<br>अव्यक्त वस्तु सुरनिर्जर नेणति ते ।<br>तो देव केवि उमगे मदिया मतिते ।<br>ऐसे असौनि तरीही श्रुतशास्त्रसाद्ये ।<br>सधैर्य होत मजला करण्यास काव्ये ।।२।।<br>नांदे विदर्भनगरी प्रभु गुंडमाख्या ।<br>देई जीवास सुख, फेडुनि जो अविद्या ।<br>सर्पानिमित्त प्रभु राजमठास येई ।<br>तेथेचि त्या प्रभुवरा नितवास होई ।।३।।<br>होई प्रभातसमयी उपहड देवा ।<br>आबाइसासि पुसता करी तिही सेवा ।<br>रायांगणी करी बीजे सहकोथळोबा ।<br>तो रूपदेव प्रभुचा करी चांगबोला ।।४।।<br>तो कोथळा प्रभुप्रति तळउपराते ।<br>तै जाणवीत धरुनि शुभदीप हाते ।<br>वेढे करी प्रभु पुन्हा परतौनि येई ।<br>त्यानंतरे स्वीकरी मर्दन मादनेही ।।५।।<br>संमार्जनोदक सदा त्रिपुरारी सारी ।<br>त्यावांचुनी इतरदत्त प्रभु ना स्वीकारी ।<br>तै कोथळा प्रभुसी मर्दन मादने दे ।<br>की भावभक्ती परिपूर्णचि सेवना ते ।। ६ ।।<br>यज्ञोपवित करी अर्पण त्रिपुरारी ।<br>त्या हातुनिच प्रभुही नित ते स्वीकारी ।<br>मातंगत्रिवडी सदा स्वीकरी मुरारी ।<br>कै जोगनायक समर्पित वस्त्रधारी ।।७।।<br>दिव्यांबरी सजविले प्रभुकारणे जे ।<br>पै अंबकासि जणु की करी पारणे जे ।<br>ते दिव्य आसन सुशोभित जे फुलांनी ।<br>होई अधिकचि पवित्र प्रभुपाउलांनी ।।८।।<br>ते दिव्य तांब्रकलश द्वय बाजूलाही ।<br>आदित्य ते तळपते गमति जनासि ।<br>ती मेघडंबरी गमे तिज पाहुनिया ।<br>की शेष छत्र धरितो जड होउनिया ।।९।।<br>कापूर कस्तुरीत कुंकुम केशरादि ।<br>तो यक्षकर्दम सदा स्वीकरी अनादि ।<br>ओकारु त्यास म्हणुनी करी खेळ काही ।<br>सर्वज्ञ जो स्विकरी तोच अजाणता ही ।।१०।।<br>कोणी जवादी भरी केशकलापभागी ।<br>सेवा घडे न मज ती खलु मी अभागी ।<br>खोपा करुनि विरगुंठीस बांधता ती ।<br>श्लेष्मा म्हणुनि पुसतो वयनोदधी ती ।।११।।<br>अर्पी महींद्रभट श्रीचरणास वाकी ।<br>जो पै प्रसन्न करतो नित माधवा की ।<br>जै तोषुनी प्रभुवरे पद आदळावे ।<br>तै वाकीने घवघवे जणु गीत गावे ।।१२।।<br>तोडोनि तै प्रभु तिला जणु मुक्ती देती ।<br>जोडोनि ये पुनरपि धरि श्रीपदे ती ।<br>त्या सांखळे प्रभुवरा नितखंत येई ।<br>जे खंतीचा जीव कुणी जणु तेथ राही ।।१३।।<br>आडा ललाटी अतिसुंदर चंदनाचा ।<br>की तो सुगंध परिपूर्णचि चंद्रसाचा ।<br>जो सोमकांत द्रववी निववी लतांसी ।<br>आला स्वये द्रवुनिया अनुलेपनासी ।।१४।।<br>श्रीकंठ शोभुनि दिसे अशी दिव्य माला ।<br>सौदामिनी जणु समर्पिली श्रीअजाला ।<br>कर्णी झळंबुक सुनिर्मित जे फुलांनी ।<br>घेई स्विकार करुनि कैवल्यदानी ।।१५।।<br>श्रीहस्तपद्म विलसे फुलमालिकांनी ।<br>ती मालिकाही विलसे श्रीकरांबुजांनी ।<br>ते दृश्य पाहुनि मुनिजन तोखती ते ।<br>सारे स्वकीय नयनी रस चाखती ते ।।१६।।<br>तो पुष्पगुच्छ प्रभुच्या करपंकजाने ।<br>झाला सुशोभित पहा धरिता अजाने ।<br>धूपारती प्रभुस ती निजभक्त करीती ।<br>पै मंगलारति जतीसह अर्जुनी ती ।।१७।।<br>पुष्पांजली उधळिती निजभक्त सारे ।<br>तै सिंधु तोष स्विकरी जणु बिंदुभारे ।<br>दोन्हीकडे चवरिया धरुनि स्वहस्ती ।<br>ढाळोनिया अनुचरे करिती सुभक्ती ।।१८।।<br>इत्यादि पूजन विधी करीती समस्त ।<br>स्वीकार ते करीतसे उकिडासनस्थ ।<br>किंवा विनंतीवश तो प्रभुराज माने ।<br>पद्मासना स्विकरी जो करी नित्य दाने ।।१९।।<br>छंदी वसंततिलका नमिला मुकुंदु ।<br>कैवल्यसिंधु प्रभु जो अनिमित्तबंधु ।<br>पादारविंद बघण्या झुरतो मुनींद्र ।<br>दावा प्रभु झडकरी तव मूर्तीचंद्रु ।।२०।।<br>इति श्रीपरधर्मे महामोक्षक साधने श्रीनागार्जुनोपदेशे कवीशर आम्नाय दीक्षित श्रीऋषीराजबाबा दर्यापूरकर<br>तत्सुत श्रीनरेंद्रमुनि अंकुळनेरकर विरचित पूजावसर स्तोत्र ।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+    <div id="poem-१०१" class="poem-card">
+        <div class="card-inner">
+            <div class="ornament-top">❦</div>
+            <div class="poem-header">
+                <span class="poem-number">अंक १०१</span>
+                <h2>आमुचा भारत भूवर..</h2>
+            </div>
+            <div class="poem-content">आमुचा भारत भूवर झेंडा फडके<br>भारत भुवर झेंडा सनातन काळापासुनि खडा ।।धृ।।<br>शुभ्र हा रंग अहिंसा परी।<br>चक्र सुदर्शन हे त्यावरी ।<br>दाखवी ज्ञानखुणेचा धडा ।।१।।<br>हिमाचल सेतुच्या अंतरी ।<br>फडकतो डौलाने बहुपरी ।<br>ऐका इतिहासाचा चौघडा ।।२।।<br>बंधुंनो झेंडा हा आपुला ।<br>रक्षू या संघटनेने चला ।<br>दामोदर दास म्हणे बापुडा ।।३।।</div>
+            <div class="ornament-bottom">❧</div>
+        </div>
+    </div>
+    
+        <div style="text-align: center; margin-top: 50px; color: var(--accent-color);">
+            ~ समाप्त ~
+        </div>
+    </div>
+
+    <script>
+        // --- Logic for Resume, Theme & Double Tap ---
+        const body = document.body;
+        const themeBtn = document.getElementById('theme-btn');
+        let currentSize = parseInt(localStorage.getItem('retroFontSize')) || 20;
+        let isDark = localStorage.getItem('retroTheme') === 'dark';
+
+        function init() {
+            // Font Size
+            body.style.fontSize = currentSize + 'px';
+            
+            // Theme
+            if(isDark) {
+                body.setAttribute('data-theme', 'dark');
+                themeBtn.innerHTML = '☀';
+            }
+
+            // Auto-Resume Position
+            const savedPos = localStorage.getItem('retroScrollPos');
+            if(savedPos) {
+                setTimeout(() => window.scrollTo(0, parseInt(savedPos)), 100);
+            }
+        }
+
+        // --- Event Listeners ---
+        // Scroll Saver (Debounced)
+        let scrollTimer;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                localStorage.setItem('retroScrollPos', window.scrollY);
+            }, 100);
+        });
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('visible');
+        }
+
+        function scrollToPoem(id) {
+            toggleSidebar();
+            const el = document.getElementById(id);
+            if(el) {
+                const offset = 100; // Header space
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = el.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+            }
+        }
+
+        function adjustFont(delta) {
+            currentSize += delta;
+            if(currentSize < 14) currentSize = 14;
+            if(currentSize > 36) currentSize = 36;
+            body.style.fontSize = currentSize + 'px';
+            localStorage.setItem('retroFontSize', currentSize);
+        }
+
+        function toggleTheme() {
+            isDark = !isDark;
+            if(isDark) {
+                body.setAttribute('data-theme', 'dark');
+                themeBtn.innerHTML = '☀';
+                localStorage.setItem('retroTheme', 'dark');
+            } else {
+                body.removeAttribute('data-theme');
+                themeBtn.innerHTML = '☾';
+                localStorage.setItem('retroTheme', 'light');
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
