@@ -1,4 +1,4 @@
-name: Brahmavidya Sleep Saver
+name: Brahmavidya Final Victory
 
 on:
   push:
@@ -15,26 +15,26 @@ jobs:
           
       - run: npm install -g cordova
       
-      # 🔥 FIX 1: Java 17 (हे Android 12 साठी अनिवार्य आहे आणि Gradle एरर काढते)
+      # 🔥 1. Java 17 सेट करणे (हे Android 12 साठी अनिवार्य आहे)
       - uses: actions/setup-java@v3
         with: { distribution: 'temurin', java-version: '17' }
 
       # --- STEP 1: प्रोजेक्ट तयार करणे ---
       - name: Create Project
         run: |
-          # App ID OK
+          # प्रोजेक्ट बनवणे
           cordova create myapp com.brahmavidya.app "Brahmavidya"
           cd myapp
           
-          # 🔥 FIX 2: Android 12.0.0 (हे Java 17 सोबत लोण्यासारखे चालते)
-          # (आधी हे फेल झाले होते कारण फोटो खराब होते, आता आपण फोटो फिक्स केले आहेत)
+          # 🔥 2. Android 12 वापरणे (हे GitHub च्या नवीन सिस्टीमवर चालते)
+          # (जुने Android 11 आता GitHub वर चालत नाही कारण तिथे Gradle खूप नवीन झाले आहे)
           cordova platform add android@12.0.0
           
           cordova plugin add cordova-plugin-statusbar
           cordova plugin add cordova-plugin-device
           cd ..
 
-      # --- STEP 2: मॅजिक इमेज (Resource Error फिक्स) ---
+      # --- STEP 2: मॅजिक इमेज (इंटरनेटची गरज नाही) ---
       - name: Generate Safe Assets
         run: |
           echo "Generating magic assets..."
@@ -42,16 +42,19 @@ jobs:
           # 1. क्लीनअप
           rm myapp/www/index.html myapp/www/css/index.css myapp/www/js/index.js
           
-          # 2. कोड कॉपी
+          # 2. तुमचा ओरिजिनल कोड कॉपी करणे
+          # (|| true लावल्यामुळे फाईल नसली तरी एरर येणार नाही)
           cp index.html myapp/www/
           cp *.html myapp/www/ || true
           cp *.js myapp/www/ || true
           cp *.css myapp/www/ || true
 
-          # 3. 🔥 MAGIC IMAGE (लाल बॉक्स) - Resource Error येणारच नाही 🔥
+          # 3. 🔥 MAGIC IMAGE (लाल बॉक्स) 🔥
+          # इंटरनेटवरून काहीही डाउनलोड न करता, कोडमधूनच फोटो बनवत आहोत.
+          # त्यामुळे '404 Error' आणि 'Resource Error' दोन्ही कायमचे गेले.
           echo "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" | base64 -d > safe_img.png
           
-          # 4. फोटो सेट करणे
+          # 4. हेच सेफ फोटो वापरणे
           cp safe_img.png myapp/www/logo.png
           cp safe_img.png myapp/www/login_bg.png
           cp safe_img.png myapp/www/cover.jpg
@@ -64,4 +67,31 @@ jobs:
           for f in *.html; do
             if [ "$f" != "index.html" ]; then
               baseName=$(basename "$f" .html)
-              echo "{ name: '$baseName', file: '$f', image: 'cover.
+              echo "{ name: '$baseName', file: '$f', image: 'cover.jpg' }," >> filelist.js
+            fi
+          done
+          echo "];" >> filelist.js
+          cd ../..
+
+      # --- STEP 3: बिल्ड करणे ---
+      - name: Build APK
+        run: |
+          cd myapp
+          
+          # Config
+          sed -i '/<widget/a <icon src="www/logo.png" />' config.xml
+          sed -i '/<widget/a <preference name="Fullscreen" value="true" />' config.xml
+          sed -i '/<widget/a <preference name="BackgroundColor" value="0xff000000" />' config.xml
+          
+          # Android 12 चे स्पेशल सेटिंग
+          sed -i '/<widget/a <preference name="AndroidXEnabled" value="true" />' config.xml
+          sed -i '/<widget/a <preference name="GradlePluginGoogleServicesEnabled" value="true" />' config.xml
+          sed -i '/<widget/a <preference name="GradlePluginKotlinEnabled" value="true" />' config.xml
+          
+          echo "Building APK..."
+          cordova build android --debug
+          
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Brahmavidya-APK
+          path: myapp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
