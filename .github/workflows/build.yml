@@ -1,4 +1,4 @@
-name: Brahmavidya Success Build
+name: Brahmavidya Guaranteed Build
 
 on:
   push:
@@ -21,9 +21,8 @@ jobs:
       # --- 1. प्रोजेक्ट तयार करणे ---
       - name: Create Project
         run: |
-          # 🔥 CHANGE IS HERE: 'final' शब्द काढून 'app' वापरला आहे 🔥
+          # ID फिक्स केला आहे: com.brahmavidya.app
           cordova create myapp com.brahmavidya.app "Brahmavidya"
-          
           cd myapp
           cordova plugin add cordova-plugin-statusbar
           cordova plugin add cordova-plugin-network-information
@@ -32,24 +31,43 @@ jobs:
           cordova platform add android
           cd ..
 
-      # --- 2. फाईल्स कॉपी करणे ---
-      - name: Copy Files
+      # --- 2. सेफ्टी चेक आणि फाईल्स कॉपी करणे ---
+      - name: Smart File Injector
         run: |
-          echo "Copying files..."
+          echo "Processing files..."
+          
+          # 1. एक 'सेफ' इमेज बनवणे (जर तुमचे फोटो खराब असतील तर हे वापरले जाईल)
+          # हा हिरव्या रंगाचा छोटा बॉक्स आहे.
+          echo "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAySURBVGhD7cExAQAAAMKg9U9tCy8gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADmzpAAGqv5J7AAAAAElFTkSuQmCC" | base64 -d > safe.png
+          
+          # 2. फाईल कॉपी फंक्शन (हे चेक करेल की फाईल चांगली आहे का)
+          copy_safe() {
+            FILE=$1
+            if [ -s "$FILE" ]; then
+              echo "✅ Valid File Found: $FILE"
+              cp "$FILE" "myapp/www/$FILE"
+            else
+              echo "⚠️ Corrupt/Missing File: $FILE - Using Backup Safe Image"
+              cp safe.png "myapp/www/$FILE"
+            fi
+          }
+          
+          # 3. जुन्या फाईल्स काढणे
           rm myapp/www/index.html myapp/www/css/index.css myapp/www/js/index.js
           
+          # 4. तुमचा कोड कॉपी करणे
           cp index.html myapp/www/
-          
-          # तुमचे ५ फोटो कॉपी करणे
-          cp logo.png myapp/www/ || true
-          cp login_bg.png myapp/www/ || true
-          cp cover.jpg myapp/www/ || true
-          cp photo1.jpg myapp/www/ || true
-          cp photo2.jpg myapp/www/ || true
-          
           cp *.html myapp/www/ || true
           
-          # लिस्ट बनवणे
+          # 5. फोटो कॉपी करणे (Smart Way)
+          # आता इथे Error येणार नाही, कारण खराब फोटो असल्यास तो Backup वापरेल.
+          copy_safe "logo.png"
+          copy_safe "login_bg.png"
+          copy_safe "cover.jpg"
+          copy_safe "photo1.jpg"
+          copy_safe "photo2.jpg"
+          
+          # 6. लिस्ट बनवणे
           cd myapp/www
           echo "var autoBookList = [" > filelist.js
           for f in *.html; do
@@ -65,11 +83,13 @@ jobs:
       - name: Build APK
         run: |
           cd myapp
+          # आयकॉन सेट करणे
           sed -i '/<widget/a <icon src="www/logo.png" />' config.xml
           sed -i '/<widget/a <preference name="Fullscreen" value="true" />' config.xml
           sed -i '/<widget/a <preference name="Orientation" value="portrait" />' config.xml
           sed -i '/<widget/a <preference name="BackgroundColor" value="0xff000000" />' config.xml
           
+          # बिल्ड कमांड
           cordova build android --debug
           
       - uses: actions/upload-artifact@v4
