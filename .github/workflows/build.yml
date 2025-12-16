@@ -1,4 +1,4 @@
-name: Brahmavidya Emergency Build
+name: Brahmavidya Final Fix
 
 on:
   push:
@@ -15,51 +15,51 @@ jobs:
           
       - run: npm install -g cordova
       
-      # 🔥 FIX 1: Java 17 (Gradle Error जाणार)
+      # 1. Java 17 (Gradle Error फिक्स)
       - uses: actions/setup-java@v3
         with: { distribution: 'temurin', java-version: '17' }
 
-      # --- STEP 1: प्रोजेक्ट तयार करणे ---
+      # --- STEP 1: प्रोजेक्ट सेटअप ---
       - name: Create Project
         run: |
-          # 🔥 FIX 2: App ID 'final' शब्द टाळून 'app' ठेवला आहे
+          # App ID: com.brahmavidya.app ('final' शब्द नाही)
           cordova create myapp com.brahmavidya.app "Brahmavidya"
           cd myapp
           
-          # Stable Android Version
+          # Stable Android 12 (Plugin Error फिक्स)
           cordova platform add android@12.0.0
           cordova plugin add cordova-plugin-statusbar
           cordova plugin add cordova-plugin-device
           cd ..
 
-      # --- STEP 2: Safe Mode (फोटो बदलणे) ---
-      - name: Inject Safe Files
+      # --- STEP 2: मॅजिक इमेज तयार करणे (No Internet Required) ---
+      - name: Create Safe Assets
         run: |
-          echo "Preparing Safe Mode..."
+          echo "Generating Assets locally..."
           
-          # 1. जुन्या फाईल्स हटवणे
+          # 1. जुने क्लिअर करणे
           rm myapp/www/index.html myapp/www/css/index.css myapp/www/js/index.js
           
-          # 2. तुमचा कोड (HTML/JS) कॉपी करणे
+          # 2. तुमचा मेन कोड टाकणे
           cp index.html myapp/www/
+          # खालील ओळींना '|| true' लावले आहे, म्हणजे फाईल नसली तरी Error येणार नाही.
           cp *.html myapp/www/ || true
           cp *.js myapp/www/ || true
           cp *.css myapp/www/ || true
+
+          # 3. 🔥 Magic Image Creation 🔥 (इंटरनेटची गरज नाही)
+          # हा कोड एक 'लाल रंगाचा' छोटा फोटो स्वतः तयार करेल.
+          # यामुळे 'Resource Failed' आणि '404 Error' दोन्ही जाणार.
+          echo "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" | base64 -d > safe_img.png
           
-          # 🔥 FIX 3: तुमचे फोटो न वापरता 'Safe Image' वापरणे
-          # (कारण तुमच्या फोटोमुळे Resource Error येत होता)
-          
-          echo "Downloading Safe Image..."
-          wget -O safe_img.png "https://upload.wikimedia.org/wikipedia/commons/e/e0/Check_green_icon.svg.png"
-          
-          echo "Replacing assets with Safe Image..."
+          # 4. हेच सेफ फोटो वापरणे
           cp safe_img.png myapp/www/logo.png
           cp safe_img.png myapp/www/login_bg.png
           cp safe_img.png myapp/www/cover.jpg
           cp safe_img.png myapp/www/photo1.jpg
           cp safe_img.png myapp/www/photo2.jpg
           
-          # File List जनरेट करणे
+          # 5. लिस्ट बनवणे
           cd myapp/www
           echo "var autoBookList = [" > filelist.js
           for f in *.html; do
@@ -76,17 +76,16 @@ jobs:
         run: |
           cd myapp
           
-          # Config सेट करणे
+          # Config
           sed -i '/<widget/a <icon src="www/logo.png" />' config.xml
           sed -i '/<widget/a <preference name="Fullscreen" value="true" />' config.xml
           sed -i '/<widget/a <preference name="Orientation" value="portrait" />' config.xml
           sed -i '/<widget/a <preference name="BackgroundColor" value="0xff000000" />' config.xml
-          sed -i '/<widget/a <preference name="AndroidXEnabled" value="true" />' config.xml
           
-          echo "Building with Safe Assets..."
+          echo "Building APK..."
           cordova build android --debug
           
       - uses: actions/upload-artifact@v4
         with:
-          name: Brahmavidya-APK-SafeMode
+          name: Brahmavidya-APK
           path: myapp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
