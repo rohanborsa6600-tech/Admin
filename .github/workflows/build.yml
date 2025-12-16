@@ -15,26 +15,26 @@ jobs:
           
       - run: npm install -g cordova
       
-      # 1. Java 11 (Android 10 सोबत बेस्ट चालते)
+      # 🔥 FIX 1: Java 17 (हे Android 12 साठी अनिवार्य आहे आणि Gradle एरर काढते)
       - uses: actions/setup-java@v3
-        with: { distribution: 'temurin', java-version: '11' }
+        with: { distribution: 'temurin', java-version: '17' }
 
-      # --- STEP 1: प्रोजेक्ट सेटअप ---
+      # --- STEP 1: प्रोजेक्ट तयार करणे ---
       - name: Create Project
         run: |
-          # App ID
+          # App ID OK
           cordova create myapp com.brahmavidya.app "Brahmavidya"
           cd myapp
           
-          # 🔥 THE GOLDEN FIX: Android 10.1.2 वापरणे 🔥
-          # हे व्हर्जन कधीच फेल होत नाही. हे 'Android 11' पेक्षाही स्टेबल आहे.
-          cordova platform add android@10.1.2
+          # 🔥 FIX 2: Android 12.0.0 (हे Java 17 सोबत लोण्यासारखे चालते)
+          # (आधी हे फेल झाले होते कारण फोटो खराब होते, आता आपण फोटो फिक्स केले आहेत)
+          cordova platform add android@12.0.0
           
           cordova plugin add cordova-plugin-statusbar
           cordova plugin add cordova-plugin-device
           cd ..
 
-      # --- STEP 2: मॅजिक इमेज (इंटरनेट नको) ---
+      # --- STEP 2: मॅजिक इमेज (Resource Error फिक्स) ---
       - name: Generate Safe Assets
         run: |
           echo "Generating magic assets..."
@@ -42,13 +42,13 @@ jobs:
           # 1. क्लीनअप
           rm myapp/www/index.html myapp/www/css/index.css myapp/www/js/index.js
           
-          # 2. कोड कॉपी करणे
+          # 2. कोड कॉपी
           cp index.html myapp/www/
           cp *.html myapp/www/ || true
           cp *.js myapp/www/ || true
           cp *.css myapp/www/ || true
 
-          # 3. मॅजिक इमेज (लाल बॉक्स) - एरर टाळण्यासाठी
+          # 3. 🔥 MAGIC IMAGE (लाल बॉक्स) - Resource Error येणारच नाही 🔥
           echo "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" | base64 -d > safe_img.png
           
           # 4. फोटो सेट करणे
@@ -64,27 +64,4 @@ jobs:
           for f in *.html; do
             if [ "$f" != "index.html" ]; then
               baseName=$(basename "$f" .html)
-              echo "{ name: '$baseName', file: '$f', image: 'cover.jpg' }," >> filelist.js
-            fi
-          done
-          echo "];" >> filelist.js
-          cd ../..
-
-      # --- STEP 3: बिल्ड करणे ---
-      - name: Build APK
-        run: |
-          cd myapp
-          
-          # Config
-          sed -i '/<widget/a <icon src="www/logo.png" />' config.xml
-          sed -i '/<widget/a <preference name="Fullscreen" value="true" />' config.xml
-          sed -i '/<widget/a <preference name="BackgroundColor" value="0xff000000" />' config.xml
-          
-          echo "Building APK..."
-          # Android 10.1.2 साठी ही कमांड आहे
-          cordova build android --debug
-          
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Brahmavidya-APK
-          path: myapp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+              echo "{ name: '$baseName', file: '$f', image: 'cover.
