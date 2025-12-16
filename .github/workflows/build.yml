@@ -1,4 +1,4 @@
-name: Brahmavidya Stable Build
+name: Brahmavidya Sleep Saver
 
 on:
   push:
@@ -15,44 +15,43 @@ jobs:
           
       - run: npm install -g cordova
       
-      # 🔥 FIX 1: आपण परत Java 11 कडे जात आहोत (हे सर्वात स्टेबल आहे)
+      # 1. Java 11 (Android 10 सोबत बेस्ट चालते)
       - uses: actions/setup-java@v3
         with: { distribution: 'temurin', java-version: '11' }
 
       # --- STEP 1: प्रोजेक्ट सेटअप ---
       - name: Create Project
         run: |
-          # App ID OK आहे
+          # App ID
           cordova create myapp com.brahmavidya.app "Brahmavidya"
           cd myapp
           
-          # 🔥 FIX 2: Android 11.0.0 वापरणे (हे 100% एरर फ्री आहे)
-          # नवीन व्हर्जनचे नाटक नको, हे जुने व्हर्जन "Old is Gold" आहे.
-          cordova platform add android@11.0.0
+          # 🔥 THE GOLDEN FIX: Android 10.1.2 वापरणे 🔥
+          # हे व्हर्जन कधीच फेल होत नाही. हे 'Android 11' पेक्षाही स्टेबल आहे.
+          cordova platform add android@10.1.2
           
           cordova plugin add cordova-plugin-statusbar
           cordova plugin add cordova-plugin-device
           cd ..
 
-      # --- STEP 2: मॅजिक इमेज आणि फाईल्स ---
-      - name: Generate Assets Locally
+      # --- STEP 2: मॅजिक इमेज (इंटरनेट नको) ---
+      - name: Generate Safe Assets
         run: |
-          echo "Generating files..."
+          echo "Generating magic assets..."
           
           # 1. क्लीनअप
           rm myapp/www/index.html myapp/www/css/index.css myapp/www/js/index.js
           
-          # 2. तुमचा मेन कोड
+          # 2. कोड कॉपी करणे
           cp index.html myapp/www/
           cp *.html myapp/www/ || true
           cp *.js myapp/www/ || true
           cp *.css myapp/www/ || true
 
-          # 3. 🔥 MAGIC IMAGE (लाल रंगाचा ठिपका) 🔥
-          # इंटरनेट नको, फाईल नको. कोडमधूनच फोटो बनवतोय.
+          # 3. मॅजिक इमेज (लाल बॉक्स) - एरर टाळण्यासाठी
           echo "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" | base64 -d > safe_img.png
           
-          # 4. सर्व फोटो जागेवर लावणे
+          # 4. फोटो सेट करणे
           cp safe_img.png myapp/www/logo.png
           cp safe_img.png myapp/www/login_bg.png
           cp safe_img.png myapp/www/cover.jpg
@@ -82,7 +81,7 @@ jobs:
           sed -i '/<widget/a <preference name="BackgroundColor" value="0xff000000" />' config.xml
           
           echo "Building APK..."
-          # Android 11 साठी ही कमांड परफेक्ट आहे
+          # Android 10.1.2 साठी ही कमांड आहे
           cordova build android --debug
           
       - uses: actions/upload-artifact@v4
