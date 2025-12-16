@@ -1,4 +1,4 @@
-name: Brahmavidya Final Victory
+name: Build Brahmavidya Final APK
 
 on:
   push:
@@ -7,91 +7,112 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
+      # 1. कोड चेकआउट करणे
       - uses: actions/checkout@v3
-      
-      - uses: actions/setup-node@v3
-        with: { node-version: 16 }
-          
-      - run: npm install -g cordova
-      
-      # 🔥 1. Java 17 सेट करणे (हे Android 12 साठी अनिवार्य आहे)
-      - uses: actions/setup-java@v3
-        with: { distribution: 'temurin', java-version: '17' }
 
-      # --- STEP 1: प्रोजेक्ट तयार करणे ---
-      - name: Create Project
+      # 2. Node.js आणि Cordova इंस्टॉल करणे
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install -g cordova
+
+      # 3. Java इंस्टॉल करणे (Android साठी)
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 4. Cordova प्रोजेक्ट तयार करणे आणि प्लगिन्स टाकणे
+      - name: Create Cordova Project
         run: |
-          # प्रोजेक्ट बनवणे
-          cordova create myapp com.brahmavidya.app "Brahmavidya"
+          # इथे ID 'ovi' आहे, म्हणून हे चालणार!
+          cordova create myapp com.brahmavidya.ovi "Brahmavidya"
           cd myapp
           
-          # 🔥 2. Android 12 वापरणे (हे GitHub च्या नवीन सिस्टीमवर चालते)
-          # (जुने Android 11 आता GitHub वर चालत नाही कारण तिथे Gradle खूप नवीन झाले आहे)
-          cordova platform add android@12.0.0
-          
+          # Plugins for Fullscreen, Statusbar and Network
           cordova plugin add cordova-plugin-statusbar
-          cordova plugin add cordova-plugin-device
+          cordova plugin add cordova-plugin-network-information
+          cordova plugin add cordova-plugin-whitelist
+          
+          # Android Platform (Latest Stable)
+          cordova platform add android
           cd ..
 
-      # --- STEP 2: मॅजिक इमेज (इंटरनेटची गरज नाही) ---
-      - name: Generate Safe Assets
+      # 5. Config.xml सेटिंग्ज (आयकॉन, फुलस्क्रीन, ओरिएंटेशन)
+      - name: Configure App Settings
         run: |
-          echo "Generating magic assets..."
+          cd myapp
+          # App Icon सेट करणे
+          sed -i '/<widget/a <icon src="www/logo.png" />' config.xml
           
-          # 1. क्लीनअप
-          rm myapp/www/index.html myapp/www/css/index.css myapp/www/js/index.js
+          # Fullscreen आणि Portrait Mode
+          sed -i '/<widget/a <preference name="Fullscreen" value="true" />' config.xml
+          sed -i '/<widget/a <preference name="Orientation" value="portrait" />' config.xml
           
-          # 2. तुमचा ओरिजिनल कोड कॉपी करणे
-          # (|| true लावल्यामुळे फाईल नसली तरी एरर येणार नाही)
+          # Timeout वाढवणे (मोठ्या पुस्तकांसाठी)
+          sed -i '/<widget/a <preference name="LoadUrlTimeoutValue" value="70000" />' config.xml
+          
+          # Android 12+ साठी सेटिंग
+          sed -i '/<widget/a <preference name="AndroidWindowSplashScreenAnimatedIcon" value="www/logo.png" />' config.xml
+          sed -i '/<widget/a <preference name="AndroidWindowSplashScreenBackground" value="#000000" />' config.xml
+          cd ..
+
+      # 6. फाईल्स कॉपी करणे (तुमच्या Repo मधून APK मध्ये)
+      - name: Copy Files to WWW
+        run: |
+          # जुन्या डिफॉल्ट फाईल्स काढणे
+          rm myapp/www/index.html
+          rm myapp/www/css/index.css
+          rm myapp/www/js/index.js
+          
+          # तुमच्या फाईल्स कॉपी करणे
           cp index.html myapp/www/
           cp *.html myapp/www/ || true
-          cp *.js myapp/www/ || true
           cp *.css myapp/www/ || true
+          cp *.js myapp/www/ || true
+          
+          # इमेजेस कॉपी करणे (Logo, Login BG, Book Covers)
+          cp logo.png myapp/www/ || true
+          cp login_bg.png myapp/www/ || true
+          cp *.png myapp/www/ || true
+          cp *.jpg myapp/www/ || true
+          cp *.jpeg myapp/www/ || true
 
-          # 3. 🔥 MAGIC IMAGE (लाल बॉक्स) 🔥
-          # इंटरनेटवरून काहीही डाउनलोड न करता, कोडमधूनच फोटो बनवत आहोत.
-          # त्यामुळे '404 Error' आणि 'Resource Error' दोन्ही कायमचे गेले.
-          echo "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" | base64 -d > safe_img.png
-          
-          # 4. हेच सेफ फोटो वापरणे
-          cp safe_img.png myapp/www/logo.png
-          cp safe_img.png myapp/www/login_bg.png
-          cp safe_img.png myapp/www/cover.jpg
-          cp safe_img.png myapp/www/photo1.jpg
-          cp safe_img.png myapp/www/photo2.jpg
-          
-          # 5. लिस्ट बनवणे
+      # 7. ऑटोमॅटिक बुक लिस्ट बनवणे (हे सर्वात महत्त्वाचे लॉजिक आहे)
+      - name: Generate Smart File List
+        run: |
           cd myapp/www
           echo "var autoBookList = [" > filelist.js
+          
+          # सर्व HTML फाईल्स स्कॅन करा
           for f in *.html; do
-            if [ "$f" != "index.html" ]; then
+            # index.html आणि admin.html सोडून बाकी सर्व पुस्तके आहेत
+            if [ "$f" != "index.html" ] && [ "$f" != "admin.html" ]; then
               baseName=$(basename "$f" .html)
-              echo "{ name: '$baseName', file: '$f', image: 'cover.jpg' }," >> filelist.js
+              
+              # कव्हर इमेज शोधणे (त्याच नावाची इमेज आहे का ते पाहणे)
+              img="cover.jpg" # डिफॉल्ट कव्हर
+              if [ -f "$baseName.jpg" ]; then img="$baseName.jpg"; fi
+              if [ -f "$baseName.png" ]; then img="$baseName.png"; fi
+              if [ -f "$baseName.jpeg" ]; then img="$baseName.jpeg"; fi
+              
+              echo "{ name: '$baseName', file: '$f', image: '$img' }," >> filelist.js
             fi
           done
+          
           echo "];" >> filelist.js
           cd ../..
 
-      # --- STEP 3: बिल्ड करणे ---
+      # 8. APK बिल्ड करणे
       - name: Build APK
         run: |
           cd myapp
-          
-          # Config
-          sed -i '/<widget/a <icon src="www/logo.png" />' config.xml
-          sed -i '/<widget/a <preference name="Fullscreen" value="true" />' config.xml
-          sed -i '/<widget/a <preference name="BackgroundColor" value="0xff000000" />' config.xml
-          
-          # Android 12 चे स्पेशल सेटिंग
-          sed -i '/<widget/a <preference name="AndroidXEnabled" value="true" />' config.xml
-          sed -i '/<widget/a <preference name="GradlePluginGoogleServicesEnabled" value="true" />' config.xml
-          sed -i '/<widget/a <preference name="GradlePluginKotlinEnabled" value="true" />' config.xml
-          
-          echo "Building APK..."
           cordova build android --debug
-          
+
+      # 9. APK अपलोड करणे (तुम्हाला डाऊनलोड करण्यासाठी)
       - uses: actions/upload-artifact@v4
         with:
-          name: Brahmavidya-APK
+          name: Brahmavidya-Ovi-APK
           path: myapp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
