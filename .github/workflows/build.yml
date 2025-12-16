@@ -1,4 +1,4 @@
-name: Brahmavidya Final Success
+name: Brahmavidya Emergency Build
 
 on:
   push:
@@ -15,62 +15,63 @@ jobs:
           
       - run: npm install -g cordova
       
-      # 🔥 FIX: एररनुसार आता आपण Java 17 वापरत आहोत
+      # 🔥 FIX 1: Java 17 (Gradle Error जाणार)
       - uses: actions/setup-java@v3
         with: { distribution: 'temurin', java-version: '17' }
 
-      # --- 1. प्रोजेक्ट तयार करणे ---
+      # --- STEP 1: प्रोजेक्ट तयार करणे ---
       - name: Create Project
         run: |
+          # 🔥 FIX 2: App ID 'final' शब्द टाळून 'app' ठेवला आहे
           cordova create myapp com.brahmavidya.app "Brahmavidya"
           cd myapp
           
-          # फक्त गरजेचे प्लगइन्स
+          # Stable Android Version
+          cordova platform add android@12.0.0
           cordova plugin add cordova-plugin-statusbar
           cordova plugin add cordova-plugin-device
-          
-          # 🔥 FIX: Cordova Android 12 वापरणे (हे Stable आहे आणि Android 16 वर चालते)
-          # Cordova 14 मध्ये बग्स आहेत, म्हणून आपण 12 वापरत आहोत.
-          cordova platform add android@12.0.0
           cd ..
 
-      # --- 2. फाईल्स कॉपी करणे ---
-      - name: Copy Files
+      # --- STEP 2: Safe Mode (फोटो बदलणे) ---
+      - name: Inject Safe Files
         run: |
-          echo "Injecting files..."
+          echo "Preparing Safe Mode..."
           
-          # जुन्या फाईल्स काढणे
+          # 1. जुन्या फाईल्स हटवणे
           rm myapp/www/index.html myapp/www/css/index.css myapp/www/js/index.js
           
-          # तुमचा मेन कोड
+          # 2. तुमचा कोड (HTML/JS) कॉपी करणे
           cp index.html myapp/www/
-          
-          # 🔥 फोटो कॉपी करणे (सर्व प्रकारचे नावे - .jpg आणि .JPG)
-          cp *.png myapp/www/ || true
-          cp *.jpg myapp/www/ || true
-          cp *.JPG myapp/www/ || true
-          cp *.jpeg myapp/www/ || true
           cp *.html myapp/www/ || true
+          cp *.js myapp/www/ || true
+          cp *.css myapp/www/ || true
           
-          # लोगो चेक करणे
-          if [ ! -f "myapp/www/logo.png" ]; then
-              echo "⚠️ Logo missing, downloading temporary one..."
-              wget -O myapp/www/logo.png "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"
-          fi
-
-          # लिस्ट बनवणे
+          # 🔥 FIX 3: तुमचे फोटो न वापरता 'Safe Image' वापरणे
+          # (कारण तुमच्या फोटोमुळे Resource Error येत होता)
+          
+          echo "Downloading Safe Image..."
+          wget -O safe_img.png "https://upload.wikimedia.org/wikipedia/commons/e/e0/Check_green_icon.svg.png"
+          
+          echo "Replacing assets with Safe Image..."
+          cp safe_img.png myapp/www/logo.png
+          cp safe_img.png myapp/www/login_bg.png
+          cp safe_img.png myapp/www/cover.jpg
+          cp safe_img.png myapp/www/photo1.jpg
+          cp safe_img.png myapp/www/photo2.jpg
+          
+          # File List जनरेट करणे
           cd myapp/www
           echo "var autoBookList = [" > filelist.js
           for f in *.html; do
             if [ "$f" != "index.html" ]; then
               baseName=$(basename "$f" .html)
-              echo "{ name: \`$baseName\`, file: \`$f\`, image: 'cover.jpg' }," >> filelist.js
+              echo "{ name: '$baseName', file: '$f', image: 'cover.jpg' }," >> filelist.js
             fi
           done
           echo "];" >> filelist.js
           cd ../..
 
-      # --- 3. बिल्ड करणे ---
+      # --- STEP 3: बिल्ड करणे ---
       - name: Build APK
         run: |
           cd myapp
@@ -82,10 +83,10 @@ jobs:
           sed -i '/<widget/a <preference name="BackgroundColor" value="0xff000000" />' config.xml
           sed -i '/<widget/a <preference name="AndroidXEnabled" value="true" />' config.xml
           
-          # बिल्ड कमांड
+          echo "Building with Safe Assets..."
           cordova build android --debug
           
       - uses: actions/upload-artifact@v4
         with:
-          name: Brahmavidya-App
+          name: Brahmavidya-APK-SafeMode
           path: myapp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
