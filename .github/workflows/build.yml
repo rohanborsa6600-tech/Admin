@@ -21,8 +21,9 @@ jobs:
       # --- 1. प्रोजेक्ट तयार करणे ---
       - name: Create Project
         run: |
-          # 'final' शब्द काढून टाकला आहे. आता हे नक्की चालेल.
+          # 🔥 CHANGE IS HERE: 'final' शब्द काढून 'app' वापरला आहे 🔥
           cordova create myapp com.brahmavidya.app "Brahmavidya"
+          
           cd myapp
           cordova plugin add cordova-plugin-statusbar
           cordova plugin add cordova-plugin-network-information
@@ -31,28 +32,24 @@ jobs:
           cordova platform add android
           cd ..
 
-      # --- 2. तुमचे फोटो आणि फाईल्स ॲपमध्ये टाकणे ---
+      # --- 2. फाईल्स कॉपी करणे ---
       - name: Copy Files
         run: |
-          echo "Copying your manual files..."
-          
-          # जुन्या डिफॉल्ट फाईल्स काढणे
+          echo "Copying files..."
           rm myapp/www/index.html myapp/www/css/index.css myapp/www/js/index.js
           
-          # तुमचा नवीन index.html टाकणे
           cp index.html myapp/www/
           
-          # 🔥 महत्त्वाचे: तुम्ही अपलोड केलेले ५ फोटो टाकणे 🔥
-          cp logo.png myapp/www/ || echo "logo.png missing"
-          cp login_bg.png myapp/www/ || echo "login_bg.png missing"
-          cp cover.jpg myapp/www/ || echo "cover.jpg missing"
-          cp photo1.jpg myapp/www/ || echo "photo1.jpg missing"
-          cp photo2.jpg myapp/www/ || echo "photo2.jpg missing"
+          # तुमचे ५ फोटो कॉपी करणे
+          cp logo.png myapp/www/ || true
+          cp login_bg.png myapp/www/ || true
+          cp cover.jpg myapp/www/ || true
+          cp photo1.jpg myapp/www/ || true
+          cp photo2.jpg myapp/www/ || true
           
-          # HTML फाईल्स असतील तर त्याही घेणे
           cp *.html myapp/www/ || true
           
-          # फाईल लिस्ट बनवणे
+          # लिस्ट बनवणे
           cd myapp/www
           echo "var autoBookList = [" > filelist.js
           for f in *.html; do
@@ -64,21 +61,17 @@ jobs:
           echo "];" >> filelist.js
           cd ../..
 
-      # --- 3. आयकॉन सेट करणे आणि बिल्ड करणे ---
+      # --- 3. बिल्ड करणे ---
       - name: Build APK
         run: |
           cd myapp
-          
-          # आयकॉन सेट करणे
           sed -i '/<widget/a <icon src="www/logo.png" />' config.xml
           sed -i '/<widget/a <preference name="Fullscreen" value="true" />' config.xml
           sed -i '/<widget/a <preference name="Orientation" value="portrait" />' config.xml
           sed -i '/<widget/a <preference name="BackgroundColor" value="0xff000000" />' config.xml
           
-          # बिल्ड करणे
           cordova build android --debug
           
-      # --- 4. APK सेव करणे ---
       - uses: actions/upload-artifact@v4
         with:
           name: Brahmavidya-APK
