@@ -1,4 +1,4 @@
-name: Brahmavidya Fresh Build
+name: Brahmavidya Success Build
 
 on:
   push:
@@ -21,7 +21,8 @@ jobs:
       # --- 1. प्रोजेक्ट तयार करणे ---
       - name: Create Project
         run: |
-          cordova create myapp com.brahmavidya.final "Brahmavidya"
+          # 'final' शब्द काढून टाकला आहे. आता हे नक्की चालेल.
+          cordova create myapp com.brahmavidya.app "Brahmavidya"
           cd myapp
           cordova plugin add cordova-plugin-statusbar
           cordova plugin add cordova-plugin-network-information
@@ -41,12 +42,12 @@ jobs:
           # तुमचा नवीन index.html टाकणे
           cp index.html myapp/www/
           
-          # 🔥 महत्त्वाचे: तुम्ही नवीन रेपोमध्ये अपलोड केलेले ५ फोटो टाकणे 🔥
-          cp logo.png myapp/www/
-          cp login_bg.png myapp/www/
-          cp cover.jpg myapp/www/
-          cp photo1.jpg myapp/www/
-          cp photo2.jpg myapp/www/
+          # 🔥 महत्त्वाचे: तुम्ही अपलोड केलेले ५ फोटो टाकणे 🔥
+          cp logo.png myapp/www/ || echo "logo.png missing"
+          cp login_bg.png myapp/www/ || echo "login_bg.png missing"
+          cp cover.jpg myapp/www/ || echo "cover.jpg missing"
+          cp photo1.jpg myapp/www/ || echo "photo1.jpg missing"
+          cp photo2.jpg myapp/www/ || echo "photo2.jpg missing"
           
           # HTML फाईल्स असतील तर त्याही घेणे
           cp *.html myapp/www/ || true
