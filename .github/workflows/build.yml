@@ -1,4 +1,4 @@
-name: Brahmavidya Platinum Build
+name: Brahmavidya Final Success
 
 on:
   push:
@@ -15,51 +15,46 @@ jobs:
           
       - run: npm install -g cordova
       
-      # Java 11 हे Android 12 साठी बेस्ट आहे
+      # 🔥 FIX: एररनुसार आता आपण Java 17 वापरत आहोत
       - uses: actions/setup-java@v3
-        with: { distribution: 'temurin', java-version: '11' }
+        with: { distribution: 'temurin', java-version: '17' }
 
-      # --- 1. प्रोजेक्ट तयार करणे (STABLE VERSION) ---
-      - name: Create Project with Stable Android
+      # --- 1. प्रोजेक्ट तयार करणे ---
+      - name: Create Project
         run: |
-          # 1. प्रोजेक्ट तयार करणे
           cordova create myapp com.brahmavidya.app "Brahmavidya"
           cd myapp
           
-          # 2. प्लगइन्स (Whitelist प्लगइन काढून टाकला आहे कारण तो एरर देत होता)
+          # फक्त गरजेचे प्लगइन्स
           cordova plugin add cordova-plugin-statusbar
           cordova plugin add cordova-plugin-device
           
-          # 🔥 FIX: आपण मुद्दाम जुने पण स्टेबल व्हर्जन वापरत आहोत (Android 12)
-          # Cordova 14 मुळेच तुमचे ॲप फेल होत होते.
+          # 🔥 FIX: Cordova Android 12 वापरणे (हे Stable आहे आणि Android 16 वर चालते)
+          # Cordova 14 मध्ये बग्स आहेत, म्हणून आपण 12 वापरत आहोत.
           cordova platform add android@12.0.0
           cd ..
 
-      # --- 2. फाईल्स आणि फोटो कॉपी करणे ---
-      - name: Smart Copy Files
+      # --- 2. फाईल्स कॉपी करणे ---
+      - name: Copy Files
         run: |
-          echo "Copying user files..."
+          echo "Injecting files..."
           
-          # डिफॉल्ट फाईल्स काढणे
+          # जुन्या फाईल्स काढणे
           rm myapp/www/index.html myapp/www/css/index.css myapp/www/js/index.js
           
-          # तुमचा index.html
+          # तुमचा मेन कोड
           cp index.html myapp/www/
           
-          # 🔥 FIX: कॅपिटल आणि स्मॉल दोन्ही नावे कॉपी करणे (.jpg आणि .JPG)
-          # तुमच्या स्क्रीनशॉटमध्ये .JPG फाईल्स दिसत होत्या, म्हणून हा बदल केला आहे.
+          # 🔥 फोटो कॉपी करणे (सर्व प्रकारचे नावे - .jpg आणि .JPG)
           cp *.png myapp/www/ || true
           cp *.jpg myapp/www/ || true
           cp *.JPG myapp/www/ || true
           cp *.jpeg myapp/www/ || true
           cp *.html myapp/www/ || true
           
-          # आयकॉन आहे का ते पाहणे
-          if [ -f "myapp/www/logo.png" ]; then
-              echo "✅ Logo found!"
-          else
-              echo "⚠️ Logo missing! Downloading backup..."
-              # जर लोगो नसेल तर तात्पुरता बॅकअप वापरणे (Error टाळण्यासाठी)
+          # लोगो चेक करणे
+          if [ ! -f "myapp/www/logo.png" ]; then
+              echo "⚠️ Logo missing, downloading temporary one..."
               wget -O myapp/www/logo.png "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"
           fi
 
@@ -68,7 +63,6 @@ jobs:
           echo "var autoBookList = [" > filelist.js
           for f in *.html; do
             if [ "$f" != "index.html" ]; then
-              # नावात स्पेस असेल तरी चालण्यासाठी फिक्स
               baseName=$(basename "$f" .html)
               echo "{ name: \`$baseName\`, file: \`$f\`, image: 'cover.jpg' }," >> filelist.js
             fi
@@ -81,17 +75,16 @@ jobs:
         run: |
           cd myapp
           
-          # Config मध्ये आयकॉन आणि सेटिंग्स
+          # Config सेट करणे
           sed -i '/<widget/a <icon src="www/logo.png" />' config.xml
           sed -i '/<widget/a <preference name="Fullscreen" value="true" />' config.xml
           sed -i '/<widget/a <preference name="Orientation" value="portrait" />' config.xml
           sed -i '/<widget/a <preference name="BackgroundColor" value="0xff000000" />' config.xml
           sed -i '/<widget/a <preference name="AndroidXEnabled" value="true" />' config.xml
           
-          # 🔥 Build Command
+          # बिल्ड कमांड
           cordova build android --debug
           
-      # --- 4. APK सेव करणे ---
       - uses: actions/upload-artifact@v4
         with:
           name: Brahmavidya-App
