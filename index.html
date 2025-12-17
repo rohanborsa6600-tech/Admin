@@ -18,38 +18,28 @@
         input { background:rgba(0,0,0,0.5); border:1px solid var(--neon); color:white; padding:12px; border-radius:10px; width:100%; box-sizing:border-box; outline:none; }
         button { background:var(--neon); border:none; padding:12px; border-radius:10px; font-weight:bold; width:100%; cursor:pointer; margin-top:15px; }
         
-        /* OVI SCREEN (Lock Screen) */
+        /* OVI SCREEN */
         #ovi-screen { justify-content:center; align-items:center; text-align:center; background:black; }
         .shloka-box { 
             border: 1px solid var(--gold); padding: 25px; border-radius: 15px; 
             color: var(--gold); font-size: 20px; line-height: 1.6; 
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); margin: 20px;
-            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); margin: 20px; font-weight: bold;
         }
 
-        /* DASHBOARD (TEXT LIST VIEW) */
+        /* DASHBOARD (TEXT LIST) */
         .navbar { height:60px; padding:0 15px; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.8); border-bottom: 1px solid #333; }
+        .book-list-container { display: flex; flex-direction: column; gap: 10px; padding: 20px; overflow-y: auto; flex: 1; }
         
-        /* List Container instead of Grid */
-        .book-list-container { 
-            display: flex; flex-direction: column; gap: 10px; 
-            padding: 20px; overflow-y: auto; flex: 1; 
-        }
-        
-        /* Text-Only Book Card */
         .book-item { 
             display: flex; justify-content: space-between; align-items: center;
-            padding: 20px; 
-            background: rgba(255,255,255,0.05); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 10px;
-            transition: 0.2s;
+            padding: 18px 20px; 
+            background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); 
+            border-left: 4px solid var(--neon);
+            border-radius: 8px; margin-bottom: 5px;
         }
-        .book-item:active { background: rgba(0, 242, 255, 0.1); transform: scale(0.98); }
-        .book-name { font-size: 18px; font-weight: 500; color: white; }
-        .book-icon { font-size: 20px; color: var(--neon); }
-        .pin-icon { color: var(--gold); margin-right: 15px; font-size: 18px; }
-
+        .book-item:active { background: rgba(0, 242, 255, 0.1); }
+        .book-name { font-size: 18px; font-weight: 500; color: white; margin-left: 10px; }
+        
         /* READER & CHAT */
         #reader-screen { background:#f4f4f4; color:#333; }
         .chat-area { flex:1; overflow-y:auto; padding:10px; background:rgba(0,0,0,0.3); margin:10px 0; border-radius:10px; display:flex; flex-direction:column; gap:8px; }
@@ -66,7 +56,7 @@
             <img src="logo.png" width="90" style="border-radius:50%; box-shadow:0 0 20px var(--neon); margin-bottom:20px;">
             <h3>Brahmavidya</h3>
             <input id="inp-name" placeholder="Enter Full Name" style="margin-bottom:10px;">
-            <p style="color:gray; font-size:12px;">Device ID detected automatically</p>
+            <p style="color:gray; font-size:12px;">Auto Device ID</p>
             <button onclick="login()">LOGIN</button>
         </div>
     </div>
@@ -74,20 +64,12 @@
     <div id="ovi-screen" class="screen">
         <div style="padding:30px; width:90%; max-width:500px;">
             <i class="fas fa-book-reader" style="font-size:50px; color:var(--pink); margin-bottom:20px;"></i>
-            
             <h3 style="color:white; margin-bottom:5px;">Digital Granthalaya</h3>
-            <p style="color:gray; font-size:12px; margin-bottom:30px;">(Waiting for Admin to assign books)</p>
-            
             <div class="shloka-box">
-                "श्रीकृष्णरावो म्हणे उद्धवदेवा :<br>
-                हा ज्ञानरत्नाचा ठेवा :<br>
-                भलेतया हातीं नेदावा :<br>
-                अधिकारेंवीण ।।"
+                "श्रीकृष्णरावो म्हणे उद्धवदेवा :<br>हा ज्ञानरत्नाचा ठेवा :<br>भलेतया हातीं नेदावा :<br>अधिकारेंवीण ।।"
             </div>
-
-            <p style="margin-top:20px; font-size:12px; color:#555;">(Please contact admin to unlock specific books)</p>
-            
-            <button onclick="checkAccess()" style="background:transparent; border:1px solid var(--neon); color:var(--neon); width:auto; padding:10px 30px;">Check Status</button>
+            <p style="color:gray; font-size:12px;">Waiting for Admin Permission...</p>
+            <button onclick="checkAccess()" style="background:transparent; border:1px solid var(--neon); color:var(--neon); width:auto; padding:10px 30px;">Refresh Status</button>
             <p id="debug-id" style="font-size:10px; color:#333; margin-top:20px;"></p>
         </div>
     </div>
@@ -98,11 +80,7 @@
             <span style="font-weight:bold;">BRAHMAVIDYA</span>
             <i class="fas fa-bars" style="font-size:24px;" onclick="openSet('menu')"></i>
         </div>
-        
-        <div style="display:flex; overflow-x:auto; padding:10px; gap:10px; border-bottom:1px solid #222;" id="cat-list"></div>
-
-        <div class="book-list-container" id="book-list">
-            </div>
+        <div class="book-list-container" id="book-list"></div>
     </div>
 
     <div id="reader-screen" class="screen">
@@ -127,23 +105,19 @@
     <script>
         const DB_URL = "https://adx-bk-default-rtdb.asia-southeast1.firebasedatabase.app";
         let user = { uid: localStorage.getItem('bv_uid'), name: localStorage.getItem('bv_name') };
-        let categories = JSON.parse(localStorage.getItem('bv_cats')) || ['All', 'Nityanem', 'Pothi'];
-        let pinned = JSON.parse(localStorage.getItem('bv_pinned')) || [];
         let bookPermissions = {}; 
-        let currentCat = 'All';
 
         window.onload = () => {
             if(user.uid) { 
                 document.getElementById('debug-id').innerText = user.uid;
-                checkAccess(); 
-                setInterval(checkAccess, 5000); 
+                checkAccess(); setInterval(checkAccess, 5000); 
             }
         };
 
         function getDeviceId() {
             let id = localStorage.getItem('bv_device_id');
             if(!id) {
-                id = (navigator.platform.substring(0,3) || "Mob") + "_" + Math.floor(Math.random()*10000);
+                id = (navigator.platform.substring(0,3)||"Mob") + "_" + Math.floor(Math.random()*10000);
                 localStorage.setItem('bv_device_id', id);
             }
             return id;
@@ -154,97 +128,63 @@
             if(!n) return alert("Enter Name");
             const d = getDeviceId();
             const uid = (n + "_" + d).replace(/[^a-zA-Z0-9]/g, "");
-            
             user = { uid, name: n };
-            localStorage.setItem('bv_uid', uid);
-            localStorage.setItem('bv_name', n);
+            localStorage.setItem('bv_uid', uid); localStorage.setItem('bv_name', n);
 
             fetch(`${DB_URL}/users/${uid}.json`).then(r=>r.json()).then(exist => {
-                const data = { 
-                    name: n, device: d, lastLogin: Date.now(), isOnline:true, 
-                    granted: (exist && exist.granted) ? true : false,
-                    isBlocked: (exist && exist.isBlocked) ? true : false
-                };
+                const data = { name: n, device: d, lastLogin: Date.now(), isOnline:true, granted: (exist && exist.granted) ? true : false };
                 fetch(`${DB_URL}/users/${uid}.json`, { method:'PUT', body:JSON.stringify(data) }).then(() => checkAccess());
             });
-
+            
+            // Auto Sync Books
             if(typeof autoBookList !== 'undefined') {
                  const updates = {}; autoBookList.forEach(b => updates[b.name]=true);
                  fetch(`${DB_URL}/library_catalog.json`, {method:'PATCH', body:JSON.stringify(updates)});
             }
         }
 
-        // 🔥 CRITICAL: STRICT ACCESS CHECK 🔥
         function checkAccess() {
             if(!user.uid) return showScreen('login-screen');
-            
             Promise.all([
                 fetch(`${DB_URL}/users/${user.uid}.json?t=${Date.now()}`).then(r=>r.json()),
                 fetch(`${DB_URL}/users/${user.uid}/access.json?t=${Date.now()}`).then(r=>r.json())
             ]).then(([u, perms]) => {
                 bookPermissions = perms || {};
-                
-                // Count allowed books
                 let allowedCount = 0;
-                if(bookPermissions) {
-                    Object.values(bookPermissions).forEach(val => { if(val === true) allowedCount++; });
-                }
+                if(bookPermissions) Object.values(bookPermissions).forEach(val => { if(val === true) allowedCount++; });
 
-                // Logic: Must be Granted AND Not Blocked AND Have at least 1 book allowed
                 if(u && u.granted === true && !u.isBlocked && allowedCount > 0) {
-                    if(!document.getElementById('dashboard-screen').classList.contains('active') && 
-                       !document.getElementById('reader-screen').classList.contains('active')) {
+                    if(!document.getElementById('dashboard-screen').classList.contains('active') && !document.getElementById('reader-screen').classList.contains('active')) {
                         loadDashboard();
                     } else if(document.getElementById('dashboard-screen').classList.contains('active')) {
-                        renderBooks(); // Refresh list if new book added
+                        renderBooks();
                     }
-                } else {
-                    // If 0 books allowed, show Shloka Screen
-                    showScreen('ovi-screen');
-                }
-            }).catch(e => console.log("Net Error"));
+                } else { showScreen('ovi-screen'); }
+            });
         }
 
-        function loadDashboard() { showScreen('dashboard-screen'); renderCats(); renderBooks(); }
-        
-        function renderCats() {
-            document.getElementById('cat-list').innerHTML = categories.map(c => 
-                `<div onclick="currentCat='${c}'; renderBooks();" style="padding:5px 15px; border-radius:20px; background:${currentCat===c?'var(--neon)':'rgba(255,255,255,0.1)'}; color:${currentCat===c?'black':'white'}; white-space:nowrap;">${c}</div>`
-            ).join('') + `<div onclick="addCat()" style="padding:5px 15px;">+</div>`;
-        }
-        function addCat() { const n=prompt("New Cat"); if(n){categories.push(n); localStorage.setItem('bv_cats',JSON.stringify(categories)); renderCats();} }
+        function loadDashboard() { showScreen('dashboard-screen'); renderBooks(); }
         
         function renderBooks() {
-            const listContainer = document.getElementById('book-list'); listContainer.innerHTML="";
-            let list = (typeof autoBookList !== 'undefined') ? autoBookList : [];
-            list.sort((a,b)=>(pinned.includes(b.name)?1:0)-(pinned.includes(a.name)?1:0));
-            
+            const list = document.getElementById('book-list'); list.innerHTML="";
+            let books = (typeof autoBookList !== 'undefined') ? autoBookList : [];
             let visibleCount = 0;
 
-            list.forEach(b => {
-                // ONLY SHOW IF ALLOWED
-                if(bookPermissions[b.name] === true) {
+            books.forEach(b => {
+                if(bookPermissions[b.name] === true) { // SHOW ONLY ALLOWED
                     visibleCount++;
-                    const isPin = pinned.includes(b.name);
-                    
-                    listContainer.innerHTML += `
+                    list.innerHTML += `
                     <div class="book-item" onclick="openBook('${b.name}','${b.file}')">
                         <div style="display:flex; align-items:center;">
-                            <i class="fas fa-thumbtack pin-icon" style="color:${isPin?'var(--gold)':'#555'}" onclick="togglePin('${b.name}', event)"></i>
+                            <i class="fas fa-book" style="color:var(--neon)"></i>
                             <span class="book-name">${b.name}</span>
                         </div>
-                        <i class="fas fa-chevron-right book-icon"></i>
+                        <i class="fas fa-chevron-right" style="color:gray; font-size:12px;"></i>
                     </div>`;
                 }
             });
-
-            if(visibleCount === 0) {
-                // Fallback (Should typically be handled by checkAccess, but just in case)
-                showScreen('ovi-screen');
-            }
+            if(visibleCount === 0) showScreen('ovi-screen');
         }
-        
-        function togglePin(n,e) { e.stopPropagation(); pinned.includes(n)?pinned=pinned.filter(x=>x!==n):pinned.push(n); localStorage.setItem('bv_pinned',JSON.stringify(pinned)); renderBooks(); }
 
         function openBook(n,f) {
             showScreen('reader-screen'); document.getElementById('book-title').innerText=n;
@@ -254,7 +194,6 @@
             });
         }
 
-        // --- FULL ABOUT US & SETTINGS ---
         function openSet(t) {
             document.getElementById('settings-modal').style.display='flex';
             const b = document.getElementById('modal-body');
@@ -267,6 +206,7 @@
                 <button onclick="document.getElementById('settings-modal').style.display='none'" style="margin-top:20px; background:#333;">Close</button>`;
             } 
             else if(t==='about') {
+                // 🔥 FULL MARATHI INFO WITH IMAGES 🔥
                 b.innerHTML=`
                     <button onclick="openSet('menu')">Back</button>
                     <div style="margin-top:15px; text-align:justify; line-height:1.6; color:#ddd;">
@@ -276,7 +216,7 @@
                             "ज्याप्रमाणे आकाशात सूर्य तळपत असतो आणि त्याच्या प्रकाशाने संपूर्ण विश्व उजळून निघते, त्याचप्रमाणे आपल्या साधकांच्या आयुष्यातील अज्ञानाचा अंधकार दूर करून त्यांना 'ब्रह्मविद्येचा' लख्ख प्रकाश देणारे साक्षात 'प्रज्ञासूर्य' म्हणजे प. पू. प. म. श्री मोठे बाबा अंकुळनेरकर होत."
                         </p>
                         <p>
-                            या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे.
+                            या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे. ते आजही आपल्या शिष्यवृंदांच्या, साधकांच्या पाठीशी खंबीरपणे उभे आहेत.
                         </p>
                         <p>
                             शास्त्रांमध्ये 'सर्वविद्' आणि 'ब्रह्मनिष्ठ' अशा महापुरुषांचे वर्णन आढळते. श्रीमोठेबाबा हे या वर्णनाचे मूर्तिमंत रूप आहेत. गीतेतील 'ज्ञानियाची लक्षणे' - अमानित्व, अदंभित्व, शांती, वैराग्य - ही सर्व त्यांच्या ठायी अनुभवास येतात.
@@ -290,35 +230,22 @@
                             <li><b>१. अखंड स्वाध्याय:</b> प्रवासातही वाचन सुरू राहावे.</li>
                             <li><b>२. ग्रंथ रक्षण:</b> दुर्मिळ पोथ्या डिजिटल रूपात जपणे.</li>
                             <li><b>३. बाबांचे विचार:</b> नित्यनियम आणि मार्गदर्शनासाठी.</li>
+                            <li><b>४. SINCE:</b> 2 JANUARY 2026 </li>
                         </ul>
                         <p style="text-align:center; color:var(--gold); margin-top:20px;">॥ श्रीदत्तात्रेयप्रभू महाराज की जय ॥</p>
                         <img src="photo2.jpg" style="width:100%; border-radius:10px; margin-top:10px;">
                     </div>`;
             } 
             else if(t==='profile') {
-                const dev = localStorage.getItem('bv_device_id');
-                b.innerHTML=`<button onclick="openSet('menu')">Back</button><div style="text-align:center; margin-top:30px;">
-                <i class="fas fa-user-circle" style="font-size:60px; color:var(--neon);"></i>
-                <h3>${user.name}</h3><p style="color:gray;">ID: ${dev}</p><p style="color:green; border:1px solid green; display:inline-block; padding:5px 15px; border-radius:15px;">Active</p></div>`;
+                b.innerHTML=`<button onclick="openSet('menu')">Back</button><div style="text-align:center; margin-top:30px;"><h3>${user.name}</h3><p style="color:gray;">ID: ${localStorage.getItem('bv_device_id')}</p><p style="color:green;">Active</p></div>`;
             } 
             else if(t==='chat') { 
-                b.innerHTML=`<button onclick="openSet('menu')">Back</button><div id="msgs" class="chat-area">Loading...</div><div style="display:flex;"><input id="c-in" style="flex:1;"><button onclick="snd()">Send</button></div>`; 
-                loadChat(); 
+                b.innerHTML=`<button onclick="openSet('menu')">Back</button><div id="msgs" class="chat-area">Loading...</div><div style="display:flex;"><input id="c-in" style="flex:1;"><button onclick="snd()">Send</button></div>`; loadChat(); 
             }
         }
         
-        function loadChat() {
-            fetch(`${DB_URL}/feedback/${user.uid}.json`).then(r=>r.json()).then(d=>{
-                const m=document.getElementById('msgs'); if(!m)return; m.innerHTML="";
-                if(d) Object.values(d).forEach(x=>m.innerHTML+=`<div class="msg ${x.sender==='admin'?'msg-a':'msg-u'}">${x.text}</div>`);
-            });
-        }
-        function snd() {
-            const t=document.getElementById('c-in').value; if(!t)return;
-            fetch(`${DB_URL}/feedback/${user.uid}.json`, {method:'POST', body:JSON.stringify({text:t, sender:'user', timestamp:Date.now()})})
-            .then(()=>{document.getElementById('c-in').value=""; loadChat();});
-        }
-
+        function loadChat() { fetch(`${DB_URL}/feedback/${user.uid}.json`).then(r=>r.json()).then(d=>{ const m=document.getElementById('msgs'); if(!m)return; m.innerHTML=""; if(d) Object.values(d).forEach(x=>m.innerHTML+=`<div class="msg ${x.sender==='admin'?'msg-a':'msg-u'}">${x.text}</div>`); }); }
+        function snd() { const t=document.getElementById('c-in').value; if(!t)return; fetch(`${DB_URL}/feedback/${user.uid}.json`, {method:'POST', body:JSON.stringify({text:t, sender:'user', timestamp:Date.now()})}).then(()=>{document.getElementById('c-in').value=""; loadChat();}); }
         function showScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
     </script>
 </body>
