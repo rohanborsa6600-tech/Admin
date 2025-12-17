@@ -1,288 +1,310 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Brahmavidya</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- LIQUID GLASS UI THEME --- */
+        /* --- THEME: LIQUID GLASS & NEON --- */
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --glass-bg: rgba(20, 20, 20, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-blue: #00f2ff;
+            --neon-gold: #ffd700;
+            --neon-pink: #ff0099;
+            --text-main: #ffffff;
         }
 
         body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
+            margin: 0; font-family: 'Segoe UI', sans-serif;
             background: url('login_bg.png') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-            height: 100vh;
-            overflow: hidden;
-            -webkit-user-select: none;
+            background-size: cover; color: var(--text-main);
+            height: 100vh; overflow: hidden; -webkit-user-select: none;
         }
 
+        /* --- UI COMPONENTS --- */
         .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            box-shadow: var(--glass-shadow);
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        .screen { display: none; height: 100%; width: 100%; flex-direction: column; }
+        .active { display: flex; }
+
+        input, textarea {
+            background: rgba(0,0,0,0.6); border: 1px solid var(--neon-blue);
+            color: white; border-radius: 10px; padding: 12px; font-size: 16px; width: 100%; box-sizing: border-box; outline: none;
+        }
+
+        button {
+            background: linear-gradient(90deg, var(--neon-blue), #0055ff);
+            border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%;
+            box-shadow: 0 0 10px var(--neon-blue); margin-top: 10px;
         }
 
         /* --- SCREENS --- */
-        .screen { display: none; height: 100%; width: 100%; position: absolute; top: 0; left: 0; }
-        .active { display: flex; flex-direction: column; }
-
-        /* Login Screen */
+        /* Login */
         #login-screen { justify-content: center; align-items: center; }
-        .login-box { padding: 40px; width: 85%; max-width: 350px; text-align: center; }
-        input { width: 90%; padding: 15px; margin: 10px 0; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 10px; color: white; outline: none; }
-        button { width: 100%; padding: 15px; background: linear-gradient(45deg, #00d2ff, #3a7bd5); border: none; border-radius: 10px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; }
-
-        /* Ovi Screen */
-        #ovi-screen { justify-content: center; align-items: center; text-align: center; padding: 20px; }
-        .ovi-text { font-size: 20px; font-weight: bold; color: #ffd700; text-shadow: 0 2px 5px black; line-height: 1.6; }
+        
+        /* Ovi (Lock) */
+        #ovi-screen { justify-content: center; align-items: center; text-align: center; padding: 30px; }
+        .ovi-box { border: 1px solid var(--neon-gold); padding: 15px; border-radius: 10px; color: var(--neon-gold); margin-top: 20px; }
 
         /* Dashboard */
-        .navbar { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-        .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; overflow-y: auto; flex: 1; }
+        .navbar { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: rgba(0,0,0,0.8); }
+        .cat-scroll { display: flex; overflow-x: auto; padding: 10px; gap: 10px; }
+        .cat-chip { padding: 6px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
+        .cat-chip.selected { background: var(--neon-blue); color: black; font-weight: bold; }
+        
+        .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; overflow-y: auto; flex: 1; padding-bottom: 80px; }
         .book-card { padding: 10px; text-align: center; position: relative; }
-        .book-cover { width: 100%; border-radius: 10px; aspect-ratio: 2/3; object-fit: cover; }
-        .pin-icon { position: absolute; top: 10px; right: 10px; color: #ffd700; display: none; }
+        .book-cover { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 8px; }
+        .pin-btn { position: absolute; top: 5px; right: 5px; font-size: 20px; color: rgba(255,255,255,0.5); padding: 10px; }
+        .pinned { color: var(--neon-gold); transform: scale(1.2); text-shadow: 0 0 5px black; }
 
         /* Reader */
-        #reader-screen { background: #fff; color: #000; }
-        .reader-header { height: 50px; background: #eee; display: flex; align-items: center; padding: 0 15px; justify-content: space-between; }
-        #book-content { padding: 20px; flex: 1; overflow-y: auto; font-size: 18px; line-height: 1.8; text-align: justify; padding-bottom: 80px; -webkit-user-select: text; }
+        #reader-screen { background: #f4f4f4; color: #333; }
+        .reader-header { height: 50px; background: white; display: flex; align-items: center; padding: 0 15px; justify-content: space-between; }
+        #book-content { padding: 20px; flex: 1; overflow-y: auto; font-size: 18px; line-height: 1.8; text-align: justify; -webkit-user-select: text; }
         
-        .search-bar-bottom { position: fixed; bottom: 0; width: 100%; height: 60px; background: #f9f9f9; display: flex; align-items: center; padding: 0 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
-        .search-input { flex: 1; padding: 10px; margin: 0 10px; border-radius: 20px; border: 1px solid #ccc; background: white; color: black; }
-
         /* Modal */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; justify-content: center; align-items: center; }
-        .modal-content { width: 90%; max-height: 90%; overflow-y: auto; padding: 20px; position: relative; }
-        .close-btn { position: absolute; top: 10px; right: 10px; font-size: 24px; color: white; cursor: pointer; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; justify-content: center; align-items: center; }
+        .modal-content { width: 90%; max-height: 90%; display: flex; flex-direction: column; padding: 20px; }
+
+        /* Chat */
+        .chat-area { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px; margin: 10px 0; }
+        .msg { padding: 8px 12px; border-radius: 10px; max-width: 80%; }
+        .msg-user { align-self: flex-end; background: var(--neon-blue); color: black; }
+        .msg-admin { align-self: flex-start; background: rgba(255,255,255,0.2); border: 1px solid white; }
     </style>
 </head>
 <body>
 
     <div id="login-screen" class="screen active">
-        <div class="glass-panel login-box">
-            <img src="logo.png" width="90" style="margin-bottom: 20px; border-radius: 50%;">
+        <div class="glass-panel" style="padding: 40px; width: 80%; max-width: 350px; text-align: center;">
+            <img src="logo.png" width="90" style="border-radius: 50%; box-shadow: 0 0 20px var(--neon-blue); margin-bottom: 20px;">
             <h3>Brahmavidya</h3>
-            <input type="text" id="user-name" placeholder="Full Name">
-            <input type="text" id="device-name" placeholder="Device Name">
-            <button onclick="handleLogin()">LOGIN</button>
+            <input type="text" id="inp-name" placeholder="Full Name" style="margin-bottom: 15px;">
+            <input type="text" id="inp-device" placeholder="Device Name (e.g. iPad)">
+            <button onclick="login()">LOGIN</button>
         </div>
     </div>
 
     <div id="ovi-screen" class="screen">
-        <div class="glass-panel" style="padding: 30px; width: 85%;">
-            <i class="fas fa-lock" style="font-size: 40px; color: cyan;"></i>
+        <div class="glass-panel" style="width: 85%; padding: 30px; text-align: center;">
+            <i class="fas fa-lock" style="font-size: 50px; color: var(--neon-pink);"></i>
             <h3>Access Pending</h3>
-            <hr>
-            <p class="ovi-text">
-               "श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा :<br>भलेतया हातीं नेदावा : अधिकारेंवीण ।।"
-            </p>
-            <button onclick="checkAccess()" style="background: transparent; border: 1px solid cyan; margin-top: 20px;">Check Status</button>
+            <p style="color: yellow;">Waiting for Admin...</p>
+            <div class="ovi-box">
+                "श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा :<br>भलेतया हातीं नेदावा : अधिकारेंवीण ।।"
+            </div>
+            <button onclick="checkAccess()" style="background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);">Check Status</button>
         </div>
     </div>
 
     <div id="dashboard-screen" class="screen">
-        <div class="navbar glass-panel" style="border-radius: 0 0 20px 20px;">
-            <i class="fas fa-user-circle" style="font-size: 24px;" onclick="showSettings('profile')"></i>
-            <span>Brahmavidya</span>
-            <i class="fas fa-bars" style="font-size: 24px;" onclick="document.getElementById('settings-modal').style.display='flex'"></i>
+        <div class="navbar">
+            <i class="fas fa-user-circle" style="font-size: 24px; color: var(--neon-blue);" onclick="openSettings('profile')"></i>
+            <span style="font-weight: bold; letter-spacing: 1px;">BRAHMAVIDYA</span>
+            <i class="fas fa-bars" style="font-size: 24px;" onclick="openSettings('menu')"></i>
         </div>
+        <div class="cat-scroll" id="cat-list"></div>
         <div class="book-grid" id="book-list"></div>
     </div>
 
     <div id="reader-screen" class="screen">
         <div class="reader-header">
             <i class="fas fa-arrow-left" onclick="closeBook()"></i>
-            <span id="book-title" style="font-weight:bold;">Title</span>
-            <i class="fas fa-bookmark"></i>
+            <span id="book-title" style="font-weight: bold;">Title</span>
+            <i class="fas fa-bookmark" style="color: var(--neon-blue);"></i>
         </div>
         <div id="book-content"></div>
-        <div class="search-bar-bottom">
-            <i class="fas fa-search" style="color:#666"></i>
-            <input type="text" id="search-input" class="search-input" placeholder="या ग्रंथात शोधा..." onkeyup="searchBook()">
+        <div style="position: fixed; bottom: 0; width: 100%; height: 50px; background: white; display: flex; align-items: center; padding: 0 10px;">
+            <i class="fas fa-search" style="color: #666;"></i>
+            <input type="text" id="search-input" placeholder="Search..." style="flex: 1; margin: 0 10px; background: #f0f0f0; color: black; border: none;" onkeyup="searchInBook()">
         </div>
     </div>
 
-    <div id="settings-modal" class="modal">
-        <div class="modal-content glass-panel">
-            <i class="fas fa-times close-btn" onclick="document.getElementById('settings-modal').style.display='none'"></i>
-            
-            <div id="menu-list" style="margin-top: 20px;">
-                <h2 style="text-align: center;">Settings</h2>
-                <div onclick="showSettings('profile')" style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1);">👤 Profile</div>
-                <div onclick="showSettings('about')" style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1);">ℹ️ About Us</div>
-                <div onclick="showSettings('help')" style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1);">❓ Help</div>
-                <div onclick="showSettings('feedback')" style="padding:15px;">💬 Feedback</div>
-            </div>
-
-            <div id="setting-content" style="display:none; margin-top: 20px;">
-                <button onclick="backToMenu()" style="width: auto; padding: 5px 15px; margin-bottom: 15px; font-size: 14px;">Back</button>
-                <div id="dynamic-content"></div>
-            </div>
+    <div id="settings-modal" class="modal-overlay">
+        <div class="glass-panel modal-content">
+            <i class="fas fa-times" onclick="closeModal()" style="position: absolute; top: 15px; right: 15px; font-size: 24px;"></i>
+            <div id="modal-body" style="flex: 1; overflow-y: auto; margin-top: 20px;"></div>
         </div>
     </div>
 
     <script src="filelist.js"></script>
+
     <script>
-        // --- LOGIC ---
+        // 🔥 YOUR FIREBASE URL (No SDK needed) 🔥
+        const DB_URL = "https://adx-bk-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-        function handleLogin() {
-            const name = document.getElementById('user-name').value;
-            const device = document.getElementById('device-name').value;
-            if(name && device) {
-                localStorage.setItem('bv_user', name);
-                localStorage.setItem('bv_device', device);
-                localStorage.setItem('bv_date', new Date().toISOString());
-                localStorage.setItem('bv_access', 'false'); 
-                checkAccess();
-            }
-        }
+        let user = { uid: localStorage.getItem('bv_uid'), name: localStorage.getItem('bv_name') };
+        let categories = JSON.parse(localStorage.getItem('bv_cats')) || ['All', 'Nityanem', 'Pothi'];
+        let pinned = JSON.parse(localStorage.getItem('bv_pinned')) || [];
+        let currentCat = 'All';
+        let checkInterval = null;
 
-        function checkAccess() {
-            if(!localStorage.getItem('bv_user')) { showScreen('login-screen'); return; }
+        // --- INIT & SYNC ---
+        window.onload = () => {
+            if(user.uid) { checkValidity(); startPolling(); }
             
-            // 30 Days Validity Check
-            const loginDate = new Date(localStorage.getItem('bv_date'));
-            const today = new Date();
-            const diffDays = Math.ceil(Math.abs(today - loginDate) / (1000 * 60 * 60 * 24));
-            if(diffDays > 30) {
-                alert("Validity Expired (30 Days). Please Login Again.");
-                localStorage.clear(); showScreen('login-screen'); return;
+            // 🔥 AUTOMATIC BOOK SYNC TO FIREBASE 🔥
+            if(typeof autoBookList !== 'undefined' && autoBookList.length > 0) {
+                const updates = {};
+                autoBookList.forEach(b => updates[b.name] = true);
+                fetch(`${DB_URL}/library_catalog.json`, { method: 'PATCH', body: JSON.stringify(updates) });
             }
+        };
 
-            // Access Check (Simulated)
-            const isGranted = localStorage.getItem('bv_access') === 'true';
-            if(isGranted) { loadDashboard(); } else { 
-                showScreen('ovi-screen');
-                // Simulate Admin Grant (For Demo Only)
-                setTimeout(() => { localStorage.setItem('bv_access', 'true'); alert("Access Granted!"); loadDashboard(); }, 3000);
-            }
-        }
+        // --- LOGIN & VALIDITY ---
+        function login() {
+            const name = document.getElementById('inp-name').value.trim();
+            const device = document.getElementById('inp-device').value.trim();
+            if(!name || !device) return alert("Enter details");
 
-        function loadDashboard() {
-            showScreen('dashboard-screen');
-            const grid = document.getElementById('book-list');
-            grid.innerHTML = "";
-            const books = (typeof autoBookList !== 'undefined') ? autoBookList : [{name: "Demo Book", file: "demo.html", image: "cover.jpg"}];
+            const uid = (name + "_" + device).replace(/[^a-zA-Z0-9]/g, "");
+            user = { uid, name };
+            
+            localStorage.setItem('bv_uid', uid);
+            localStorage.setItem('bv_name', name);
+            localStorage.setItem('bv_device', device);
+            localStorage.setItem('bv_login_date', Date.now());
 
-            books.forEach(book => {
-                const div = document.createElement('div');
-                div.className = 'glass-panel book-card';
-                div.onclick = () => openBook(book);
-                div.innerHTML = `<i class="fas fa-thumbtack pin-icon" style="display:${book.pinned?'block':'none'}"></i><img src="${book.image}" class="book-cover"><p style="margin-top:10px;">${book.name}</p>`;
-                grid.appendChild(div);
+            // Check if exists to preserve granted status
+            fetch(`${DB_URL}/users/${uid}.json`).then(r=>r.json()).then(exist => {
+                const data = { name, device, lastLogin: Date.now(), isBlocked: false };
+                if(exist && exist.granted) data.granted = true; else data.granted = false;
+                
+                fetch(`${DB_URL}/users/${uid}.json`, { method: 'PUT', body: JSON.stringify(data) })
+                    .then(() => { checkAccess(); startPolling(); });
             });
         }
 
-        function openBook(book) {
-            document.getElementById('book-title').innerText = book.name;
-            const contentDiv = document.getElementById('book-content');
-            
-            fetch(book.file).then(r => r.text()).then(t => {
-                contentDiv.innerHTML = t;
-                contentDiv.scrollTop = localStorage.getItem('pos_' + book.name) || 0;
-            }).catch(e => contentDiv.innerHTML = "<p style='padding:20px'>Loading...</p>");
-
-            showScreen('reader-screen');
-            contentDiv.onscroll = () => localStorage.setItem('pos_' + book.name, contentDiv.scrollTop);
+        function checkValidity() {
+            const date = parseInt(localStorage.getItem('bv_login_date') || 0);
+            if((Date.now() - date) > (30*24*60*60*1000)) {
+                if(navigator.onLine) localStorage.setItem('bv_login_date', Date.now());
+                else { alert("Offline Validity Expired."); showScreen('login-screen'); return; }
+            }
+            checkAccess();
         }
 
-        function closeBook() { showScreen('dashboard-screen'); }
-
-        function searchBook() {
-            const query = document.getElementById('search-input').value;
-            if(query.length > 2) window.find(query);
+        function checkAccess() {
+            if(!user.uid) return showScreen('login-screen');
+            fetch(`${DB_URL}/users/${user.uid}.json`).then(r=>r.json()).then(u => {
+                if(u && u.granted && !u.isBlocked) loadDashboard();
+                else showScreen('ovi-screen');
+            }).catch(() => showScreen('ovi-screen'));
         }
 
-        function showSettings(type) {
-            document.getElementById('menu-list').style.display = 'none';
-            document.getElementById('setting-content').style.display = 'block';
-            const content = document.getElementById('dynamic-content');
+        function startPolling() {
+            if(checkInterval) clearInterval(checkInterval);
+            checkInterval = setInterval(() => {
+                if(document.getElementById('ovi-screen').classList.contains('active')) checkAccess();
+            }, 5000);
+        }
 
-            if(type === 'about') {
-                content.innerHTML = `
-                    <div style="padding-bottom: 20px;">
-                        <img src="photo1.jpg" style="width:100%; border-radius:10px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.2);">
-                        
-                        <div style="background: rgba(255, 215, 0, 0.1); border-left: 4px solid #ffd700; padding: 10px; margin: 15px 0; text-align: center; border-radius: 5px;">
-                            <p style="font-weight: bold; color: #ffd700; margin: 0; font-style: italic;">
-                                "श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा :<br>
-                                भलेतया हातीं नेदावा : अधिकारेंवीण ।।"
-                            </p>
-                        </div>
+        // --- DASHBOARD ---
+        function loadDashboard() { showScreen('dashboard-screen'); renderCats(); renderBooks(); }
+        
+        function renderCats() {
+            document.getElementById('cat-list').innerHTML = categories.map(c => 
+                `<div class="cat-chip ${currentCat===c?'selected':''}" onclick="currentCat='${c}'; renderCats(); renderBooks();">${c}</div>`
+            ).join('') + `<div class="cat-chip" onclick="addCat()">+</div>`;
+        }
+        function addCat() {
+            const n = prompt("New Category");
+            if(n) { categories.push(n); localStorage.setItem('bv_cats', JSON.stringify(categories)); renderCats(); }
+        }
 
-                        <h3 style="color: #ffd700; text-align: center; margin-bottom: 15px;">॥ श्री दत्तात्रेय प्रभू भगवान की जय ॥</h3>
-                        
-                        <p style="text-align: justify; margin-bottom: 10px;">
-                            "ज्याप्रमाणे आकाशात सूर्य तळपत असतो आणि त्याच्या प्रकाशाने संपूर्ण विश्व उजळून निघते, त्याचप्रमाणे आपल्या साधकांच्या आयुष्यातील अज्ञानाचा अंधकार दूर करून त्यांना 'ब्रह्मविद्येचा' लख्ख प्रकाश देणारे साक्षात 'प्रज्ञासूर्य' म्हणजे प. पू. प. म. श्री मोठे बाबा अंकुळनेरकर होत."
-                        </p>
-                        <p style="text-align: justify; margin-bottom: 10px;">
-                            या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे. ते आजही आपल्या शिष्यवृंदांच्या, साधकांच्या पाठीशी खंबीरपणे उभे आहेत.
-                        </p>
-                        <p style="text-align: justify; margin-bottom: 10px;">
-                            शास्त्रांमध्ये 'सर्वविद्' (सर्व काही जाणणारा) आणि 'ब्रह्मनिष्ठ' (ब्रह्माशी एकरूप झालेला) अशा महापुरुषांचे वर्णन आढळते. श्रीमोठेबाबा हे या वर्णनाचे मूर्तिमंत आणि प्रत्यक्ष रूप आहेत. गीतेत १३ व्या अध्यायात 'ज्ञानियाची लक्षणे' सांगितली आहेत—जसे की अमानित्व, अदंभित्व, अचल शांती, वैराग्य, निरहंकार वृत्ती आणि केवळ ईश्वरप्राप्तीची तळमळ—ही सर्व लक्षणे श्रीमोठेबाबांच्या ठायी आजही आपल्याला अनुभवास येतात.
-                        </p>
-                        <p style="text-align: justify; margin-bottom: 10px;">
-                            त्यांचे संपूर्ण आयुष्य हे 'ब्रह्मविद्या शास्त्राच्या' चिंतनात आणि आचरणात व्यतीत झाले आहे. राहूनही कमळाच्या पानाप्रमाणे अलिप्त ईश्वरप्राप्तीसाठी आचरण कसे शुद्ध आणि निर्मळ असावे याचा वस्तुपाठ ते आपल्या साधकांना देत आहेत. श्रीमोठेबाबा हे केवळ एक व्यक्ती नसून ती एक 'अखंड चेतना' आहे. जसा सूर्य स्वतः प्रकाशीत होऊन जगाला प्रकाश देतो, तसे श्रीमोठेबाबा आपल्या तपाच्या सामर्थ्याने साधकांचे जीवन उज्वल करत आहेत. त्यांचे मार्गदर्शन, त्यांची प्रसन्नता आणि त्यांचा आशीर्वाद प्रत्येक श्रद्धावान साधकाला क्षणाक्षणाला जाणवत असतो.
-                        </p>
-                        <p style="text-align: center; font-weight: bold; color: cyan; margin: 15px 0;">
-                            हे ॲप, आणि आमचा हा छोटासा प्रयत्न, त्या महातेजस्वी 'प्रज्ञासूर्या'च्या चरणी अत्यंत विनम्र भावाने समर्पित आहे.
-                        </p>
-
-                        <hr style="border-color: rgba(255,255,255,0.2); margin: 20px 0;">
-
-                        <h3 style="color: #ffd700; text-align: center;">॥ ब्रह्मविद्या - स्वाध्याय आणि चिंतन ॥</h3>
-                        <p style="text-align: justify; margin-bottom: 10px;">
-                            प. पू. श्री मोठे बाबांनी जी 'ब्रह्मविद्या' (ईश्वरी ज्ञान) दिली आहे, तिचे रक्षण करणे आणि अखंड चिंतन करणे हे प्रत्येक संन्यासी साधकाचे परम कर्तव्य आहे.
-                        </p>
-                        <p style="text-align: justify; margin-bottom: 10px;">
-                            संन्यास आश्रमात 'स्वाध्याय' (शास्त्राचा अभ्यास) आणि 'विहार' (भ्रमंती) याला अत्यंत महत्त्व आहे. साधक जेव्हा विहारासाठी किंवा चातुर्मासासाठी बाहेर असतात, तेव्हा सोबत अनेक ग्रंथ बाळगणे प्रत्येक वेळी शक्य होत नाही. ग्रंथांच्या अनुपलब्धतेमुळे साधनेच्या किंवा अभ्यासाच्या प्रवाहात खंड पडू नये, यासाठी हे 'ब्रह्मविद्या ॲप' तयार करण्यात आले आहे.
-                        </p>
-                        <p style="text-align: center; font-weight: bold; color: #ffd700;">
-                            हे ॲप म्हणजे साधकांसाठी एक 'फिरते ग्रंथालय' (Digital Library) आहे.
-                        </p>
-
-                        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 10px 0;">
-                            <p style="margin-bottom: 10px; text-decoration: underline;"><b>या ॲपचा मुख्य उद्देश:</b></p>
-                            <ul style="padding-left: 20px; text-align: justify;">
-                                <li style="margin-bottom: 8px;"><b>१. अखंड स्वाध्याय:</b> साधक कोणत्याही स्थानी किंवा प्रवासात असले तरी, त्यांना शास्त्राचे वाचन आणि चिंतन अविरत करता यावे.</li>
-                                <li style="margin-bottom: 8px;"><b>२. दुर्मिळ ग्रंथ रक्षण:</b> प्राचीन हस्तलिखिते आणि आश्रमातील महत्त्वाचे ग्रंथ डिजिटल स्वरूपात सुरक्षित राहावेत आणि अभ्यासू साधकांना ते सहज उपलब्ध व्हावेत.</li>
-                                <li><b>३. बाबांचे विचार:</b> प. पू. मोठे बाबांची शिकवण आणि 'ब्रह्मविद्या' शास्त्राचे मार्गदर्शन साधकांना नित्यनियम पाळण्यासाठी सहाय्यक ठरावे.</li>
-                            </ul>
-                        </div>
-
-                        <p style="text-align: justify; margin-top: 15px;">
-                            श्री देवदत्त आश्रम, जाधववाडी हे या कार्याचे मुख्य प्रेरणास्थान आहे. श्रीमोठेबाबांच्या तपाने पुनीत झालेली ही भूमी म्हणजे ब्रह्मविद्येचे विद्यापीठच आहे. इथूनच हा ज्ञानाचा प्रवाह आता आधुनिक तंत्रज्ञानाच्या साहाय्याने प्रत्येक साधकापर्यंत पोहोचत आहे, जेणेकरून त्यांची ज्ञानसाधना अधिक प्रगल्भ होईल.
-                        </p>
-
-                        <h3 style="color: #ffd700; text-align: center; margin-top: 20px;">॥ श्रीदत्तात्रेयप्रभू महाराज की जय ॥</h3>
-                        <img src="photo2.jpg" style="width:100%; border-radius:10px; margin-top:20px; border:1px solid rgba(255,255,255,0.2);">
+        function renderBooks() {
+            const grid = document.getElementById('book-list');
+            grid.innerHTML = "";
+            let list = (typeof autoBookList !== 'undefined') ? autoBookList : [];
+            list.sort((a,b) => (pinned.includes(b.name)?1:0) - (pinned.includes(a.name)?1:0));
+            list.forEach(b => {
+                const isPin = pinned.includes(b.name);
+                grid.innerHTML += `
+                    <div class="glass-panel book-card">
+                        <i class="fas fa-thumbtack pin-btn ${isPin?'pinned':''}" onclick="togglePin('${b.name}', event)"></i>
+                        <img src="${b.image}" class="book-cover" onclick="openBook('${b.name}','${b.file}')">
+                        <p style="margin-top:5px; font-size:14px;">${b.name}</p>
                     </div>`;
-            } else if(type === 'profile') {
-                content.innerHTML = `<div style="text-align:center;"><i class="fas fa-user-circle" style="font-size:60px; color:cyan;"></i><h3>${localStorage.getItem('bv_user')}</h3><p>${localStorage.getItem('bv_device')}</p><p style="color:yellow">Valid for 30 Days</p></div>`;
-            } else if(type === 'help') {
-                content.innerHTML = `<h3>Help</h3><ul><li>Login with name.</li><li>Wait for Admin Access.</li><li>Read Books.</li><li>Use Search Bar.</li></ul>`;
-            } else if(type === 'feedback') {
-                content.innerHTML = `<h3>Feedback</h3><textarea style="width:100%; height:100px; color:black;"></textarea><button>Send</button>`;
+            });
+        }
+        function togglePin(n,e) {
+            e.stopPropagation();
+            if(pinned.includes(n)) pinned = pinned.filter(x=>x!==n); else pinned.push(n);
+            localStorage.setItem('bv_pinned', JSON.stringify(pinned)); renderBooks();
+        }
+
+        // --- READER ---
+        function openBook(n,f) {
+            showScreen('reader-screen');
+            document.getElementById('book-title').innerText=n;
+            fetch(f).then(r=>r.text()).then(t => {
+                const d = document.getElementById('book-content'); d.innerHTML=t;
+                d.scrollTop = localStorage.getItem('pos_'+n) || 0;
+                d.onscroll=()=>localStorage.setItem('pos_'+n, d.scrollTop);
+            });
+        }
+        function closeBook() { showScreen('dashboard-screen'); }
+        function searchInBook() { window.find(document.getElementById('search-input').value); }
+
+        // --- SETTINGS ---
+        function openSettings(type) {
+            document.getElementById('settings-modal').style.display='flex';
+            const body = document.getElementById('modal-body');
+            
+            if(type==='menu') {
+                body.innerHTML = `<h2 style="text-align:center;">MENU</h2>
+                <div onclick="openSettings('profile')" style="padding:15px; border-bottom:1px solid #333;">👤 Profile</div>
+                <div onclick="openSettings('about')" style="padding:15px; border-bottom:1px solid #333;">ℹ️ About Us</div>
+                <div onclick="openSettings('feedback')" style="padding:15px;">💬 Chat</div>`;
+            } else if(type==='about') {
+                body.innerHTML = `
+                    <button onclick="openSettings('menu')">Back</button>
+                    <div style="margin-top:10px; color:#ddd; line-height:1.6; text-align:justify;">
+                        <img src="photo1.jpg" style="width:100%; border-radius:10px;">
+                        <h3 style="color:var(--neon-gold); text-align:center;">॥ श्री दत्तात्रेय प्रभू भगवान की जय ॥</h3>
+                        <p>"ज्याप्रमाणे आकाशात सूर्य तळपत असतो आणि त्याच्या प्रकाशाने संपूर्ण विश्व उजळून निघते, त्याचप्रमाणे आपल्या साधकांच्या आयुष्यातील अज्ञानाचा अंधकार दूर करून त्यांना 'ब्रह्मविद्येचा' लख्ख प्रकाश देणारे साक्षात 'प्रज्ञासूर्य' म्हणजे प. पू. प. म. श्री मोठे बाबा अंकुळनेरकर होत."</p>
+                        <p>या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे.</p>
+                        <p style="text-align:center; font-weight:bold; color:var(--neon-blue);">हे ॲप, आणि आमचा हा छोटासा प्रयत्न, त्या महातेजस्वी 'प्रज्ञासूर्या'च्या चरणी अत्यंत विनम्र भावाने समर्पित आहे.</p>
+                        <hr>
+                        <h3 style="color:var(--neon-gold); text-align:center;">॥ ब्रह्मविद्या - स्वाध्याय आणि चिंतन ॥</h3>
+                        <p>हे ॲप म्हणजे साधकांसाठी एक 'फिरते ग्रंथालय' (Digital Library) आहे. याचा मुख्य उद्देश अखंड स्वाध्याय, दुर्मिळ ग्रंथ रक्षण आणि बाबांचे विचार पोहोचवणे हा आहे.</p>
+                        <h3 style="color:var(--neon-gold); text-align:center;">॥ श्रीदत्तात्रेयप्रभू महाराज की जय ॥</h3>
+                        <img src="photo2.jpg" style="width:100%; border-radius:10px;">
+                    </div>`;
+            } else if(type==='profile') {
+                body.innerHTML = `<button onclick="openSettings('menu')">Back</button><div style="text-align:center; margin-top:20px;"><h3>${user.name}</h3><p>Active</p></div>`;
+            } else if(type==='feedback') {
+                body.innerHTML = `<button onclick="openSettings('menu')">Back</button><div id="chat-msgs" class="chat-area">Loading...</div><div style="display:flex;"><input id="chat-in" style="flex:1;"><button onclick="sendMsg()">Send</button></div>`;
+                loadChat();
             }
         }
+        function closeModal() { document.getElementById('settings-modal').style.display='none'; }
 
-        function backToMenu() { document.getElementById('menu-list').style.display='block'; document.getElementById('setting-content').style.display='none'; }
-        function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+        // Chat
+        function loadChat() {
+            fetch(`${DB_URL}/feedback/${user.uid}.json`).then(r=>r.json()).then(msgs => {
+                const div = document.getElementById('chat-msgs'); if(!div) return; div.innerHTML = "";
+                if(msgs) Object.values(msgs).forEach(m => {
+                    if((Date.now()-m.timestamp) < 7*24*60*60*1000)
+                        div.innerHTML += `<div class="msg ${m.sender==='admin'?'msg-admin':'msg-user'}">${m.text}</div>`;
+                });
+            });
+        }
+        function sendMsg() {
+            const txt = document.getElementById('chat-in').value; if(!txt) return;
+            fetch(`${DB_URL}/feedback/${user.uid}.json`, { method:'POST', body:JSON.stringify({text:txt, sender:'user', timestamp:Date.now()}) })
+            .then(()=>{ document.getElementById('chat-in').value=""; loadChat(); });
+        }
 
-        if(localStorage.getItem('bv_user')) { checkAccess(); }
+        function showScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
     </script>
 </body>
 </html>
