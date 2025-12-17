@@ -7,328 +7,298 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- UI STYLES --- */
-        :root { --glass-bg: rgba(20, 20, 20, 0.7); --neon-blue: #00f2ff; --neon-gold: #ffd700; --neon-pink: #ff0099; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: url('login_bg.png') center/cover fixed; color: white; height: 100vh; overflow: hidden; -webkit-user-select: none; }
-        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
-        .screen { display: none; height: 100%; width: 100%; flex-direction: column; }
-        .active { display: flex; }
-        input, textarea { background: rgba(0,0,0,0.5); border: 1px solid var(--neon-blue); color: white; border-radius: 10px; padding: 12px; font-size: 16px; outline: none; }
-        button { background: linear-gradient(90deg, var(--neon-blue), #0055ff); border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        /* --- THEME --- */
+        :root { --glass: rgba(20,20,20,0.95); --neon: #00f2ff; --gold: #ffd700; --pink: #ff0099; }
+        body { margin:0; font-family:'Segoe UI', sans-serif; background:url('login_bg.png') center/cover fixed; color:white; height:100vh; overflow:hidden; -webkit-user-select:none; }
         
-        /* Dashboard */
-        .navbar { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: rgba(0,0,0,0.8); }
-        .cat-scroll { display: flex; overflow-x: auto; padding: 10px; gap: 10px; }
-        .cat-chip { padding: 6px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); white-space: nowrap; }
-        .cat-chip.selected { background: var(--neon-blue); color: black; font-weight: bold; }
-        .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; overflow-y: auto; flex: 1; padding-bottom: 80px; }
-        .book-card { padding: 10px; text-align: center; position: relative; }
-        .book-cover { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 8px; }
-        .pin-btn { position: absolute; top: 5px; right: 5px; font-size: 20px; color: rgba(255,255,255,0.5); padding: 10px; }
-        .pinned { color: var(--neon-gold); transform: scale(1.2); }
+        .screen { display:none; height:100%; width:100%; flex-direction:column; }
+        .active { display:flex; }
         
-        /* Reader */
-        #reader-screen { background: #f4f4f4; color: #333; }
-        .reader-header { height: 50px; background: white; display: flex; align-items: center; padding: 0 15px; justify-content: space-between; }
-        #book-content { padding: 20px; flex: 1; overflow-y: auto; font-size: 18px; line-height: 1.8; text-align: justify; -webkit-user-select: text; }
+        .glass-panel { background:rgba(255,255,255,0.05); backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.1); border-radius:15px; }
+        input { background:rgba(0,0,0,0.5); border:1px solid var(--neon); color:white; padding:12px; border-radius:10px; width:100%; box-sizing:border-box; outline:none; }
+        button { background:var(--neon); border:none; padding:12px; border-radius:10px; font-weight:bold; width:100%; cursor:pointer; margin-top:15px; }
         
-        /* Chat */
-        .chat-area { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; margin-bottom: 10px; }
-        .msg { padding: 8px 12px; border-radius: 10px; max-width: 80%; font-size: 14px; }
-        .msg-user { align-self: flex-end; background: var(--neon-blue); color: black; }
-        .msg-admin { align-self: flex-start; background: rgba(255,255,255,0.2); border: 1px solid white; }
+        /* OVI SCREEN (Lock Screen) */
+        #ovi-screen { justify-content:center; align-items:center; text-align:center; background:black; }
+        .shloka-box { 
+            border: 1px solid var(--gold); padding: 20px; border-radius: 15px; 
+            color: var(--gold); font-size: 18px; line-height: 1.6; 
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            margin: 20px;
+        }
+
+        /* DASHBOARD */
+        .navbar { height:60px; padding:0 15px; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.8); }
+        .book-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:15px; overflow-y:auto; flex:1; }
+        .book-card { padding:10px; text-align:center; position:relative; }
+        .book-cover { width:100%; aspect-ratio:2/3; object-fit:cover; border-radius:8px; }
         
-        /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; justify-content: center; align-items: center; }
-        .modal-content { width: 90%; max-height: 90%; display: flex; flex-direction: column; padding: 20px; }
+        /* Lock Overlay for specific books */
+        .locked-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; border-radius:10px; }
+
+        /* READER & CHAT */
+        #reader-screen { background:#f4f4f4; color:#333; }
+        .chat-area { flex:1; overflow-y:auto; padding:10px; background:rgba(0,0,0,0.3); margin:10px 0; border-radius:10px; display:flex; flex-direction:column; gap:8px; }
+        .msg { padding:8px 12px; border-radius:10px; max-width:80%; font-size:14px; }
+        .msg-u { align-self:flex-end; background:var(--neon); color:black; }
+        .msg-a { align-self:flex-start; background:rgba(255,255,255,0.2); border:1px solid white; }
+        .modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; display:none; justify-content:center; align-items:center; }
     </style>
 </head>
 <body>
 
-    <div id="login-screen" class="screen active" style="justify-content: center; align-items: center;">
-        <div class="glass-panel" style="padding: 40px; width: 80%; max-width: 350px; text-align: center;">
-            <img src="logo.png" width="90" style="border-radius: 50%; box-shadow: 0 0 20px var(--neon-blue); margin-bottom: 20px;">
+    <div id="login-screen" class="screen active" style="justify-content:center; align-items:center;">
+        <div class="glass-panel" style="padding:40px; width:80%; max-width:350px; text-align:center;">
+            <img src="logo.png" width="90" style="border-radius:50%; box-shadow:0 0 20px var(--neon); margin-bottom:20px;">
             <h3>Brahmavidya</h3>
-            <input type="text" id="inp-name" placeholder="Enter Full Name" style="width: 85%; margin-bottom: 10px;">
-            <p style="font-size: 12px; color: gray;">Device ID will be detected automatically.</p>
-            <button onclick="login()" style="width: 90%; margin-top: 10px;">LOGIN</button>
+            <input id="inp-name" placeholder="Enter Full Name" style="margin-bottom:10px;">
+            <p style="color:gray; font-size:12px;">Device ID detected automatically</p>
+            <button onclick="login()">LOGIN</button>
         </div>
     </div>
 
-    <div id="ovi-screen" class="screen" style="justify-content: center; align-items: center; text-align: center; padding: 30px;">
-        <div class="glass-panel" style="padding: 30px;">
-            <i class="fas fa-lock" style="font-size: 50px; color: var(--neon-pink);"></i>
-            <h3>Access Pending</h3>
-            <p style="color: yellow;">Waiting for Admin...</p>
-            <p id="user-debug-id" style="font-size: 10px; color: #555; margin-top: 5px;"></p>
+    <div id="ovi-screen" class="screen">
+        <div style="padding:30px; width:90%; max-width:500px;">
+            <i class="fas fa-lock" style="font-size:50px; color:var(--pink); margin-bottom:20px;"></i>
             
-            <div style="margin-top: 20px; border: 1px solid var(--neon-gold); padding: 15px; border-radius: 10px; color: var(--neon-gold); font-weight: bold;">
-                "श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा :<br>भलेतया हातीं नेदावा : अधिकारेंवीण ।।"
+            <h3 style="color:white; margin-bottom:5px;">Access Restricted</h3>
+            <p style="color:gray; font-size:12px; margin-bottom:30px;">Waiting for Admin Approval...</p>
+            
+            <div class="shloka-box">
+                "श्रीकृष्णरावो म्हणे उद्धवदेवा :<br>
+                हा ज्ञानरत्नाचा ठेवा :<br>
+                भलेतया हातीं नेदावा :<br>
+                अधिकारेंवीण ।।"
             </div>
-            <button onclick="checkAccess()" style="margin-top: 20px; background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);">Check Status</button>
+
+            <p style="margin-top:20px; font-size:12px; color:#555;">(Please contact admin to grant access for this device)</p>
+            
+            <button onclick="checkAccess()" style="background:transparent; border:1px solid var(--neon); color:var(--neon); width:auto; padding:10px 30px;">Check Status</button>
+            <p id="debug-id" style="font-size:10px; color:#333; margin-top:20px;"></p>
         </div>
     </div>
 
     <div id="dashboard-screen" class="screen">
         <div class="navbar">
-            <i class="fas fa-user-circle" style="font-size: 24px; color: var(--neon-blue);" onclick="openSettings('profile')"></i>
-            <span style="font-weight: bold;">BRAHMAVIDYA</span>
-            <i class="fas fa-bars" style="font-size: 24px;" onclick="openSettings('menu')"></i>
+            <i class="fas fa-user-circle" style="font-size:24px; color:var(--neon);" onclick="openSet('profile')"></i>
+            <span style="font-weight:bold;">BRAHMAVIDYA</span>
+            <i class="fas fa-bars" style="font-size:24px;" onclick="openSet('menu')"></i>
         </div>
-        <div class="cat-scroll" id="cat-list"></div>
+        <div style="display:flex; overflow-x:auto; padding:10px; gap:10px;" id="cat-list"></div>
         <div class="book-grid" id="book-list"></div>
     </div>
 
     <div id="reader-screen" class="screen">
-        <div class="reader-header">
-            <i class="fas fa-arrow-left" onclick="closeBook()"></i>
-            <span id="book-title" style="font-weight: bold;">Title</span>
-            <i class="fas fa-bookmark" style="color: var(--neon-blue);"></i>
+        <div style="height:50px; background:white; display:flex; align-items:center; padding:0 15px; justify-content:space-between;">
+            <i class="fas fa-arrow-left" onclick="showScreen('dashboard-screen')" style="color:black;"></i>
+            <span id="book-title" style="color:black; font-weight:bold;">Title</span>
+            <i class="fas fa-bookmark" style="color:var(--neon);"></i>
         </div>
-        <div id="book-content"></div>
-        <div style="position: fixed; bottom: 0; width: 100%; height: 50px; background: white; display: flex; align-items: center; padding: 0 10px;">
-            <i class="fas fa-search" style="color: #666;"></i>
-            <input type="text" id="search-input" placeholder="Search..." style="flex: 1; margin: 0 10px; background: #f0f0f0; color: black; border: none;" onkeyup="searchInBook()">
+        <div id="book-content" style="padding:20px; flex:1; overflow-y:auto; font-size:18px; line-height:1.6; text-align:justify; -webkit-user-select:text;"></div>
+        <div style="height:50px; background:white; display:flex; align-items:center; padding:0 10px; border-top:1px solid #ccc;">
+            <input id="search-input" placeholder="Search..." style="background:#eee; color:black; border:none;" onkeyup="window.find(this.value)">
         </div>
     </div>
 
-    <div id="settings-modal" class="modal-overlay">
-        <div class="glass-panel modal-content">
-            <i class="fas fa-times" onclick="closeModal()" style="position: absolute; top: 15px; right: 15px; font-size: 24px;"></i>
-            <div id="modal-body" style="flex: 1; overflow-y: auto; margin-top: 20px;"></div>
+    <div id="settings-modal" class="modal">
+        <div class="glass-panel" style="width:90%; max-height:90%; padding:20px; display:flex; flex-direction:column;">
+            <i class="fas fa-times" onclick="document.getElementById('settings-modal').style.display='none'" style="align-self:flex-end; font-size:24px;"></i>
+            <div id="modal-body" style="flex:1; overflow-y:auto; margin-top:10px;"></div>
         </div>
     </div>
 
     <script src="filelist.js"></script>
     <script>
-        // 🔥 YOUR DATABASE URL 🔥
+        // 🔥 YOUR FIREBASE URL 🔥
         const DB_URL = "https://adx-bk-default-rtdb.asia-southeast1.firebasedatabase.app";
-
+        
         let user = { uid: localStorage.getItem('bv_uid'), name: localStorage.getItem('bv_name') };
         let categories = JSON.parse(localStorage.getItem('bv_cats')) || ['All', 'Nityanem', 'Pothi'];
         let pinned = JSON.parse(localStorage.getItem('bv_pinned')) || [];
+        let bookPermissions = {}; 
         let currentCat = 'All';
-        let checkInterval = null;
 
         window.onload = () => {
             if(user.uid) { 
-                document.getElementById('user-debug-id').innerText = "ID: " + user.uid;
-                checkValidity(); 
-                startPolling(); 
+                document.getElementById('debug-id').innerText = user.uid;
+                checkAccess(); 
+                setInterval(checkAccess, 5000); 
             }
         };
 
-        // --- 1. AUTOMATIC DEVICE ID LOGIC ---
         function getDeviceId() {
-            // १. आधी LocalStorage मध्ये आहे का ते बघा (म्हणजे युजर पुन्हा आला तर तोच ID राहील)
-            let storedId = localStorage.getItem('bv_device_id');
-            if(storedId) return storedId;
-
-            // २. जर नसेल तर नवीन तयार करा
-            // Cordova Plugin असेल तर त्याचा UUID वापरा, नाहीतर रँडम बनवा
-            let newId = "";
-            
-            // Check if running in Cordova and Device plugin is available
-            /* (Optional: Uncomment if using cordova-plugin-device)
-            if(window.device && window.device.uuid) {
-                newId = window.device.model + "_" + window.device.uuid;
-            } else { */
-                // Fallback for Web/No-Plugin: Random String
-                const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
-                const platform = navigator.platform.split(' ')[0] || "Mobile";
-                newId = platform + "_" + randomPart;
-            /* } */
-
-            localStorage.setItem('bv_device_id', newId);
-            return newId;
+            let id = localStorage.getItem('bv_device_id');
+            if(!id) {
+                // Generate a simpler ID for readability
+                id = (navigator.platform.substring(0,3) || "Mob") + "_" + Math.floor(Math.random()*10000);
+                localStorage.setItem('bv_device_id', id);
+            }
+            return id;
         }
 
-        // --- 2. LOGIN WITH AUTO ID ---
         function login() {
-            const name = document.getElementById('inp-name').value.trim();
-            if(!name) return alert("Please enter your name");
-
-            // Get Auto Device ID
-            const deviceId = getDeviceId();
+            const n = document.getElementById('inp-name').value.trim();
+            if(!n) return alert("Enter Name");
+            const d = getDeviceId();
+            // Create Clean UID
+            const uid = (n + "_" + d).replace(/[^a-zA-Z0-9]/g, "");
             
-            // Create User ID (Name + Device Code) - Clean String
-            const uid = (name + "_" + deviceId).replace(/[^a-zA-Z0-9]/g, "");
-            
-            user = { uid, name };
-            
+            user = { uid, name: n };
             localStorage.setItem('bv_uid', uid);
-            localStorage.setItem('bv_name', name);
-            localStorage.setItem('bv_device', deviceId); // Save Device Name
-            localStorage.setItem('bv_login_date', Date.now());
+            localStorage.setItem('bv_name', n);
 
-            // Display ID on waiting screen for debugging
-            document.getElementById('user-debug-id').innerText = "ID: " + uid;
-
+            // Register User
             fetch(`${DB_URL}/users/${uid}.json`).then(r=>r.json()).then(exist => {
-                // If user exists, keep their 'granted' status. If new, set false.
+                // Keep granted status if exists
                 const data = { 
-                    name: name, 
-                    device: deviceId, // Auto detected ID sent to server
+                    name: n, 
+                    device: d, 
                     lastLogin: Date.now(), 
-                    isOnline: true, 
-                    granted: (exist && exist.granted) ? true : false 
+                    isOnline:true, 
+                    granted: (exist && exist.granted) ? true : false,
+                    isBlocked: (exist && exist.isBlocked) ? true : false
                 };
                 
-                fetch(`${DB_URL}/users/${uid}.json`, {
-                    method: 'PUT',
-                    body: JSON.stringify(data)
-                }).then(() => {
-                    checkAccess();
-                    startPolling();
-                });
+                fetch(`${DB_URL}/users/${uid}.json`, { method:'PUT', body:JSON.stringify(data) })
+                    .then(() => checkAccess());
             });
 
-            // Auto Book Sync
-            if(typeof autoBookList !== 'undefined' && autoBookList.length > 0) {
-                const updates = {};
-                autoBookList.forEach(b => updates[b.name] = true);
-                fetch(`${DB_URL}/library_catalog.json`, { method: 'PATCH', body: JSON.stringify(updates) });
+            // Auto Sync Books to Admin
+            if(typeof autoBookList !== 'undefined') {
+                 const updates = {}; autoBookList.forEach(b => updates[b.name]=true);
+                 fetch(`${DB_URL}/library_catalog.json`, {method:'PATCH', body:JSON.stringify(updates)});
             }
         }
 
-        // --- ACCESS CHECK ---
         function checkAccess() {
             if(!user.uid) return showScreen('login-screen');
             
-            fetch(`${DB_URL}/users/${user.uid}.json?t=${Date.now()}`) // Anti-cache
-                .then(r => r.json())
-                .then(u => {
-                    if(u && u.granted === true && !u.isBlocked) loadDashboard();
-                    else showScreen('ovi-screen');
-                })
-                .catch(() => showScreen('ovi-screen'));
-        }
-
-        function startPolling() {
-            if(checkInterval) clearInterval(checkInterval);
-            checkInterval = setInterval(() => {
-                if(document.getElementById('ovi-screen').classList.contains('active')) {
-                    checkAccess();
+            // Fetch User Status AND Book Permissions
+            Promise.all([
+                fetch(`${DB_URL}/users/${user.uid}.json?t=${Date.now()}`).then(r=>r.json()),
+                fetch(`${DB_URL}/users/${user.uid}/access.json?t=${Date.now()}`).then(r=>r.json())
+            ]).then(([u, perms]) => {
+                if(u && u.granted === true && !u.isBlocked) {
+                    bookPermissions = perms || {};
+                    // Only load dashboard if not already reading or viewing dashboard
+                    if(!document.getElementById('dashboard-screen').classList.contains('active') && 
+                       !document.getElementById('reader-screen').classList.contains('active')) {
+                        loadDashboard();
+                    } else if(document.getElementById('dashboard-screen').classList.contains('active')) {
+                        renderBooks(); // Silent refresh for locks
+                    }
+                } else {
+                    // IF NOT GRANTED OR BLOCKED -> SHOW OVI SCREEN (No Books)
+                    showScreen('ovi-screen');
                 }
-            }, 5000);
+            }).catch(e => console.log("Net Error"));
         }
 
-        function checkValidity() {
-            const date = parseInt(localStorage.getItem('bv_login_date') || 0);
-            if((Date.now() - date) > (30*24*60*60*1000)) {
-                if(navigator.onLine) localStorage.setItem('bv_login_date', Date.now());
-                else { alert("Offline expired."); showScreen('login-screen'); return; }
-            }
-            checkAccess();
-        }
-
-        // --- DASHBOARD ---
         function loadDashboard() { showScreen('dashboard-screen'); renderCats(); renderBooks(); }
+        
         function renderCats() {
             document.getElementById('cat-list').innerHTML = categories.map(c => 
-                `<div class="cat-chip ${currentCat===c?'selected':''}" onclick="currentCat='${c}'; renderCats(); renderBooks();">${c}</div>`
-            ).join('') + `<div class="cat-chip" onclick="addCat()">+</div>`;
+                `<div onclick="currentCat='${c}'; renderBooks();" style="padding:5px 15px; border-radius:20px; background:${currentCat===c?'var(--neon)':'rgba(255,255,255,0.1)'}; color:${currentCat===c?'black':'white'}; white-space:nowrap;">${c}</div>`
+            ).join('') + `<div onclick="addCat()" style="padding:5px 15px;">+</div>`;
         }
-        function addCat() {
-            const n = prompt("New Category");
-            if(n) { categories.push(n); localStorage.setItem('bv_cats', JSON.stringify(categories)); renderCats(); }
-        }
+        function addCat() { const n=prompt("New Cat"); if(n){categories.push(n); localStorage.setItem('bv_cats',JSON.stringify(categories)); renderCats();} }
+        
         function renderBooks() {
-            const grid = document.getElementById('book-list');
-            grid.innerHTML = "";
+            const grid = document.getElementById('book-list'); grid.innerHTML="";
             let list = (typeof autoBookList !== 'undefined') ? autoBookList : [];
-            list.sort((a,b) => (pinned.includes(b.name)?1:0) - (pinned.includes(a.name)?1:0));
-            list.forEach(b => {
-                const isPin = pinned.includes(b.name);
-                grid.innerHTML += `
-                    <div class="glass-panel book-card">
-                        <i class="fas fa-thumbtack pin-btn ${isPin?'pinned':''}" onclick="togglePin('${b.name}', event)"></i>
-                        <img src="${b.image}" class="book-cover" onclick="openBook('${b.name}','${b.file}')">
-                        <p style="margin-top:5px; font-size:14px;">${b.name}</p>
-                    </div>`;
-            });
-        }
-        function togglePin(n,e) {
-            e.stopPropagation();
-            if(pinned.includes(n)) pinned = pinned.filter(x=>x!==n); else pinned.push(n);
-            localStorage.setItem('bv_pinned', JSON.stringify(pinned)); renderBooks();
-        }
-
-        // --- READER ---
-        function openBook(n,f) {
-            showScreen('reader-screen');
-            document.getElementById('book-title').innerText=n;
-            fetch(f).then(r=>r.text()).then(t => {
-                const d = document.getElementById('book-content'); d.innerHTML=t;
-                d.scrollTop = localStorage.getItem('pos_'+n) || 0;
-                d.onscroll=()=>localStorage.setItem('pos_'+n, d.scrollTop);
-            });
-        }
-        function closeBook() { showScreen('dashboard-screen'); }
-        function searchInBook() { window.find(document.getElementById('search-input').value); }
-
-        // --- SETTINGS ---
-        function openSettings(type) {
-            document.getElementById('settings-modal').style.display='flex';
-            const body = document.getElementById('modal-body');
+            list.sort((a,b)=>(pinned.includes(b.name)?1:0)-(pinned.includes(a.name)?1:0));
             
-            if(type==='menu') {
-                body.innerHTML = `<h2 style="text-align:center;">MENU</h2>
-                <div onclick="openSettings('profile')" style="padding:15px; border-bottom:1px solid #333;">👤 Profile</div>
-                <div onclick="openSettings('about')" style="padding:15px; border-bottom:1px solid #333;">ℹ️ About Us</div>
-                <div onclick="openSettings('feedback')" style="padding:15px;">💬 Chat</div>`;
-            } else if(type==='about') {
-                body.innerHTML = `
-                    <button onclick="openSettings('menu')">Back</button>
-                    <div style="margin-top:10px; color:#ddd; line-height:1.6; text-align:justify;">
-                        <img src="photo1.jpg" style="width:100%; border-radius:10px;">
-                        <h3 style="color:var(--neon-gold); text-align:center;">॥ श्री दत्तात्रेय प्रभू भगवान की जय ॥</h3>
-                        <p>"ज्याप्रमाणे आकाशात सूर्य तळपत असतो आणि त्याच्या प्रकाशाने संपूर्ण विश्व उजळून निघते, त्याचप्रमाणे आपल्या साधकांच्या आयुष्यातील अज्ञानाचा अंधकार दूर करून त्यांना 'ब्रह्मविद्येचा' लख्ख प्रकाश देणारे साक्षात 'प्रज्ञासूर्य' म्हणजे प. पू. प. म. श्री मोठे बाबा अंकुळनेरकर होत."</p>
-                        <p>या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे.</p>
-                        <p style="text-align:center; font-weight:bold; color:var(--neon-blue);">हे ॲप, आणि आमचा हा छोटासा प्रयत्न, त्या महातेजस्वी 'प्रज्ञासूर्या'च्या चरणी अत्यंत विनम्र भावाने समर्पित आहे.</p>
-                        <hr>
-                        <h3 style="color:var(--neon-gold); text-align:center;">॥ ब्रह्मविद्या - स्वाध्याय आणि चिंतन ॥</h3>
-                        <p>हे ॲप म्हणजे साधकांसाठी एक 'फिरते ग्रंथालय' (Digital Library) आहे. याचा मुख्य उद्देश अखंड स्वाध्याय, दुर्मिळ ग्रंथ रक्षण आणि बाबांचे विचार पोहोचवणे हा आहे.</p>
-                        <h3 style="color:var(--neon-gold); text-align:center;">॥ श्रीदत्तात्रेयप्रभू महाराज की जय ॥</h3>
-                        <img src="photo2.jpg" style="width:100%; border-radius:10px;">
-                    </div>`;
-            } else if(type==='profile') {
-                // Profile shows the Auto-Detected Device ID
-                const devId = localStorage.getItem('bv_device') || 'Unknown';
-                body.innerHTML = `<button onclick="openSettings('menu')">Back</button>
-                    <div style="text-align:center; margin-top:20px;">
-                        <h3>${user.name}</h3>
-                        <p style="color:gray; font-size:12px;">Device ID: ${devId}</p>
-                        <p style="color:green;">Active</p>
-                    </div>`;
-            } else if(type==='feedback') {
-                body.innerHTML = `<button onclick="openSettings('menu')">Back</button><div id="chat-msgs" class="chat-area">Loading...</div><div style="display:flex;"><input id="chat-in" style="flex:1;"><button onclick="sendMsg()">Send</button></div>`;
-                loadChat();
-            }
-        }
-        function closeModal() { document.getElementById('settings-modal').style.display='none'; }
-
-        // Chat Logic
-        function loadChat() {
-            fetch(`${DB_URL}/feedback/${user.uid}.json`).then(r=>r.json()).then(msgs => {
-                const div = document.getElementById('chat-msgs');
-                if(!div) return; div.innerHTML = "";
-                if(msgs) {
-                    Object.values(msgs).forEach(m => {
-                        div.innerHTML += `<div class="msg ${m.sender==='admin'?'msg-admin':'msg-user'}">${m.text}</div>`;
-                    });
-                    div.scrollTop = div.scrollHeight;
-                } else div.innerHTML = "No messages.";
+            list.forEach(b => {
+                const isAllowed = bookPermissions[b.name] === true;
+                const isPin = pinned.includes(b.name);
+                
+                let html = `
+                <div class="glass-panel book-card" onclick="${isAllowed ? `openBook('${b.name}','${b.file}')` : `alert('Locked by Admin')`}">
+                    <i class="fas fa-thumbtack pin-btn ${isPin?'pinned':''}" onclick="togglePin('${b.name}', event)"></i>
+                    <img src="${b.image}" class="book-cover" style="opacity:${isAllowed?1:0.4}">
+                    <p style="margin-top:5px; font-size:14px;">${b.name}</p>
+                `;
+                
+                // Lock Icon
+                if(!isAllowed) html += `<div class="locked-overlay"><i class="fas fa-lock" style="font-size:24px; color:var(--pink);"></i></div>`;
+                
+                html += `</div>`;
+                grid.innerHTML += html;
             });
         }
-        function sendMsg() {
-            const txt = document.getElementById('chat-in').value;
-            if(txt) {
-                const msg = { text: txt, sender: 'user', timestamp: Date.now() };
-                fetch(`${DB_URL}/feedback/${user.uid}.json`, {
-                    method: 'POST', body: JSON.stringify(msg)
-                }).then(() => { document.getElementById('chat-in').value=""; loadChat(); });
+        function togglePin(n,e) { e.stopPropagation(); pinned.includes(n)?pinned=pinned.filter(x=>x!==n):pinned.push(n); localStorage.setItem('bv_pinned',JSON.stringify(pinned)); renderBooks(); }
+
+        function openBook(n,f) {
+            showScreen('reader-screen'); document.getElementById('book-title').innerText=n;
+            fetch(f).then(r=>r.text()).then(t => {
+                const d=document.getElementById('book-content'); d.innerHTML=t;
+                d.scrollTop=localStorage.getItem('pos_'+n)||0; d.onscroll=()=>localStorage.setItem('pos_'+n, d.scrollTop);
+            });
+        }
+
+        // --- FULL ABOUT US & SETTINGS ---
+        function openSet(t) {
+            document.getElementById('settings-modal').style.display='flex';
+            const b = document.getElementById('modal-body');
+            
+            if(t==='menu') {
+                b.innerHTML=`<h2 style="text-align:center;">MENU</h2>
+                <div onclick="openSet('profile')" style="padding:15px; border-bottom:1px solid #333;">👤 Profile</div>
+                <div onclick="openSet('about')" style="padding:15px; border-bottom:1px solid #333;">ℹ️ About Us</div>
+                <div onclick="openSet('chat')" style="padding:15px;">💬 Chat</div>`;
+            } 
+            else if(t==='about') {
+                // 🔥 FULL MARATHI INFO ADDED HERE 🔥
+                b.innerHTML=`
+                    <button onclick="openSet('menu')">Back</button>
+                    <div style="margin-top:15px; text-align:justify; line-height:1.6; color:#ddd;">
+                        <img src="photo1.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
+                        <h3 style="color:var(--gold); text-align:center;">॥ श्री दत्तात्रेय प्रभू भगवान की जय ॥</h3>
+                        <p>
+                            "ज्याप्रमाणे आकाशात सूर्य तळपत असतो आणि त्याच्या प्रकाशाने संपूर्ण विश्व उजळून निघते, त्याचप्रमाणे आपल्या साधकांच्या आयुष्यातील अज्ञानाचा अंधकार दूर करून त्यांना 'ब्रह्मविद्येचा' लख्ख प्रकाश देणारे साक्षात 'प्रज्ञासूर्य' म्हणजे प. पू. प. म. श्री मोठे बाबा अंकुळनेरकर होत."
+                        </p>
+                        <p>
+                            या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे. ते आजही आपल्या शिष्यवृंदांच्या, साधकांच्या पाठीशी खंबीरपणे उभे आहेत.
+                        </p>
+                        <p>
+                            शास्त्रांमध्ये 'सर्वविद्' आणि 'ब्रह्मनिष्ठ' अशा महापुरुषांचे वर्णन आढळते. श्रीमोठेबाबा हे या वर्णनाचे मूर्तिमंत रूप आहेत. गीतेतील 'ज्ञानियाची लक्षणे' - अमानित्व, अदंभित्व, शांती, वैराग्य - ही सर्व त्यांच्या ठायी अनुभवास येतात.
+                        </p>
+                        <hr style="border-color:#444;">
+                        <h4 style="color:var(--neon); text-align:center;">॥ ब्रह्मविद्या - स्वाध्याय आणि चिंतन ॥</h4>
+                        <p>
+                            प. पू. श्री मोठे बाबांनी जी 'ब्रह्मविद्या' दिली आहे, तिचे रक्षण करणे हे आपले कर्तव्य आहे. हे ॲप म्हणजे साधकांसाठी एक <b>'फिरते ग्रंथालय' (Digital Library)</b> आहे.
+                        </p>
+                        <ul style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px;">
+                            <li><b>१. अखंड स्वाध्याय:</b> प्रवासातही वाचन सुरू राहावे.</li>
+                            <li><b>२. ग्रंथ रक्षण:</b> दुर्मिळ पोथ्या डिजिटल रूपात जपणे.</li>
+                            <li><b>३. बाबांचे विचार:</b> नित्यनियम आणि मार्गदर्शनासाठी.</li>
+                        </ul>
+                        <p style="text-align:center; color:var(--gold); margin-top:20px;">॥ श्रीदत्तात्रेयप्रभू महाराज की जय ॥</p>
+                        <img src="photo2.jpg" style="width:100%; border-radius:10px; margin-top:10px;">
+                    </div>`;
+            } 
+            else if(t==='profile') {
+                const dev = localStorage.getItem('bv_device_id');
+                b.innerHTML=`<button onclick="openSet('menu')">Back</button><div style="text-align:center; margin-top:30px;">
+                <i class="fas fa-user-circle" style="font-size:60px; color:var(--neon);"></i>
+                <h3>${user.name}</h3><p style="color:gray;">ID: ${dev}</p><p style="color:green; border:1px solid green; display:inline-block; padding:5px 15px; border-radius:15px;">Active</p></div>`;
+            } 
+            else if(t==='chat') { 
+                b.innerHTML=`<button onclick="openSet('menu')">Back</button><div id="msgs" class="chat-area">Loading...</div><div style="display:flex;"><input id="c-in" style="flex:1;"><button onclick="snd()">Send</button></div>`; 
+                loadChat(); 
             }
+        }
+        
+        function loadChat() {
+            fetch(`${DB_URL}/feedback/${user.uid}.json`).then(r=>r.json()).then(d=>{
+                const m=document.getElementById('msgs'); if(!m)return; m.innerHTML="";
+                if(d) Object.values(d).forEach(x=>m.innerHTML+=`<div class="msg ${x.sender==='admin'?'msg-a':'msg-u'}">${x.text}</div>`);
+            });
+        }
+        function snd() {
+            const t=document.getElementById('c-in').value; if(!t)return;
+            fetch(`${DB_URL}/feedback/${user.uid}.json`, {method:'POST', body:JSON.stringify({text:t, sender:'user', timestamp:Date.now()})})
+            .then(()=>{document.getElementById('c-in').value=""; loadChat();});
         }
 
         function showScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
