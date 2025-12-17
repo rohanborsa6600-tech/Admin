@@ -7,108 +7,70 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- THEME: LIQUID GLASS & NEON --- */
-        :root {
-            --glass-bg: rgba(20, 20, 20, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --neon-blue: #00f2ff;
-            --neon-gold: #ffd700;
-            --neon-pink: #ff0099;
-            --text-main: #ffffff;
-        }
-
-        body {
-            margin: 0; font-family: 'Segoe UI', sans-serif;
-            background: url('login_bg.png') no-repeat center center fixed;
-            background-size: cover; color: var(--text-main);
-            height: 100vh; overflow: hidden; -webkit-user-select: none;
-        }
-
-        /* --- UI COMPONENTS --- */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-        }
-
+        /* --- UI STYLES --- */
+        :root { --glass-bg: rgba(20, 20, 20, 0.7); --neon-blue: #00f2ff; --neon-gold: #ffd700; --neon-pink: #ff0099; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: url('login_bg.png') center/cover fixed; color: white; height: 100vh; overflow: hidden; -webkit-user-select: none; }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
         .screen { display: none; height: 100%; width: 100%; flex-direction: column; }
         .active { display: flex; }
-
-        input, textarea {
-            background: rgba(0,0,0,0.6); border: 1px solid var(--neon-blue);
-            color: white; border-radius: 10px; padding: 12px; font-size: 16px; width: 100%; box-sizing: border-box; outline: none;
-        }
-
-        button {
-            background: linear-gradient(90deg, var(--neon-blue), #0055ff);
-            border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%;
-            box-shadow: 0 0 10px var(--neon-blue); margin-top: 10px;
-        }
-
-        /* --- SCREENS --- */
-        /* Login */
-        #login-screen { justify-content: center; align-items: center; }
+        input, textarea { background: rgba(0,0,0,0.5); border: 1px solid var(--neon-blue); color: white; border-radius: 10px; padding: 12px; font-size: 16px; outline: none; }
+        button { background: linear-gradient(90deg, var(--neon-blue), #0055ff); border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
         
-        /* Ovi (Lock) */
-        #ovi-screen { justify-content: center; align-items: center; text-align: center; padding: 30px; }
-        .ovi-box { border: 1px solid var(--neon-gold); padding: 15px; border-radius: 10px; color: var(--neon-gold); margin-top: 20px; }
-
         /* Dashboard */
         .navbar { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: rgba(0,0,0,0.8); }
         .cat-scroll { display: flex; overflow-x: auto; padding: 10px; gap: 10px; }
-        .cat-chip { padding: 6px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
+        .cat-chip { padding: 6px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); white-space: nowrap; }
         .cat-chip.selected { background: var(--neon-blue); color: black; font-weight: bold; }
-        
         .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; overflow-y: auto; flex: 1; padding-bottom: 80px; }
         .book-card { padding: 10px; text-align: center; position: relative; }
         .book-cover { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 8px; }
         .pin-btn { position: absolute; top: 5px; right: 5px; font-size: 20px; color: rgba(255,255,255,0.5); padding: 10px; }
-        .pinned { color: var(--neon-gold); transform: scale(1.2); text-shadow: 0 0 5px black; }
-
+        .pinned { color: var(--neon-gold); transform: scale(1.2); }
+        
         /* Reader */
         #reader-screen { background: #f4f4f4; color: #333; }
         .reader-header { height: 50px; background: white; display: flex; align-items: center; padding: 0 15px; justify-content: space-between; }
         #book-content { padding: 20px; flex: 1; overflow-y: auto; font-size: 18px; line-height: 1.8; text-align: justify; -webkit-user-select: text; }
         
+        /* Chat */
+        .chat-area { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; margin-bottom: 10px; }
+        .msg { padding: 8px 12px; border-radius: 10px; max-width: 80%; font-size: 14px; }
+        .msg-user { align-self: flex-end; background: var(--neon-blue); color: black; }
+        .msg-admin { align-self: flex-start; background: rgba(255,255,255,0.2); border: 1px solid white; }
+        
         /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; justify-content: center; align-items: center; }
         .modal-content { width: 90%; max-height: 90%; display: flex; flex-direction: column; padding: 20px; }
-
-        /* Chat */
-        .chat-area { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px; margin: 10px 0; }
-        .msg { padding: 8px 12px; border-radius: 10px; max-width: 80%; }
-        .msg-user { align-self: flex-end; background: var(--neon-blue); color: black; }
-        .msg-admin { align-self: flex-start; background: rgba(255,255,255,0.2); border: 1px solid white; }
     </style>
 </head>
 <body>
 
-    <div id="login-screen" class="screen active">
+    <div id="login-screen" class="screen active" style="justify-content: center; align-items: center;">
         <div class="glass-panel" style="padding: 40px; width: 80%; max-width: 350px; text-align: center;">
             <img src="logo.png" width="90" style="border-radius: 50%; box-shadow: 0 0 20px var(--neon-blue); margin-bottom: 20px;">
             <h3>Brahmavidya</h3>
-            <input type="text" id="inp-name" placeholder="Full Name" style="margin-bottom: 15px;">
-            <input type="text" id="inp-device" placeholder="Device Name (e.g. iPad)">
-            <button onclick="login()">LOGIN</button>
+            <input type="text" id="inp-name" placeholder="Full Name" style="width: 85%; margin-bottom: 10px;">
+            <input type="text" id="inp-device" placeholder="Device Name" style="width: 85%;">
+            <button onclick="login()" style="width: 90%; margin-top: 20px;">LOGIN</button>
         </div>
     </div>
 
-    <div id="ovi-screen" class="screen">
-        <div class="glass-panel" style="width: 85%; padding: 30px; text-align: center;">
+    <div id="ovi-screen" class="screen" style="justify-content: center; align-items: center; text-align: center; padding: 30px;">
+        <div class="glass-panel" style="padding: 30px;">
             <i class="fas fa-lock" style="font-size: 50px; color: var(--neon-pink);"></i>
             <h3>Access Pending</h3>
             <p style="color: yellow;">Waiting for Admin...</p>
-            <div class="ovi-box">
+            <div style="margin-top: 20px; border: 1px solid var(--neon-gold); padding: 15px; border-radius: 10px; color: var(--neon-gold); font-weight: bold;">
                 "श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा :<br>भलेतया हातीं नेदावा : अधिकारेंवीण ।।"
             </div>
-            <button onclick="checkAccess()" style="background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);">Check Status</button>
+            <button onclick="checkAccess()" style="margin-top: 20px; background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);">Check Status</button>
         </div>
     </div>
 
     <div id="dashboard-screen" class="screen">
         <div class="navbar">
             <i class="fas fa-user-circle" style="font-size: 24px; color: var(--neon-blue);" onclick="openSettings('profile')"></i>
-            <span style="font-weight: bold; letter-spacing: 1px;">BRAHMAVIDYA</span>
+            <span style="font-weight: bold;">BRAHMAVIDYA</span>
             <i class="fas fa-bars" style="font-size: 24px;" onclick="openSettings('menu')"></i>
         </div>
         <div class="cat-scroll" id="cat-list"></div>
@@ -136,9 +98,8 @@
     </div>
 
     <script src="filelist.js"></script>
-
     <script>
-        // 🔥 YOUR FIREBASE URL (No SDK needed) 🔥
+        // 🔥 तुमचा URL (REST API)
         const DB_URL = "https://adx-bk-default-rtdb.asia-southeast1.firebasedatabase.app";
 
         let user = { uid: localStorage.getItem('bv_uid'), name: localStorage.getItem('bv_name') };
@@ -147,23 +108,15 @@
         let currentCat = 'All';
         let checkInterval = null;
 
-        // --- INIT & SYNC ---
         window.onload = () => {
             if(user.uid) { checkValidity(); startPolling(); }
-            
-            // 🔥 AUTOMATIC BOOK SYNC TO FIREBASE 🔥
-            if(typeof autoBookList !== 'undefined' && autoBookList.length > 0) {
-                const updates = {};
-                autoBookList.forEach(b => updates[b.name] = true);
-                fetch(`${DB_URL}/library_catalog.json`, { method: 'PATCH', body: JSON.stringify(updates) });
-            }
         };
 
-        // --- LOGIN & VALIDITY ---
+        // --- LOGIN ---
         function login() {
             const name = document.getElementById('inp-name').value.trim();
             const device = document.getElementById('inp-device').value.trim();
-            if(!name || !device) return alert("Enter details");
+            if(!name || !device) return alert("Fill all details");
 
             const uid = (name + "_" + device).replace(/[^a-zA-Z0-9]/g, "");
             user = { uid, name };
@@ -173,43 +126,59 @@
             localStorage.setItem('bv_device', device);
             localStorage.setItem('bv_login_date', Date.now());
 
-            // Check if exists to preserve granted status
             fetch(`${DB_URL}/users/${uid}.json`).then(r=>r.json()).then(exist => {
-                const data = { name, device, lastLogin: Date.now(), isBlocked: false };
-                if(exist && exist.granted) data.granted = true; else data.granted = false;
+                const data = { name: name, device: device, lastLogin: Date.now(), isOnline: true, granted: false };
+                if(exist && exist.granted) data.granted = true;
                 
-                fetch(`${DB_URL}/users/${uid}.json`, { method: 'PUT', body: JSON.stringify(data) })
-                    .then(() => { checkAccess(); startPolling(); });
+                fetch(`${DB_URL}/users/${uid}.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                }).then(() => {
+                    checkAccess();
+                    startPolling();
+                });
             });
+
+            // Auto Book Sync
+            if(typeof autoBookList !== 'undefined' && autoBookList.length > 0) {
+                const updates = {};
+                autoBookList.forEach(b => updates[b.name] = true);
+                fetch(`${DB_URL}/library_catalog.json`, { method: 'PATCH', body: JSON.stringify(updates) });
+            }
+        }
+
+        // --- ACCESS CHECK ---
+        function checkAccess() {
+            if(!user.uid) return showScreen('login-screen');
+            fetch(`${DB_URL}/users/${user.uid}/granted.json`)
+                .then(r => r.json())
+                .then(granted => {
+                    if(granted === true) loadDashboard();
+                    else showScreen('ovi-screen');
+                })
+                .catch(() => showScreen('ovi-screen'));
+        }
+
+        function startPolling() {
+            if(checkInterval) clearInterval(checkInterval);
+            checkInterval = setInterval(() => {
+                if(document.getElementById('ovi-screen').classList.contains('active')) {
+                    checkAccess();
+                }
+            }, 5000);
         }
 
         function checkValidity() {
             const date = parseInt(localStorage.getItem('bv_login_date') || 0);
             if((Date.now() - date) > (30*24*60*60*1000)) {
                 if(navigator.onLine) localStorage.setItem('bv_login_date', Date.now());
-                else { alert("Offline Validity Expired."); showScreen('login-screen'); return; }
+                else { alert("Offline expired."); showScreen('login-screen'); return; }
             }
             checkAccess();
         }
 
-        function checkAccess() {
-            if(!user.uid) return showScreen('login-screen');
-            fetch(`${DB_URL}/users/${user.uid}.json`).then(r=>r.json()).then(u => {
-                if(u && u.granted && !u.isBlocked) loadDashboard();
-                else showScreen('ovi-screen');
-            }).catch(() => showScreen('ovi-screen'));
-        }
-
-        function startPolling() {
-            if(checkInterval) clearInterval(checkInterval);
-            checkInterval = setInterval(() => {
-                if(document.getElementById('ovi-screen').classList.contains('active')) checkAccess();
-            }, 5000);
-        }
-
         // --- DASHBOARD ---
         function loadDashboard() { showScreen('dashboard-screen'); renderCats(); renderBooks(); }
-        
         function renderCats() {
             document.getElementById('cat-list').innerHTML = categories.map(c => 
                 `<div class="cat-chip ${currentCat===c?'selected':''}" onclick="currentCat='${c}'; renderCats(); renderBooks();">${c}</div>`
@@ -219,7 +188,6 @@
             const n = prompt("New Category");
             if(n) { categories.push(n); localStorage.setItem('bv_cats', JSON.stringify(categories)); renderCats(); }
         }
-
         function renderBooks() {
             const grid = document.getElementById('book-list');
             grid.innerHTML = "";
@@ -254,7 +222,7 @@
         function closeBook() { showScreen('dashboard-screen'); }
         function searchInBook() { window.find(document.getElementById('search-input').value); }
 
-        // --- SETTINGS ---
+        // --- SETTINGS & CHAT (UPDATED CODE HERE) ---
         function openSettings(type) {
             document.getElementById('settings-modal').style.display='flex';
             const body = document.getElementById('modal-body');
@@ -288,20 +256,27 @@
         }
         function closeModal() { document.getElementById('settings-modal').style.display='none'; }
 
-        // Chat
+        // Chat Logic
         function loadChat() {
             fetch(`${DB_URL}/feedback/${user.uid}.json`).then(r=>r.json()).then(msgs => {
-                const div = document.getElementById('chat-msgs'); if(!div) return; div.innerHTML = "";
-                if(msgs) Object.values(msgs).forEach(m => {
-                    if((Date.now()-m.timestamp) < 7*24*60*60*1000)
+                const div = document.getElementById('chat-msgs');
+                if(!div) return; div.innerHTML = "";
+                if(msgs) {
+                    Object.values(msgs).forEach(m => {
                         div.innerHTML += `<div class="msg ${m.sender==='admin'?'msg-admin':'msg-user'}">${m.text}</div>`;
-                });
+                    });
+                    div.scrollTop = div.scrollHeight;
+                } else div.innerHTML = "No messages.";
             });
         }
         function sendMsg() {
-            const txt = document.getElementById('chat-in').value; if(!txt) return;
-            fetch(`${DB_URL}/feedback/${user.uid}.json`, { method:'POST', body:JSON.stringify({text:txt, sender:'user', timestamp:Date.now()}) })
-            .then(()=>{ document.getElementById('chat-in').value=""; loadChat(); });
+            const txt = document.getElementById('chat-in').value;
+            if(txt) {
+                const msg = { text: txt, sender: 'user', timestamp: Date.now() };
+                fetch(`${DB_URL}/feedback/${user.uid}.json`, {
+                    method: 'POST', body: JSON.stringify(msg)
+                }).then(() => { document.getElementById('chat-in').value=""; loadChat(); });
+            }
         }
 
         function showScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
