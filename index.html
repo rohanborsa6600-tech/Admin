@@ -49,9 +49,9 @@
         <div class="glass-panel" style="padding: 40px; width: 80%; max-width: 350px; text-align: center;">
             <img src="logo.png" width="90" style="border-radius: 50%; box-shadow: 0 0 20px var(--neon-blue); margin-bottom: 20px;">
             <h3>Brahmavidya</h3>
-            <input type="text" id="inp-name" placeholder="Full Name" style="width: 85%; margin-bottom: 10px;">
-            <input type="text" id="inp-device" placeholder="Device Name" style="width: 85%;">
-            <button onclick="login()" style="width: 90%; margin-top: 20px;">LOGIN</button>
+            <input type="text" id="inp-name" placeholder="Enter Full Name" style="width: 85%; margin-bottom: 10px;">
+            <p style="font-size: 12px; color: gray;">Device ID will be detected automatically.</p>
+            <button onclick="login()" style="width: 90%; margin-top: 10px;">LOGIN</button>
         </div>
     </div>
 
@@ -60,6 +60,8 @@
             <i class="fas fa-lock" style="font-size: 50px; color: var(--neon-pink);"></i>
             <h3>Access Pending</h3>
             <p style="color: yellow;">Waiting for Admin...</p>
+            <p id="user-debug-id" style="font-size: 10px; color: #555; margin-top: 5px;"></p>
+            
             <div style="margin-top: 20px; border: 1px solid var(--neon-gold); padding: 15px; border-radius: 10px; color: var(--neon-gold); font-weight: bold;">
                 "श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा :<br>भलेतया हातीं नेदावा : अधिकारेंवीण ।।"
             </div>
@@ -99,7 +101,7 @@
 
     <script src="filelist.js"></script>
     <script>
-        // 🔥 तुमचा URL (REST API)
+        // 🔥 YOUR DATABASE URL 🔥
         const DB_URL = "https://adx-bk-default-rtdb.asia-southeast1.firebasedatabase.app";
 
         let user = { uid: localStorage.getItem('bv_uid'), name: localStorage.getItem('bv_name') };
@@ -109,26 +111,68 @@
         let checkInterval = null;
 
         window.onload = () => {
-            if(user.uid) { checkValidity(); startPolling(); }
+            if(user.uid) { 
+                document.getElementById('user-debug-id').innerText = "ID: " + user.uid;
+                checkValidity(); 
+                startPolling(); 
+            }
         };
 
-        // --- LOGIN ---
+        // --- 1. AUTOMATIC DEVICE ID LOGIC ---
+        function getDeviceId() {
+            // १. आधी LocalStorage मध्ये आहे का ते बघा (म्हणजे युजर पुन्हा आला तर तोच ID राहील)
+            let storedId = localStorage.getItem('bv_device_id');
+            if(storedId) return storedId;
+
+            // २. जर नसेल तर नवीन तयार करा
+            // Cordova Plugin असेल तर त्याचा UUID वापरा, नाहीतर रँडम बनवा
+            let newId = "";
+            
+            // Check if running in Cordova and Device plugin is available
+            /* (Optional: Uncomment if using cordova-plugin-device)
+            if(window.device && window.device.uuid) {
+                newId = window.device.model + "_" + window.device.uuid;
+            } else { */
+                // Fallback for Web/No-Plugin: Random String
+                const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
+                const platform = navigator.platform.split(' ')[0] || "Mobile";
+                newId = platform + "_" + randomPart;
+            /* } */
+
+            localStorage.setItem('bv_device_id', newId);
+            return newId;
+        }
+
+        // --- 2. LOGIN WITH AUTO ID ---
         function login() {
             const name = document.getElementById('inp-name').value.trim();
-            const device = document.getElementById('inp-device').value.trim();
-            if(!name || !device) return alert("Fill all details");
+            if(!name) return alert("Please enter your name");
 
-            const uid = (name + "_" + device).replace(/[^a-zA-Z0-9]/g, "");
+            // Get Auto Device ID
+            const deviceId = getDeviceId();
+            
+            // Create User ID (Name + Device Code) - Clean String
+            const uid = (name + "_" + deviceId).replace(/[^a-zA-Z0-9]/g, "");
+            
             user = { uid, name };
             
             localStorage.setItem('bv_uid', uid);
             localStorage.setItem('bv_name', name);
-            localStorage.setItem('bv_device', device);
+            localStorage.setItem('bv_device', deviceId); // Save Device Name
             localStorage.setItem('bv_login_date', Date.now());
 
+            // Display ID on waiting screen for debugging
+            document.getElementById('user-debug-id').innerText = "ID: " + uid;
+
             fetch(`${DB_URL}/users/${uid}.json`).then(r=>r.json()).then(exist => {
-                const data = { name: name, device: device, lastLogin: Date.now(), isOnline: true, granted: false };
-                if(exist && exist.granted) data.granted = true;
+                // If user exists, keep their 'granted' status. If new, set false.
+                const data = { 
+                    name: name, 
+                    device: deviceId, // Auto detected ID sent to server
+                    lastLogin: Date.now(), 
+                    isOnline: true, 
+                    granted: (exist && exist.granted) ? true : false 
+                };
                 
                 fetch(`${DB_URL}/users/${uid}.json`, {
                     method: 'PUT',
@@ -150,10 +194,11 @@
         // --- ACCESS CHECK ---
         function checkAccess() {
             if(!user.uid) return showScreen('login-screen');
-            fetch(`${DB_URL}/users/${user.uid}/granted.json`)
+            
+            fetch(`${DB_URL}/users/${user.uid}.json?t=${Date.now()}`) // Anti-cache
                 .then(r => r.json())
-                .then(granted => {
-                    if(granted === true) loadDashboard();
+                .then(u => {
+                    if(u && u.granted === true && !u.isBlocked) loadDashboard();
                     else showScreen('ovi-screen');
                 })
                 .catch(() => showScreen('ovi-screen'));
@@ -222,7 +267,7 @@
         function closeBook() { showScreen('dashboard-screen'); }
         function searchInBook() { window.find(document.getElementById('search-input').value); }
 
-        // --- SETTINGS & CHAT (UPDATED CODE HERE) ---
+        // --- SETTINGS ---
         function openSettings(type) {
             document.getElementById('settings-modal').style.display='flex';
             const body = document.getElementById('modal-body');
@@ -248,7 +293,14 @@
                         <img src="photo2.jpg" style="width:100%; border-radius:10px;">
                     </div>`;
             } else if(type==='profile') {
-                body.innerHTML = `<button onclick="openSettings('menu')">Back</button><div style="text-align:center; margin-top:20px;"><h3>${user.name}</h3><p>Active</p></div>`;
+                // Profile shows the Auto-Detected Device ID
+                const devId = localStorage.getItem('bv_device') || 'Unknown';
+                body.innerHTML = `<button onclick="openSettings('menu')">Back</button>
+                    <div style="text-align:center; margin-top:20px;">
+                        <h3>${user.name}</h3>
+                        <p style="color:gray; font-size:12px;">Device ID: ${devId}</p>
+                        <p style="color:green;">Active</p>
+                    </div>`;
             } else if(type==='feedback') {
                 body.innerHTML = `<button onclick="openSettings('menu')">Back</button><div id="chat-msgs" class="chat-area">Loading...</div><div style="display:flex;"><input id="chat-in" style="flex:1;"><button onclick="sendMsg()">Send</button></div>`;
                 loadChat();
