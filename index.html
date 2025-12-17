@@ -1,160 +1,288 @@
 <!DOCTYPE html>
-<html lang="mr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ब्रह्मविद्या</title>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="cordova.js"></script>
-    <script src="filelist.js"></script>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Brahmavidya</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        /* --- UI THEME --- */
-        :root { --neon: #00f3ff; --gold: #ffd700; --glass: rgba(255, 255, 255, 0.05); }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #000; color: white; overflow: hidden; user-select: none; }
+        /* --- LIQUID GLASS UI THEME --- */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: url('login_bg.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-user-select: none;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        /* --- SCREENS --- */
+        .screen { display: none; height: 100%; width: 100%; position: absolute; top: 0; left: 0; }
+        .active { display: flex; flex-direction: column; }
+
+        /* Login Screen */
+        #login-screen { justify-content: center; align-items: center; }
+        .login-box { padding: 40px; width: 85%; max-width: 350px; text-align: center; }
+        input { width: 90%; padding: 15px; margin: 10px 0; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 10px; color: white; outline: none; }
+        button { width: 100%; padding: 15px; background: linear-gradient(45deg, #00d2ff, #3a7bd5); border: none; border-radius: 10px; color: white; font-weight: bold; margin-top: 20px; cursor: pointer; }
+
+        /* Ovi Screen */
+        #ovi-screen { justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        .ovi-text { font-size: 20px; font-weight: bold; color: #ffd700; text-shadow: 0 2px 5px black; line-height: 1.6; }
+
+        /* Dashboard */
+        .navbar { height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .book-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; overflow-y: auto; flex: 1; }
+        .book-card { padding: 10px; text-align: center; position: relative; }
+        .book-cover { width: 100%; border-radius: 10px; aspect-ratio: 2/3; object-fit: cover; }
+        .pin-icon { position: absolute; top: 10px; right: 10px; color: #ffd700; display: none; }
+
+        /* Reader */
+        #reader-screen { background: #fff; color: #000; }
+        .reader-header { height: 50px; background: #eee; display: flex; align-items: center; padding: 0 15px; justify-content: space-between; }
+        #book-content { padding: 20px; flex: 1; overflow-y: auto; font-size: 18px; line-height: 1.8; text-align: justify; padding-bottom: 80px; -webkit-user-select: text; }
         
-        /* ANIMATED BACKGROUND */
-        .bg-anim { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, #000000, #1a0b2e, #0f1c2e); background-size: 400% 400%; animation: bgMove 15s infinite; z-index: -1; }
-        @keyframes bgMove { 0% {background-position:0% 50%} 50% {background-position:100% 50%} 100% {background-position:0% 50%} }
-        
-        .screen { display: none; position: absolute; width: 100%; height: 100%; flex-direction: column; }
-        .active { display: flex; }
-        
-        /* LOGIN SCREEN */
-        #login-screen { justify-content: center; align-items: center; background: url('login_bg.png') center/cover no-repeat; }
-        .crystal-card { background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 30px; width: 80%; max-width: 350px; text-align: center; }
-        input { width: 90%; padding: 12px; margin: 10px 0; background: rgba(255,255,255,0.1); border: 1px solid #555; border-radius: 10px; color: white; text-align: center; font-size: 16px; }
-        .btn-liquid { width: 100%; padding: 12px; margin-top: 15px; background: linear-gradient(135deg, #ffd700, #ffaa00); border: none; border-radius: 10px; color: black; font-weight: bold; }
-        
-        /* HOME GRID */
-        .header { padding: 40px 20px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; overflow-y: auto; padding-bottom: 100px; }
-        .book-card { background: rgba(255,255,255,0.05); border-radius: 15px; position: relative; height: 230px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; }
-        .book-cover { width: 100%; height: 80%; object-fit: cover; opacity: 0.9; }
-        .progress-line { height: 4px; background: #333; width: 100%; position: absolute; bottom: 35px; }
-        .progress-fill { height: 100%; background: #0f0; width: 0%; }
-        
-        /* READER & MODAL */
-        #reader-screen { background: white; z-index: 100; }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 200; display: none; flex-direction: column; }
-        .modal-content { padding: 20px; overflow-y: auto; height: 100%; }
-        
-        /* ABOUT TEXT STYLE */
-        .about-text p { margin-bottom: 15px; line-height: 1.7; color: #ddd; text-align: justify; font-size: 15px; }
-        .gold-txt { color: var(--gold); font-weight: bold; }
-        .cyan-txt { color: var(--neon); font-weight: bold; }
-        .quote-box { background: rgba(255,215,0,0.05); padding: 15px; border-left: 3px solid var(--gold); margin: 20px 0; font-style: italic; color: var(--gold); }
+        .search-bar-bottom { position: fixed; bottom: 0; width: 100%; height: 60px; background: #f9f9f9; display: flex; align-items: center; padding: 0 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        .search-input { flex: 1; padding: 10px; margin: 0 10px; border-radius: 20px; border: 1px solid #ccc; background: white; color: black; }
+
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; justify-content: center; align-items: center; }
+        .modal-content { width: 90%; max-height: 90%; overflow-y: auto; padding: 20px; position: relative; }
+        .close-btn { position: absolute; top: 10px; right: 10px; font-size: 24px; color: white; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="bg-anim"></div>
 
     <div id="login-screen" class="screen active">
-        <div class="crystal-card">
-            <h2 style="color:var(--gold); margin:0;">ब्रह्मविद्या</h2>
-            <p style="color:#aaa; font-size:12px;">Digital Vachan Pothi</p>
-            <div style="font-style:italic; font-size:12px; margin:20px 0; color:#ddd; border-top:1px solid #555; border-bottom:1px solid #555; padding:10px 0;">
-                "श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा :<br>भलेतया हातीं नेदावा : अधिकारेंवीण ।।"
-            </div>
-            <input type="text" id="u_name" placeholder="तुमचे नाव (Name)">
-            <input type="tel" id="u_pin" placeholder="PIN" maxlength="6">
-            <button class="btn-liquid" id="login-btn" onclick="doLogin()">प्रवेश करा</button>
+        <div class="glass-panel login-box">
+            <img src="logo.png" width="90" style="margin-bottom: 20px; border-radius: 50%;">
+            <h3>Brahmavidya</h3>
+            <input type="text" id="user-name" placeholder="Full Name">
+            <input type="text" id="device-name" placeholder="Device Name">
+            <button onclick="handleLogin()">LOGIN</button>
         </div>
     </div>
 
-    <div id="home-screen" class="screen">
-        <div class="header">
-            <div style="color:var(--gold); font-weight:bold; font-size:20px;" id="disp-name">User</div>
-            <span onclick="openSettings()" style="font-size:24px;">⚙️</span>
+    <div id="ovi-screen" class="screen">
+        <div class="glass-panel" style="padding: 30px; width: 85%;">
+            <i class="fas fa-lock" style="font-size: 40px; color: cyan;"></i>
+            <h3>Access Pending</h3>
+            <hr>
+            <p class="ovi-text">
+               "श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा :<br>भलेतया हातीं नेदावा : अधिकारेंवीण ।।"
+            </p>
+            <button onclick="checkAccess()" style="background: transparent; border: 1px solid cyan; margin-top: 20px;">Check Status</button>
         </div>
-        <div id="waiting" style="display:none; text-align:center; margin-top:50px; color:var(--gold);">Loading Library...</div>
-        <div class="grid" id="book-grid"></div>
+    </div>
+
+    <div id="dashboard-screen" class="screen">
+        <div class="navbar glass-panel" style="border-radius: 0 0 20px 20px;">
+            <i class="fas fa-user-circle" style="font-size: 24px;" onclick="showSettings('profile')"></i>
+            <span>Brahmavidya</span>
+            <i class="fas fa-bars" style="font-size: 24px;" onclick="document.getElementById('settings-modal').style.display='flex'"></i>
+        </div>
+        <div class="book-grid" id="book-list"></div>
     </div>
 
     <div id="reader-screen" class="screen">
-        <div style="height:50px; background:#111; display:flex; align-items:center; justify-content:space-between; padding:0 15px;">
-            <span onclick="closeReader()" style="color:white; font-size:24px;">←</span>
-            <span id="reader-title" style="color:white; font-size:14px;">Book</span>
-            <span onclick="changeFont(1)" style="font-size:18px;">A+</span>
+        <div class="reader-header">
+            <i class="fas fa-arrow-left" onclick="closeBook()"></i>
+            <span id="book-title" style="font-weight:bold;">Title</span>
+            <i class="fas fa-bookmark"></i>
         </div>
-        <iframe id="book-frame" style="width:100%; height:calc(100% - 50px); border:none; background:white;"></iframe>
+        <div id="book-content"></div>
+        <div class="search-bar-bottom">
+            <i class="fas fa-search" style="color:#666"></i>
+            <input type="text" id="search-input" class="search-input" placeholder="या ग्रंथात शोधा..." onkeyup="searchBook()">
+        </div>
     </div>
 
-    <div id="modal-box" class="modal">
-        <div class="modal-content" id="modal-body"></div>
-        <button onclick="document.getElementById('modal-box').style.display='none'" style="padding:15px; background:#333; color:white; border:none; width:100%;">Close</button>
+    <div id="settings-modal" class="modal">
+        <div class="modal-content glass-panel">
+            <i class="fas fa-times close-btn" onclick="document.getElementById('settings-modal').style.display='none'"></i>
+            
+            <div id="menu-list" style="margin-top: 20px;">
+                <h2 style="text-align: center;">Settings</h2>
+                <div onclick="showSettings('profile')" style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1);">👤 Profile</div>
+                <div onclick="showSettings('about')" style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1);">ℹ️ About Us</div>
+                <div onclick="showSettings('help')" style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1);">❓ Help</div>
+                <div onclick="showSettings('feedback')" style="padding:15px;">💬 Feedback</div>
+            </div>
+
+            <div id="setting-content" style="display:none; margin-top: 20px;">
+                <button onclick="backToMenu()" style="width: auto; padding: 5px 15px; margin-bottom: 15px; font-size: 14px;">Back</button>
+                <div id="dynamic-content"></div>
+            </div>
+        </div>
     </div>
 
+    <script src="filelist.js"></script>
     <script>
-        const firebaseConfig = { databaseURL: "https://adx-bk-default-rtdb.asia-southeast1.firebasedatabase.app" };
-        let db, did, deviceUuid = "unknown";
-        document.addEventListener('deviceready', function() { try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch(e){} deviceUuid = device.uuid; let s = localStorage.getItem('u_name'); if(s) { document.getElementById('u_name').value = s; document.getElementById('u_pin').value = "922523"; doLogin(); } }, false);
-        
-        function doLogin() {
-            let n = document.getElementById('u_name').value.trim(), p = document.getElementById('u_pin').value;
-            if(!n || p!=="922523") return alert("Invalid Login");
-            let safeId = "U_" + n.replace(/[.#$[\]]/g, '_');
-            document.getElementById('login-btn').innerText = "...";
-            db.ref('users/' + safeId).once('value', s => {
-                let d = s.val();
-                if (d && d.deviceId && d.deviceId !== deviceUuid) { alert("Access Denied: Device Mismatch"); document.getElementById('login-btn').innerText="Login"; localStorage.clear(); }
-                else { proceed(n, safeId); }
-            });
-        }
-        function proceed(n, id) {
-            did = id; localStorage.setItem('u_name', n); document.getElementById('disp-name').innerText = n;
-            document.getElementById('login-screen').classList.remove('active'); document.getElementById('home-screen').classList.add('active');
-            if(navigator.onLine) {
-                db.ref('users/' + did).update({ name: n, deviceId: deviceUuid, isOnline: true });
-                db.ref('users/' + did + '/access').on('value', s => renderBooks(s.val() || {}));
-                db.ref('users/' + did + '/isBlocked').on('value', s => { if(s.val()) { alert("Blocked"); location.reload(); }});
-                db.ref('users/' + did + '/isOnline').onDisconnect().set(false);
-            } else { renderBooks(JSON.parse(localStorage.getItem('cached_access')) || {}); }
-        }
-        function renderBooks(acc) {
-            localStorage.setItem('cached_access', JSON.stringify(acc));
-            let g = document.getElementById('book-grid'); g.innerHTML = "";
-            if(typeof autoBookList !== 'undefined') {
-                autoBookList.forEach(b => {
-                    if(acc[b.name]) {
-                        let pct = localStorage.getItem('prog_' + b.name) || 0;
-                        g.innerHTML += `<div class="book-card" onclick="openBook('${b.file}','${b.name}')"><img src="${b.image||'cover.jpg'}" class="book-cover"><div style="position:absolute;bottom:0;width:100%;background:rgba(0,0,0,0.8);padding:5px;">${b.name}</div><div class="progress-line"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
-                    }
-                });
+        // --- LOGIC ---
+
+        function handleLogin() {
+            const name = document.getElementById('user-name').value;
+            const device = document.getElementById('device-name').value;
+            if(name && device) {
+                localStorage.setItem('bv_user', name);
+                localStorage.setItem('bv_device', device);
+                localStorage.setItem('bv_date', new Date().toISOString());
+                localStorage.setItem('bv_access', 'false'); 
+                checkAccess();
             }
         }
-        function openBook(f,n) { document.getElementById('home-screen').classList.remove('active'); document.getElementById('reader-screen').classList.add('active'); document.getElementById('reader-title').innerText=n; document.getElementById('book-frame').src=f; }
-        function closeReader() { document.getElementById('reader-screen').classList.remove('active'); document.getElementById('home-screen').classList.add('active'); document.getElementById('book-frame').src=""; }
-        function changeFont(d) { let b=document.getElementById('book-frame').contentDocument.body; b.style.fontSize=(parseFloat(window.getComputedStyle(b).fontSize)+d*2)+"px"; }
-        
-        function openSettings() { document.getElementById('modal-body').innerHTML = `<h2 style="color:var(--neon)">मेनू</h2><div onclick="showAbout()" style="padding:15px; border-bottom:1px solid #333;">ℹ️ आमच्याबद्दल (About Us)</div>`; document.getElementById('modal-box').style.display='flex'; }
 
-        // 🔥 FULL ABOUT US CONTENT 🔥
-        function showAbout() { 
-            document.getElementById('modal-body').innerHTML = `
-            <div class="about-text">
-                <h2 style="text-align:center; color:var(--gold); border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:10px;">॥ श्री दत्तात्रेय प्रभू भगवान की जय ॥</h2>
-                
-                <img src="photo1.jpg" style="width:100%; border-radius:10px; margin:15px 0; border:1px solid #555;">
-                
-                <p>"ज्याप्रमाणे आकाशात सूर्य तळपत असतो... <span class="gold-txt">'प्रज्ञासूर्य' म्हणजे प. पू. प. म. श्री मोठे बाबा अंकुळनेरकर</span> होत."</p>
-                <p>या विश्वात सूर्याचे स्थान अढळ आहे... श्रीमोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे.</p>
-                <p>शास्त्रांमध्ये 'सर्वविद्' आणि 'ब्रह्मनिष्ठ' अशा महापुरुषांचे वर्णन आढळते. श्रीमोठेबाबा हे याचे मूर्तिमंत रूप आहेत. गीतेत सांगितलेली 'ज्ञानियाची लक्षणे' त्यांच्या ठायी आजही अनुभवास येतात.</p>
-                
-                <div class="quote-box">"हे ॲप त्या महातेजस्वी 'प्रज्ञासूर्या'च्या चरणी समर्पित आहे."</div>
-                
-                <h3 class="cyan-txt" style="text-align:center; margin-top:20px;">॥ ब्रह्मविद्या - स्वाध्याय आणि चिंतन ॥</h3>
-                
-                <img src="photo2.jpg" style="width:100%; border-radius:10px; margin:15px 0; border:1px solid #555;">
-                
-                <p>संन्यास आश्रमात 'स्वाध्याय' आणि 'विहार' याला महत्त्व आहे. प्रवासात ग्रंथ सोबत बाळगणे कठीण असते, म्हणूनच हे <strong>'ब्रह्मविद्या ॲप'</strong> तयार करण्यात आले आहे.</p>
-                <p>हे ॲप म्हणजे साधकांसाठी एक <span class="cyan-txt">'फिरते ग्रंथालय' (Digital Library)</span> आहे.</p>
-                <ul style="padding-left:20px;"><li>अखंड स्वाध्याय</li><li>दुर्मिळ ग्रंथ रक्षण</li><li>बाबांचे विचार</li></ul>
-                
-                <p><span class="gold-txt">श्री देवदत्त आश्रम, जाधववाडी</span> हे याचे मुख्य प्रेरणास्थान आहे.</p>
-            </div>`; 
+        function checkAccess() {
+            if(!localStorage.getItem('bv_user')) { showScreen('login-screen'); return; }
+            
+            // 30 Days Validity Check
+            const loginDate = new Date(localStorage.getItem('bv_date'));
+            const today = new Date();
+            const diffDays = Math.ceil(Math.abs(today - loginDate) / (1000 * 60 * 60 * 24));
+            if(diffDays > 30) {
+                alert("Validity Expired (30 Days). Please Login Again.");
+                localStorage.clear(); showScreen('login-screen'); return;
+            }
+
+            // Access Check (Simulated)
+            const isGranted = localStorage.getItem('bv_access') === 'true';
+            if(isGranted) { loadDashboard(); } else { 
+                showScreen('ovi-screen');
+                // Simulate Admin Grant (For Demo Only)
+                setTimeout(() => { localStorage.setItem('bv_access', 'true'); alert("Access Granted!"); loadDashboard(); }, 3000);
+            }
         }
+
+        function loadDashboard() {
+            showScreen('dashboard-screen');
+            const grid = document.getElementById('book-list');
+            grid.innerHTML = "";
+            const books = (typeof autoBookList !== 'undefined') ? autoBookList : [{name: "Demo Book", file: "demo.html", image: "cover.jpg"}];
+
+            books.forEach(book => {
+                const div = document.createElement('div');
+                div.className = 'glass-panel book-card';
+                div.onclick = () => openBook(book);
+                div.innerHTML = `<i class="fas fa-thumbtack pin-icon" style="display:${book.pinned?'block':'none'}"></i><img src="${book.image}" class="book-cover"><p style="margin-top:10px;">${book.name}</p>`;
+                grid.appendChild(div);
+            });
+        }
+
+        function openBook(book) {
+            document.getElementById('book-title').innerText = book.name;
+            const contentDiv = document.getElementById('book-content');
+            
+            fetch(book.file).then(r => r.text()).then(t => {
+                contentDiv.innerHTML = t;
+                contentDiv.scrollTop = localStorage.getItem('pos_' + book.name) || 0;
+            }).catch(e => contentDiv.innerHTML = "<p style='padding:20px'>Loading...</p>");
+
+            showScreen('reader-screen');
+            contentDiv.onscroll = () => localStorage.setItem('pos_' + book.name, contentDiv.scrollTop);
+        }
+
+        function closeBook() { showScreen('dashboard-screen'); }
+
+        function searchBook() {
+            const query = document.getElementById('search-input').value;
+            if(query.length > 2) window.find(query);
+        }
+
+        function showSettings(type) {
+            document.getElementById('menu-list').style.display = 'none';
+            document.getElementById('setting-content').style.display = 'block';
+            const content = document.getElementById('dynamic-content');
+
+            if(type === 'about') {
+                content.innerHTML = `
+                    <div style="padding-bottom: 20px;">
+                        <img src="photo1.jpg" style="width:100%; border-radius:10px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.2);">
+                        
+                        <div style="background: rgba(255, 215, 0, 0.1); border-left: 4px solid #ffd700; padding: 10px; margin: 15px 0; text-align: center; border-radius: 5px;">
+                            <p style="font-weight: bold; color: #ffd700; margin: 0; font-style: italic;">
+                                "श्रीकृष्णरावो म्हणे उद्धवदेवा : हा ज्ञानरत्नाचा ठेवा :<br>
+                                भलेतया हातीं नेदावा : अधिकारेंवीण ।।"
+                            </p>
+                        </div>
+
+                        <h3 style="color: #ffd700; text-align: center; margin-bottom: 15px;">॥ श्री दत्तात्रेय प्रभू भगवान की जय ॥</h3>
+                        
+                        <p style="text-align: justify; margin-bottom: 10px;">
+                            "ज्याप्रमाणे आकाशात सूर्य तळपत असतो आणि त्याच्या प्रकाशाने संपूर्ण विश्व उजळून निघते, त्याचप्रमाणे आपल्या साधकांच्या आयुष्यातील अज्ञानाचा अंधकार दूर करून त्यांना 'ब्रह्मविद्येचा' लख्ख प्रकाश देणारे साक्षात 'प्रज्ञासूर्य' म्हणजे प. पू. प. म. श्री मोठे बाबा अंकुळनेरकर होत."
+                        </p>
+                        <p style="text-align: justify; margin-bottom: 10px;">
+                            या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे. ते आजही आपल्या शिष्यवृंदांच्या, साधकांच्या पाठीशी खंबीरपणे उभे आहेत.
+                        </p>
+                        <p style="text-align: justify; margin-bottom: 10px;">
+                            शास्त्रांमध्ये 'सर्वविद्' (सर्व काही जाणणारा) आणि 'ब्रह्मनिष्ठ' (ब्रह्माशी एकरूप झालेला) अशा महापुरुषांचे वर्णन आढळते. श्रीमोठेबाबा हे या वर्णनाचे मूर्तिमंत आणि प्रत्यक्ष रूप आहेत. गीतेत १३ व्या अध्यायात 'ज्ञानियाची लक्षणे' सांगितली आहेत—जसे की अमानित्व, अदंभित्व, अचल शांती, वैराग्य, निरहंकार वृत्ती आणि केवळ ईश्वरप्राप्तीची तळमळ—ही सर्व लक्षणे श्रीमोठेबाबांच्या ठायी आजही आपल्याला अनुभवास येतात.
+                        </p>
+                        <p style="text-align: justify; margin-bottom: 10px;">
+                            त्यांचे संपूर्ण आयुष्य हे 'ब्रह्मविद्या शास्त्राच्या' चिंतनात आणि आचरणात व्यतीत झाले आहे. राहूनही कमळाच्या पानाप्रमाणे अलिप्त ईश्वरप्राप्तीसाठी आचरण कसे शुद्ध आणि निर्मळ असावे याचा वस्तुपाठ ते आपल्या साधकांना देत आहेत. श्रीमोठेबाबा हे केवळ एक व्यक्ती नसून ती एक 'अखंड चेतना' आहे. जसा सूर्य स्वतः प्रकाशीत होऊन जगाला प्रकाश देतो, तसे श्रीमोठेबाबा आपल्या तपाच्या सामर्थ्याने साधकांचे जीवन उज्वल करत आहेत. त्यांचे मार्गदर्शन, त्यांची प्रसन्नता आणि त्यांचा आशीर्वाद प्रत्येक श्रद्धावान साधकाला क्षणाक्षणाला जाणवत असतो.
+                        </p>
+                        <p style="text-align: center; font-weight: bold; color: cyan; margin: 15px 0;">
+                            हे ॲप, आणि आमचा हा छोटासा प्रयत्न, त्या महातेजस्वी 'प्रज्ञासूर्या'च्या चरणी अत्यंत विनम्र भावाने समर्पित आहे.
+                        </p>
+
+                        <hr style="border-color: rgba(255,255,255,0.2); margin: 20px 0;">
+
+                        <h3 style="color: #ffd700; text-align: center;">॥ ब्रह्मविद्या - स्वाध्याय आणि चिंतन ॥</h3>
+                        <p style="text-align: justify; margin-bottom: 10px;">
+                            प. पू. श्री मोठे बाबांनी जी 'ब्रह्मविद्या' (ईश्वरी ज्ञान) दिली आहे, तिचे रक्षण करणे आणि अखंड चिंतन करणे हे प्रत्येक संन्यासी साधकाचे परम कर्तव्य आहे.
+                        </p>
+                        <p style="text-align: justify; margin-bottom: 10px;">
+                            संन्यास आश्रमात 'स्वाध्याय' (शास्त्राचा अभ्यास) आणि 'विहार' (भ्रमंती) याला अत्यंत महत्त्व आहे. साधक जेव्हा विहारासाठी किंवा चातुर्मासासाठी बाहेर असतात, तेव्हा सोबत अनेक ग्रंथ बाळगणे प्रत्येक वेळी शक्य होत नाही. ग्रंथांच्या अनुपलब्धतेमुळे साधनेच्या किंवा अभ्यासाच्या प्रवाहात खंड पडू नये, यासाठी हे 'ब्रह्मविद्या ॲप' तयार करण्यात आले आहे.
+                        </p>
+                        <p style="text-align: center; font-weight: bold; color: #ffd700;">
+                            हे ॲप म्हणजे साधकांसाठी एक 'फिरते ग्रंथालय' (Digital Library) आहे.
+                        </p>
+
+                        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 10px 0;">
+                            <p style="margin-bottom: 10px; text-decoration: underline;"><b>या ॲपचा मुख्य उद्देश:</b></p>
+                            <ul style="padding-left: 20px; text-align: justify;">
+                                <li style="margin-bottom: 8px;"><b>१. अखंड स्वाध्याय:</b> साधक कोणत्याही स्थानी किंवा प्रवासात असले तरी, त्यांना शास्त्राचे वाचन आणि चिंतन अविरत करता यावे.</li>
+                                <li style="margin-bottom: 8px;"><b>२. दुर्मिळ ग्रंथ रक्षण:</b> प्राचीन हस्तलिखिते आणि आश्रमातील महत्त्वाचे ग्रंथ डिजिटल स्वरूपात सुरक्षित राहावेत आणि अभ्यासू साधकांना ते सहज उपलब्ध व्हावेत.</li>
+                                <li><b>३. बाबांचे विचार:</b> प. पू. मोठे बाबांची शिकवण आणि 'ब्रह्मविद्या' शास्त्राचे मार्गदर्शन साधकांना नित्यनियम पाळण्यासाठी सहाय्यक ठरावे.</li>
+                            </ul>
+                        </div>
+
+                        <p style="text-align: justify; margin-top: 15px;">
+                            श्री देवदत्त आश्रम, जाधववाडी हे या कार्याचे मुख्य प्रेरणास्थान आहे. श्रीमोठेबाबांच्या तपाने पुनीत झालेली ही भूमी म्हणजे ब्रह्मविद्येचे विद्यापीठच आहे. इथूनच हा ज्ञानाचा प्रवाह आता आधुनिक तंत्रज्ञानाच्या साहाय्याने प्रत्येक साधकापर्यंत पोहोचत आहे, जेणेकरून त्यांची ज्ञानसाधना अधिक प्रगल्भ होईल.
+                        </p>
+
+                        <h3 style="color: #ffd700; text-align: center; margin-top: 20px;">॥ श्रीदत्तात्रेयप्रभू महाराज की जय ॥</h3>
+                        <img src="photo2.jpg" style="width:100%; border-radius:10px; margin-top:20px; border:1px solid rgba(255,255,255,0.2);">
+                    </div>`;
+            } else if(type === 'profile') {
+                content.innerHTML = `<div style="text-align:center;"><i class="fas fa-user-circle" style="font-size:60px; color:cyan;"></i><h3>${localStorage.getItem('bv_user')}</h3><p>${localStorage.getItem('bv_device')}</p><p style="color:yellow">Valid for 30 Days</p></div>`;
+            } else if(type === 'help') {
+                content.innerHTML = `<h3>Help</h3><ul><li>Login with name.</li><li>Wait for Admin Access.</li><li>Read Books.</li><li>Use Search Bar.</li></ul>`;
+            } else if(type === 'feedback') {
+                content.innerHTML = `<h3>Feedback</h3><textarea style="width:100%; height:100px; color:black;"></textarea><button>Send</button>`;
+            }
+        }
+
+        function backToMenu() { document.getElementById('menu-list').style.display='block'; document.getElementById('setting-content').style.display='none'; }
+        function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+
+        if(localStorage.getItem('bv_user')) { checkAccess(); }
     </script>
 </body>
 </html>
