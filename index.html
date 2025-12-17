@@ -21,20 +21,34 @@
         /* OVI SCREEN (Lock Screen) */
         #ovi-screen { justify-content:center; align-items:center; text-align:center; background:black; }
         .shloka-box { 
-            border: 1px solid var(--gold); padding: 20px; border-radius: 15px; 
-            color: var(--gold); font-size: 18px; line-height: 1.6; 
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-            margin: 20px;
+            border: 1px solid var(--gold); padding: 25px; border-radius: 15px; 
+            color: var(--gold); font-size: 20px; line-height: 1.6; 
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); margin: 20px;
+            font-weight: bold;
         }
 
-        /* DASHBOARD */
-        .navbar { height:60px; padding:0 15px; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.8); }
-        .book-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:15px; overflow-y:auto; flex:1; }
-        .book-card { padding:10px; text-align:center; position:relative; }
-        .book-cover { width:100%; aspect-ratio:2/3; object-fit:cover; border-radius:8px; }
+        /* DASHBOARD (TEXT LIST VIEW) */
+        .navbar { height:60px; padding:0 15px; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.8); border-bottom: 1px solid #333; }
         
-        /* Lock Overlay for specific books */
-        .locked-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; border-radius:10px; }
+        /* List Container instead of Grid */
+        .book-list-container { 
+            display: flex; flex-direction: column; gap: 10px; 
+            padding: 20px; overflow-y: auto; flex: 1; 
+        }
+        
+        /* Text-Only Book Card */
+        .book-item { 
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px; 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+        .book-item:active { background: rgba(0, 242, 255, 0.1); transform: scale(0.98); }
+        .book-name { font-size: 18px; font-weight: 500; color: white; }
+        .book-icon { font-size: 20px; color: var(--neon); }
+        .pin-icon { color: var(--gold); margin-right: 15px; font-size: 18px; }
 
         /* READER & CHAT */
         #reader-screen { background:#f4f4f4; color:#333; }
@@ -59,10 +73,10 @@
 
     <div id="ovi-screen" class="screen">
         <div style="padding:30px; width:90%; max-width:500px;">
-            <i class="fas fa-lock" style="font-size:50px; color:var(--pink); margin-bottom:20px;"></i>
+            <i class="fas fa-book-reader" style="font-size:50px; color:var(--pink); margin-bottom:20px;"></i>
             
-            <h3 style="color:white; margin-bottom:5px;">Access Restricted</h3>
-            <p style="color:gray; font-size:12px; margin-bottom:30px;">Waiting for Admin Approval...</p>
+            <h3 style="color:white; margin-bottom:5px;">Digital Granthalaya</h3>
+            <p style="color:gray; font-size:12px; margin-bottom:30px;">(Waiting for Admin to assign books)</p>
             
             <div class="shloka-box">
                 "श्रीकृष्णरावो म्हणे उद्धवदेवा :<br>
@@ -71,7 +85,7 @@
                 अधिकारेंवीण ।।"
             </div>
 
-            <p style="margin-top:20px; font-size:12px; color:#555;">(Please contact admin to grant access for this device)</p>
+            <p style="margin-top:20px; font-size:12px; color:#555;">(Please contact admin to unlock specific books)</p>
             
             <button onclick="checkAccess()" style="background:transparent; border:1px solid var(--neon); color:var(--neon); width:auto; padding:10px 30px;">Check Status</button>
             <p id="debug-id" style="font-size:10px; color:#333; margin-top:20px;"></p>
@@ -84,8 +98,11 @@
             <span style="font-weight:bold;">BRAHMAVIDYA</span>
             <i class="fas fa-bars" style="font-size:24px;" onclick="openSet('menu')"></i>
         </div>
-        <div style="display:flex; overflow-x:auto; padding:10px; gap:10px;" id="cat-list"></div>
-        <div class="book-grid" id="book-list"></div>
+        
+        <div style="display:flex; overflow-x:auto; padding:10px; gap:10px; border-bottom:1px solid #222;" id="cat-list"></div>
+
+        <div class="book-list-container" id="book-list">
+            </div>
     </div>
 
     <div id="reader-screen" class="screen">
@@ -101,17 +118,14 @@
     </div>
 
     <div id="settings-modal" class="modal">
-        <div class="glass-panel" style="width:90%; max-height:90%; padding:20px; display:flex; flex-direction:column;">
-            <i class="fas fa-times" onclick="document.getElementById('settings-modal').style.display='none'" style="align-self:flex-end; font-size:24px;"></i>
+        <div class="glass-panel modal-content" style="width:90%; max-height:90%; padding:20px; display:flex; flex-direction:column;">
             <div id="modal-body" style="flex:1; overflow-y:auto; margin-top:10px;"></div>
         </div>
     </div>
 
     <script src="filelist.js"></script>
     <script>
-        // 🔥 YOUR FIREBASE URL 🔥
         const DB_URL = "https://adx-bk-default-rtdb.asia-southeast1.firebasedatabase.app";
-        
         let user = { uid: localStorage.getItem('bv_uid'), name: localStorage.getItem('bv_name') };
         let categories = JSON.parse(localStorage.getItem('bv_cats')) || ['All', 'Nityanem', 'Pothi'];
         let pinned = JSON.parse(localStorage.getItem('bv_pinned')) || [];
@@ -129,7 +143,6 @@
         function getDeviceId() {
             let id = localStorage.getItem('bv_device_id');
             if(!id) {
-                // Generate a simpler ID for readability
                 id = (navigator.platform.substring(0,3) || "Mob") + "_" + Math.floor(Math.random()*10000);
                 localStorage.setItem('bv_device_id', id);
             }
@@ -140,55 +153,53 @@
             const n = document.getElementById('inp-name').value.trim();
             if(!n) return alert("Enter Name");
             const d = getDeviceId();
-            // Create Clean UID
             const uid = (n + "_" + d).replace(/[^a-zA-Z0-9]/g, "");
             
             user = { uid, name: n };
             localStorage.setItem('bv_uid', uid);
             localStorage.setItem('bv_name', n);
 
-            // Register User
             fetch(`${DB_URL}/users/${uid}.json`).then(r=>r.json()).then(exist => {
-                // Keep granted status if exists
                 const data = { 
-                    name: n, 
-                    device: d, 
-                    lastLogin: Date.now(), 
-                    isOnline:true, 
+                    name: n, device: d, lastLogin: Date.now(), isOnline:true, 
                     granted: (exist && exist.granted) ? true : false,
                     isBlocked: (exist && exist.isBlocked) ? true : false
                 };
-                
-                fetch(`${DB_URL}/users/${uid}.json`, { method:'PUT', body:JSON.stringify(data) })
-                    .then(() => checkAccess());
+                fetch(`${DB_URL}/users/${uid}.json`, { method:'PUT', body:JSON.stringify(data) }).then(() => checkAccess());
             });
 
-            // Auto Sync Books to Admin
             if(typeof autoBookList !== 'undefined') {
                  const updates = {}; autoBookList.forEach(b => updates[b.name]=true);
                  fetch(`${DB_URL}/library_catalog.json`, {method:'PATCH', body:JSON.stringify(updates)});
             }
         }
 
+        // 🔥 CRITICAL: STRICT ACCESS CHECK 🔥
         function checkAccess() {
             if(!user.uid) return showScreen('login-screen');
             
-            // Fetch User Status AND Book Permissions
             Promise.all([
                 fetch(`${DB_URL}/users/${user.uid}.json?t=${Date.now()}`).then(r=>r.json()),
                 fetch(`${DB_URL}/users/${user.uid}/access.json?t=${Date.now()}`).then(r=>r.json())
             ]).then(([u, perms]) => {
-                if(u && u.granted === true && !u.isBlocked) {
-                    bookPermissions = perms || {};
-                    // Only load dashboard if not already reading or viewing dashboard
+                bookPermissions = perms || {};
+                
+                // Count allowed books
+                let allowedCount = 0;
+                if(bookPermissions) {
+                    Object.values(bookPermissions).forEach(val => { if(val === true) allowedCount++; });
+                }
+
+                // Logic: Must be Granted AND Not Blocked AND Have at least 1 book allowed
+                if(u && u.granted === true && !u.isBlocked && allowedCount > 0) {
                     if(!document.getElementById('dashboard-screen').classList.contains('active') && 
                        !document.getElementById('reader-screen').classList.contains('active')) {
                         loadDashboard();
                     } else if(document.getElementById('dashboard-screen').classList.contains('active')) {
-                        renderBooks(); // Silent refresh for locks
+                        renderBooks(); // Refresh list if new book added
                     }
                 } else {
-                    // IF NOT GRANTED OR BLOCKED -> SHOW OVI SCREEN (No Books)
+                    // If 0 books allowed, show Shloka Screen
                     showScreen('ovi-screen');
                 }
             }).catch(e => console.log("Net Error"));
@@ -204,28 +215,35 @@
         function addCat() { const n=prompt("New Cat"); if(n){categories.push(n); localStorage.setItem('bv_cats',JSON.stringify(categories)); renderCats();} }
         
         function renderBooks() {
-            const grid = document.getElementById('book-list'); grid.innerHTML="";
+            const listContainer = document.getElementById('book-list'); listContainer.innerHTML="";
             let list = (typeof autoBookList !== 'undefined') ? autoBookList : [];
             list.sort((a,b)=>(pinned.includes(b.name)?1:0)-(pinned.includes(a.name)?1:0));
             
+            let visibleCount = 0;
+
             list.forEach(b => {
-                const isAllowed = bookPermissions[b.name] === true;
-                const isPin = pinned.includes(b.name);
-                
-                let html = `
-                <div class="glass-panel book-card" onclick="${isAllowed ? `openBook('${b.name}','${b.file}')` : `alert('Locked by Admin')`}">
-                    <i class="fas fa-thumbtack pin-btn ${isPin?'pinned':''}" onclick="togglePin('${b.name}', event)"></i>
-                    <img src="${b.image}" class="book-cover" style="opacity:${isAllowed?1:0.4}">
-                    <p style="margin-top:5px; font-size:14px;">${b.name}</p>
-                `;
-                
-                // Lock Icon
-                if(!isAllowed) html += `<div class="locked-overlay"><i class="fas fa-lock" style="font-size:24px; color:var(--pink);"></i></div>`;
-                
-                html += `</div>`;
-                grid.innerHTML += html;
+                // ONLY SHOW IF ALLOWED
+                if(bookPermissions[b.name] === true) {
+                    visibleCount++;
+                    const isPin = pinned.includes(b.name);
+                    
+                    listContainer.innerHTML += `
+                    <div class="book-item" onclick="openBook('${b.name}','${b.file}')">
+                        <div style="display:flex; align-items:center;">
+                            <i class="fas fa-thumbtack pin-icon" style="color:${isPin?'var(--gold)':'#555'}" onclick="togglePin('${b.name}', event)"></i>
+                            <span class="book-name">${b.name}</span>
+                        </div>
+                        <i class="fas fa-chevron-right book-icon"></i>
+                    </div>`;
+                }
             });
+
+            if(visibleCount === 0) {
+                // Fallback (Should typically be handled by checkAccess, but just in case)
+                showScreen('ovi-screen');
+            }
         }
+        
         function togglePin(n,e) { e.stopPropagation(); pinned.includes(n)?pinned=pinned.filter(x=>x!==n):pinned.push(n); localStorage.setItem('bv_pinned',JSON.stringify(pinned)); renderBooks(); }
 
         function openBook(n,f) {
@@ -245,10 +263,10 @@
                 b.innerHTML=`<h2 style="text-align:center;">MENU</h2>
                 <div onclick="openSet('profile')" style="padding:15px; border-bottom:1px solid #333;">👤 Profile</div>
                 <div onclick="openSet('about')" style="padding:15px; border-bottom:1px solid #333;">ℹ️ About Us</div>
-                <div onclick="openSet('chat')" style="padding:15px;">💬 Chat</div>`;
+                <div onclick="openSet('chat')" style="padding:15px;">💬 Chat</div>
+                <button onclick="document.getElementById('settings-modal').style.display='none'" style="margin-top:20px; background:#333;">Close</button>`;
             } 
             else if(t==='about') {
-                // 🔥 FULL MARATHI INFO ADDED HERE 🔥
                 b.innerHTML=`
                     <button onclick="openSet('menu')">Back</button>
                     <div style="margin-top:15px; text-align:justify; line-height:1.6; color:#ddd;">
@@ -258,7 +276,7 @@
                             "ज्याप्रमाणे आकाशात सूर्य तळपत असतो आणि त्याच्या प्रकाशाने संपूर्ण विश्व उजळून निघते, त्याचप्रमाणे आपल्या साधकांच्या आयुष्यातील अज्ञानाचा अंधकार दूर करून त्यांना 'ब्रह्मविद्येचा' लख्ख प्रकाश देणारे साक्षात 'प्रज्ञासूर्य' म्हणजे प. पू. प. म. श्री मोठे बाबा अंकुळनेरकर होत."
                         </p>
                         <p>
-                            या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे. ते आजही आपल्या शिष्यवृंदांच्या, साधकांच्या पाठीशी खंबीरपणे उभे आहेत.
+                            या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे.
                         </p>
                         <p>
                             शास्त्रांमध्ये 'सर्वविद्' आणि 'ब्रह्मनिष्ठ' अशा महापुरुषांचे वर्णन आढळते. श्रीमोठेबाबा हे या वर्णनाचे मूर्तिमंत रूप आहेत. गीतेतील 'ज्ञानियाची लक्षणे' - अमानित्व, अदंभित्व, शांती, वैराग्य - ही सर्व त्यांच्या ठायी अनुभवास येतात.
