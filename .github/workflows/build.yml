@@ -1,4 +1,4 @@
-name: Build Sthanshodhani Final APK
+name: Build Brahmavidya Final APK
 
 on:
   push:
@@ -7,79 +7,112 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
       # 1. कोड चेकआउट करणे
       - uses: actions/checkout@v3
 
-      # 2. Node.js इंस्टॉल करणे
+      # 2. Node.js आणि Cordova इंस्टॉल करणे
       - uses: actions/setup-node@v3
         with:
           node-version: 16
       - run: npm install -g cordova
 
-      # 3. Java 17 इंस्टॉल करणे (Android 12+ साठी हेच लागते)
+      # 3. Java इंस्टॉल करणे (Android साठी)
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # 4. नवीन फ्रेश प्रोजेक्ट बनवणे
-      - name: Create Fresh Cordova Project
+      # 4. Cordova प्रोजेक्ट तयार करणे आणि प्लगिन्स टाकणे
+      - name: Create Cordova Project
         run: |
-          # 1. प्रोजेक्ट तयार करा
-          cordova create SthanshodhaniApp com.sthanshodhani.app "Sthanshodhani"
-          cd SthanshodhaniApp
+          # इथे ID 'ovi' आहे, म्हणून हे चालणार!
+          cordova create myapp com.brahmavidya.ovi "Brahmavidya"
+          cd myapp
           
-          # 2. प्लगइन्स टाका (Device प्लगइन महत्त्वाचे आहे ट्रॅकिंगसाठी)
-          cordova plugin add cordova-plugin-device
+          # Plugins for Fullscreen, Statusbar and Network
           cordova plugin add cordova-plugin-statusbar
+          cordova plugin add cordova-plugin-network-information
           cordova plugin add cordova-plugin-whitelist
           
-          # 3. Android प्लॅटफॉर्म ॲड करा (येथे @12.0.0 वापरले आहे म्हणजे एरर येणार नाही)
-          # हाच तो मुख्य फिक्स आहे ज्याने XmlParser एरर जाईल
-          cordova platform add android@12.0.0
-          
+          # Android Platform (Latest Stable)
+          cordova platform add android
           cd ..
 
-      # 5. Config.xml मध्ये लोगो आणि सेटिंग्ज लावणे (तुमच्या सॅम्पल कोडनुसार)
-      - name: Configure App Settings & Logo
+      # 5. Config.xml सेटिंग्ज (आयकॉन, फुलस्क्रीन, ओरिएंटेशन)
+      - name: Configure App Settings
         run: |
-          cd SthanshodhaniApp
-          
-          # 🔥 LOGO SETTING (तुमच्या सॅम्पल कोडमधील जादू)
-          # हे लाईन config.xml मध्ये <icon ... /> ॲड करते
+          cd myapp
+          # App Icon सेट करणे
           sed -i '/<widget/a <icon src="www/logo.png" />' config.xml
           
-          # Fullscreen मोड
+          # Fullscreen आणि Portrait Mode
           sed -i '/<widget/a <preference name="Fullscreen" value="true" />' config.xml
+          sed -i '/<widget/a <preference name="Orientation" value="portrait" />' config.xml
           
-          # Android 12 Splash Screen साठी लोगो वापरणे
+          # Timeout वाढवणे (मोठ्या पुस्तकांसाठी)
+          sed -i '/<widget/a <preference name="LoadUrlTimeoutValue" value="70000" />' config.xml
+          
+          # Android 12+ साठी सेटिंग
           sed -i '/<widget/a <preference name="AndroidWindowSplashScreenAnimatedIcon" value="www/logo.png" />' config.xml
           sed -i '/<widget/a <preference name="AndroidWindowSplashScreenBackground" value="#000000" />' config.xml
-          
           cd ..
 
-      # 6. फाईल्स कॉपी करणे (तुमच्या GitHub वरून नवीन ॲपमध्ये)
+      # 6. फाईल्स कॉपी करणे (तुमच्या Repo मधून APK मध्ये)
       - name: Copy Files to WWW
         run: |
-          # 1. नवीन प्रोजेक्टमधील डीफॉल्ट फाईल्स उडवणे
-          rm SthanshodhaniApp/www/index.html
-          rm -rf SthanshodhaniApp/www/js
-          rm -rf SthanshodhaniApp/www/css
-          rm -rf SthanshodhaniApp/www/img
+          # जुन्या डिफॉल्ट फाईल्स काढणे
+          rm myapp/www/index.html
+          rm myapp/www/css/index.css
+          rm myapp/www/js/index.js
+          
+          # तुमच्या फाईल्स कॉपी करणे
+          cp index.html myapp/www/
+          cp *.html myapp/www/ || true
+          cp *.css myapp/www/ || true
+          cp *.js myapp/www/ || true
+          
+          # इमेजेस कॉपी करणे (Logo, Login BG, Book Covers)
+          cp logo.png myapp/www/ || true
+          cp login_bg.png myapp/www/ || true
+          cp *.png myapp/www/ || true
+          cp *.jpg myapp/www/ || true
+          cp *.jpeg myapp/www/ || true
 
-          # 2. तुमची www फोल्डर (ज्यात logo.png आणि index.html आहे) कॉपी करणे
-          cp -r www/* SthanshodhaniApp/www/
+      # 7. ऑटोमॅटिक बुक लिस्ट बनवणे (हे सर्वात महत्त्वाचे लॉजिक आहे)
+      - name: Generate Smart File List
+        run: |
+          cd myapp/www
+          echo "var autoBookList = [" > filelist.js
+          
+          # सर्व HTML फाईल्स स्कॅन करा
+          for f in *.html; do
+            # index.html आणि admin.html सोडून बाकी सर्व पुस्तके आहेत
+            if [ "$f" != "index.html" ] && [ "$f" != "admin.html" ]; then
+              baseName=$(basename "$f" .html)
+              
+              # कव्हर इमेज शोधणे (त्याच नावाची इमेज आहे का ते पाहणे)
+              img="cover.jpg" # डिफॉल्ट कव्हर
+              if [ -f "$baseName.jpg" ]; then img="$baseName.jpg"; fi
+              if [ -f "$baseName.png" ]; then img="$baseName.png"; fi
+              if [ -f "$baseName.jpeg" ]; then img="$baseName.jpeg"; fi
+              
+              echo "{ name: '$baseName', file: '$f', image: '$img' }," >> filelist.js
+            fi
+          done
+          
+          echo "];" >> filelist.js
+          cd ../..
 
-      # 7. APK बिल्ड करणे
+      # 8. APK बिल्ड करणे
       - name: Build APK
         run: |
-          cd SthanshodhaniApp
+          cd myapp
           cordova build android --debug
 
-      # 8. APK अपलोड करणे
+      # 9. APK अपलोड करणे (तुम्हाला डाऊनलोड करण्यासाठी)
       - uses: actions/upload-artifact@v4
         with:
-          name: Sthanshodhani-Final-APK
-          path: SthanshodhaniApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+          name: Brahmavidya-Ovi-APK
+          path: myapp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
