@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- THEME --- */
+        /* --- THEME (Cyber/Glass) --- */
         :root { --glass: rgba(20,20,20,0.95); --neon: #00f2ff; --gold: #ffd700; --pink: #ff0099; }
         body { margin:0; font-family:'Segoe UI', sans-serif; background:url('login_bg.png') center/cover fixed; color:white; height:100vh; overflow:hidden; -webkit-user-select:none; }
         
@@ -18,7 +18,7 @@
         input { background:rgba(0,0,0,0.5); border:1px solid var(--neon); color:white; padding:12px; border-radius:10px; width:100%; box-sizing:border-box; outline:none; }
         button { background:var(--neon); border:none; padding:12px; border-radius:10px; font-weight:bold; width:100%; cursor:pointer; margin-top:15px; }
         
-        /* OVI SCREEN */
+        /* OVI SCREEN (LOCK) */
         #ovi-screen { justify-content:center; align-items:center; text-align:center; background:black; }
         .shloka-box { 
             border: 1px solid var(--gold); padding: 25px; border-radius: 15px; 
@@ -26,7 +26,7 @@
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); margin: 20px; font-weight: bold;
         }
 
-        /* DASHBOARD (TEXT LIST) */
+        /* DASHBOARD (TEXT LIST ONLY) */
         .navbar { height:60px; padding:0 15px; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.8); border-bottom: 1px solid #333; }
         .book-list-container { display: flex; flex-direction: column; gap: 10px; padding: 20px; overflow-y: auto; flex: 1; }
         
@@ -36,8 +36,9 @@
             background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); 
             border-left: 4px solid var(--neon);
             border-radius: 8px; margin-bottom: 5px;
+            transition: 0.2s;
         }
-        .book-item:active { background: rgba(0, 242, 255, 0.1); }
+        .book-item:active { background: rgba(0, 242, 255, 0.1); transform: scale(0.98); }
         .book-name { font-size: 18px; font-weight: 500; color: white; margin-left: 10px; }
         
         /* READER & CHAT */
@@ -56,7 +57,7 @@
             <img src="logo.png" width="90" style="border-radius:50%; box-shadow:0 0 20px var(--neon); margin-bottom:20px;">
             <h3>Brahmavidya</h3>
             <input id="inp-name" placeholder="Enter Full Name" style="margin-bottom:10px;">
-            <p style="color:gray; font-size:12px;">Auto Device ID</p>
+            <p style="color:gray; font-size:12px;">Device ID detected automatically</p>
             <button onclick="login()">LOGIN</button>
         </div>
     </div>
@@ -65,11 +66,16 @@
         <div style="padding:30px; width:90%; max-width:500px;">
             <i class="fas fa-book-reader" style="font-size:50px; color:var(--pink); margin-bottom:20px;"></i>
             <h3 style="color:white; margin-bottom:5px;">Digital Granthalaya</h3>
+            <p style="color:gray; font-size:12px; margin-bottom:20px;">Waiting for Admin Permission...</p>
+            
             <div class="shloka-box">
-                "श्रीकृष्णरावो म्हणे उद्धवदेवा :<br>हा ज्ञानरत्नाचा ठेवा :<br>भलेतया हातीं नेदावा :<br>अधिकारेंवीण ।।"
+                "श्रीकृष्णरावो म्हणे उद्धवदेवा :<br>
+                हा ज्ञानरत्नाचा ठेवा :<br>
+                भलेतया हातीं नेदावा :<br>
+                अधिकारेंवीण ।।"
             </div>
-            <p style="color:gray; font-size:12px;">Waiting for Admin Permission...</p>
-            <button onclick="checkAccess()" style="background:transparent; border:1px solid var(--neon); color:var(--neon); width:auto; padding:10px 30px;">Refresh Status</button>
+
+            <button onclick="checkAccess()" style="background:transparent; border:1px solid var(--neon); color:var(--neon); width:auto; padding:10px 30px; margin-top:20px;">Refresh Status</button>
             <p id="debug-id" style="font-size:10px; color:#333; margin-top:20px;"></p>
         </div>
     </div>
@@ -85,7 +91,7 @@
 
     <div id="reader-screen" class="screen">
         <div style="height:50px; background:white; display:flex; align-items:center; padding:0 15px; justify-content:space-between;">
-            <i class="fas fa-arrow-left" onclick="showScreen('dashboard-screen')" style="color:black;"></i>
+            <i class="fas fa-arrow-left" onclick="history.back()" style="color:black; font-size: 20px; cursor: pointer;"></i>
             <span id="book-title" style="color:black; font-weight:bold;">Title</span>
             <i class="fas fa-bookmark" style="color:var(--neon);"></i>
         </div>
@@ -104,14 +110,30 @@
     <script src="filelist.js"></script>
     <script>
         const DB_URL = "https://adx-bk-default-rtdb.asia-southeast1.firebasedatabase.app";
+        
         let user = { uid: localStorage.getItem('bv_uid'), name: localStorage.getItem('bv_name') };
         let bookPermissions = {}; 
+
+        // 🔥 SYSTEM BACK BUTTON HANDLER 🔥
+        // This stops the app from closing when pressing Back on Android
+        window.addEventListener('popstate', function (event) {
+            if (document.getElementById('reader-screen').classList.contains('active')) {
+                // If in Reader, go back to Dashboard
+                showScreen('dashboard-screen');
+            } else if (document.getElementById('settings-modal').style.display === 'flex') {
+                // If in Settings, close modal
+                document.getElementById('settings-modal').style.display = 'none';
+            }
+            // If on Dashboard, default behavior (Exit) works
+        });
 
         window.onload = () => {
             if(user.uid) { 
                 document.getElementById('debug-id').innerText = user.uid;
                 checkAccess(); setInterval(checkAccess, 5000); 
             }
+            // Replace Initial History State
+            history.replaceState({page: 'dashboard'}, null, '');
         };
 
         function getDeviceId() {
@@ -128,15 +150,20 @@
             if(!n) return alert("Enter Name");
             const d = getDeviceId();
             const uid = (n + "_" + d).replace(/[^a-zA-Z0-9]/g, "");
+            
             user = { uid, name: n };
-            localStorage.setItem('bv_uid', uid); localStorage.setItem('bv_name', n);
+            localStorage.setItem('bv_uid', uid);
+            localStorage.setItem('bv_name', n);
 
             fetch(`${DB_URL}/users/${uid}.json`).then(r=>r.json()).then(exist => {
-                const data = { name: n, device: d, lastLogin: Date.now(), isOnline:true, granted: (exist && exist.granted) ? true : false };
+                const data = { 
+                    name: n, device: d, lastLogin: Date.now(), isOnline:true, 
+                    granted: (exist && exist.granted) ? true : false,
+                    isBlocked: (exist && exist.isBlocked) ? true : false
+                };
                 fetch(`${DB_URL}/users/${uid}.json`, { method:'PUT', body:JSON.stringify(data) }).then(() => checkAccess());
             });
-            
-            // Auto Sync Books
+
             if(typeof autoBookList !== 'undefined') {
                  const updates = {}; autoBookList.forEach(b => updates[b.name]=true);
                  fetch(`${DB_URL}/library_catalog.json`, {method:'PATCH', body:JSON.stringify(updates)});
@@ -145,6 +172,7 @@
 
         function checkAccess() {
             if(!user.uid) return showScreen('login-screen');
+            
             Promise.all([
                 fetch(`${DB_URL}/users/${user.uid}.json?t=${Date.now()}`).then(r=>r.json()),
                 fetch(`${DB_URL}/users/${user.uid}/access.json?t=${Date.now()}`).then(r=>r.json())
@@ -154,26 +182,29 @@
                 if(bookPermissions) Object.values(bookPermissions).forEach(val => { if(val === true) allowedCount++; });
 
                 if(u && u.granted === true && !u.isBlocked && allowedCount > 0) {
-                    if(!document.getElementById('dashboard-screen').classList.contains('active') && !document.getElementById('reader-screen').classList.contains('active')) {
+                    if(!document.getElementById('dashboard-screen').classList.contains('active') && 
+                       !document.getElementById('reader-screen').classList.contains('active')) {
                         loadDashboard();
                     } else if(document.getElementById('dashboard-screen').classList.contains('active')) {
                         renderBooks();
                     }
-                } else { showScreen('ovi-screen'); }
-            });
+                } else {
+                    showScreen('ovi-screen');
+                }
+            }).catch(e => console.log("Net Error"));
         }
 
         function loadDashboard() { showScreen('dashboard-screen'); renderBooks(); }
         
         function renderBooks() {
-            const list = document.getElementById('book-list'); list.innerHTML="";
-            let books = (typeof autoBookList !== 'undefined') ? autoBookList : [];
+            const listContainer = document.getElementById('book-list'); listContainer.innerHTML="";
+            let list = (typeof autoBookList !== 'undefined') ? autoBookList : [];
             let visibleCount = 0;
 
-            books.forEach(b => {
-                if(bookPermissions[b.name] === true) { // SHOW ONLY ALLOWED
+            list.forEach(b => {
+                if(bookPermissions[b.name] === true) { 
                     visibleCount++;
-                    list.innerHTML += `
+                    listContainer.innerHTML += `
                     <div class="book-item" onclick="openBook('${b.name}','${b.file}')">
                         <div style="display:flex; align-items:center;">
                             <i class="fas fa-book" style="color:var(--neon)"></i>
@@ -183,17 +214,41 @@
                     </div>`;
                 }
             });
+
             if(visibleCount === 0) showScreen('ovi-screen');
         }
 
-        function openBook(n,f) {
-            showScreen('reader-screen'); document.getElementById('book-title').innerText=n;
-            fetch(f).then(r=>r.text()).then(t => {
-                const d=document.getElementById('book-content'); d.innerHTML=t;
-                d.scrollTop=localStorage.getItem('pos_'+n)||0; d.onscroll=()=>localStorage.setItem('pos_'+n, d.scrollTop);
+        // 🔥 JAVASCRIPT & HISTORY FIX 🔥
+        function openBook(n, f) {
+            // Push State to History so Back Button works
+            history.pushState({page: 'reader'}, null, '#reader');
+
+            showScreen('reader-screen'); 
+            document.getElementById('book-title').innerText = n;
+            
+            fetch(f).then(r => r.text()).then(t => {
+                const d = document.getElementById('book-content');
+                d.innerHTML = t;
+
+                // Re-run Scripts for Android
+                const scripts = d.querySelectorAll("script");
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement("script");
+                    if (oldScript.src) {
+                        newScript.src = oldScript.src;
+                        newScript.async = false;
+                    } else {
+                        newScript.textContent = oldScript.innerHTML;
+                    }
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+
+                d.scrollTop = localStorage.getItem('pos_' + n) || 0; 
+                d.onscroll = () => localStorage.setItem('pos_' + n, d.scrollTop);
             });
         }
 
+        // --- FULL ABOUT US & SETTINGS ---
         function openSet(t) {
             document.getElementById('settings-modal').style.display='flex';
             const b = document.getElementById('modal-body');
@@ -206,7 +261,6 @@
                 <button onclick="document.getElementById('settings-modal').style.display='none'" style="margin-top:20px; background:#333;">Close</button>`;
             } 
             else if(t==='about') {
-                // 🔥 FULL MARATHI INFO WITH IMAGES 🔥
                 b.innerHTML=`
                     <button onclick="openSet('menu')">Back</button>
                     <div style="margin-top:15px; text-align:justify; line-height:1.6; color:#ddd;">
@@ -216,10 +270,7 @@
                             "ज्याप्रमाणे आकाशात सूर्य तळपत असतो आणि त्याच्या प्रकाशाने संपूर्ण विश्व उजळून निघते, त्याचप्रमाणे आपल्या साधकांच्या आयुष्यातील अज्ञानाचा अंधकार दूर करून त्यांना 'ब्रह्मविद्येचा' लख्ख प्रकाश देणारे साक्षात 'प्रज्ञासूर्य' म्हणजे प. पू. प. म. श्री मोठे बाबा अंकुळनेरकर होत."
                         </p>
                         <p>
-                            या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे. ते आजही आपल्या शिष्यवृंदांच्या, साधकांच्या पाठीशी खंबीरपणे उभे आहेत.
-                        </p>
-                        <p>
-                            शास्त्रांमध्ये 'सर्वविद्' आणि 'ब्रह्मनिष्ठ' अशा महापुरुषांचे वर्णन आढळते. श्रीमोठेबाबा हे या वर्णनाचे मूर्तिमंत रूप आहेत. गीतेतील 'ज्ञानियाची लक्षणे' - अमानित्व, अदंभित्व, शांती, वैराग्य - ही सर्व त्यांच्या ठायी अनुभवास येतात.
+                            या विश्वात सूर्याचे स्थान अढळ आहे, सूर्य कधीही मावळत नाही, तो फक्त आपली जागा बदलतो. अगदी त्याचप्रमाणे, प. पू. श्री मोठेबाबांचे अस्तित्व आणि त्यांचे कार्य आजही अखंड आणि अविरत सुरू आहे.
                         </p>
                         <hr style="border-color:#444;">
                         <h4 style="color:var(--neon); text-align:center;">॥ ब्रह्मविद्या - स्वाध्याय आणि चिंतन ॥</h4>
@@ -230,14 +281,17 @@
                             <li><b>१. अखंड स्वाध्याय:</b> प्रवासातही वाचन सुरू राहावे.</li>
                             <li><b>२. ग्रंथ रक्षण:</b> दुर्मिळ पोथ्या डिजिटल रूपात जपणे.</li>
                             <li><b>३. बाबांचे विचार:</b> नित्यनियम आणि मार्गदर्शनासाठी.</li>
-                            <li><b>४. SINCE:</b> 2 JANUARY 2026 </li>
+                            <li><b>SINCE</b> 2 JANUARY 2026</li>
                         </ul>
                         <p style="text-align:center; color:var(--gold); margin-top:20px;">॥ श्रीदत्तात्रेयप्रभू महाराज की जय ॥</p>
                         <img src="photo2.jpg" style="width:100%; border-radius:10px; margin-top:10px;">
                     </div>`;
             } 
             else if(t==='profile') {
-                b.innerHTML=`<button onclick="openSet('menu')">Back</button><div style="text-align:center; margin-top:30px;"><h3>${user.name}</h3><p style="color:gray;">ID: ${localStorage.getItem('bv_device_id')}</p><p style="color:green;">Active</p></div>`;
+                const dev = localStorage.getItem('bv_device_id');
+                b.innerHTML=`<button onclick="openSet('menu')">Back</button><div style="text-align:center; margin-top:30px;">
+                <i class="fas fa-user-circle" style="font-size:60px; color:var(--neon);"></i>
+                <h3>${user.name}</h3><p style="color:gray;">ID: ${dev}</p><p style="color:green; border:1px solid green; display:inline-block; padding:5px 15px; border-radius:15px;">Active</p></div>`;
             } 
             else if(t==='chat') { 
                 b.innerHTML=`<button onclick="openSet('menu')">Back</button><div id="msgs" class="chat-area">Loading...</div><div style="display:flex;"><input id="c-in" style="flex:1;"><button onclick="snd()">Send</button></div>`; loadChat(); 
@@ -246,6 +300,7 @@
         
         function loadChat() { fetch(`${DB_URL}/feedback/${user.uid}.json`).then(r=>r.json()).then(d=>{ const m=document.getElementById('msgs'); if(!m)return; m.innerHTML=""; if(d) Object.values(d).forEach(x=>m.innerHTML+=`<div class="msg ${x.sender==='admin'?'msg-a':'msg-u'}">${x.text}</div>`); }); }
         function snd() { const t=document.getElementById('c-in').value; if(!t)return; fetch(`${DB_URL}/feedback/${user.uid}.json`, {method:'POST', body:JSON.stringify({text:t, sender:'user', timestamp:Date.now()})}).then(()=>{document.getElementById('c-in').value=""; loadChat();}); }
+
         function showScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
     </script>
 </body>
