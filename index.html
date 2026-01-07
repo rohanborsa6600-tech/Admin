@@ -301,7 +301,14 @@
         function loadChat() { fetch(`${DB_URL}/feedback/${user.uid}.json`).then(r=>r.json()).then(d=>{ const m=document.getElementById('msgs'); if(!m)return; m.innerHTML=""; if(d) Object.values(d).forEach(x=>m.innerHTML+=`<div class="msg ${x.sender==='admin'?'msg-a':'msg-u'}">${x.text}</div>`); }); }
         function snd() { const t=document.getElementById('c-in').value; if(!t)return; fetch(`${DB_URL}/feedback/${user.uid}.json`, {method:'POST', body:JSON.stringify({text:t, sender:'user', timestamp:Date.now()})}).then(()=>{document.getElementById('c-in').value=""; loadChat();}); }
 
-        function showScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+        function showScreen(id) {
+            // Clean up Reader if leaving it
+            if(id !== 'reader-screen') {
+                document.getElementById('book-content').innerHTML = "";
+            }
+            document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
     </script>
 </body>
 </html>
