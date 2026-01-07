@@ -86,6 +86,15 @@
             font-size: 1.25rem;
         }
 
+        @media (max-width: 768px) {
+            .chapter-card {
+                padding: 20px;
+            }
+            .chapter-title {
+                font-size: 1.5rem;
+            }
+        }
+
         /* --- Floating Menu Button --- */
         .fab {
             position: fixed;
@@ -270,7 +279,8 @@
         }
 
         function applySavedStyles() {
-            const fSize = localStorage.getItem('fSize') || 20;
+            const defaultSize = window.innerWidth < 768 ? 16 : 20;
+            const fSize = localStorage.getItem('fSize') || defaultSize;
             document.querySelectorAll('.sutra').forEach(s => s.style.fontSize = fSize + 'px');
         }
 
