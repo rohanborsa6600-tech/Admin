@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Brahmavidya</title>
+    <link rel="preload" as="image" href="login_bg.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -28,17 +29,17 @@
 
         /* DASHBOARD (TEXT LIST ONLY) */
         .navbar { height:60px; padding:0 15px; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.8); border-bottom: 1px solid #333; }
-        .book-list-container { display: flex; flex-direction: column; gap: 10px; padding: 20px; overflow-y: auto; flex: 1; }
+        .book-list-container { display: flex; flex-direction: column; gap: 5px; padding: 15px; overflow-y: auto; flex: 1; }
         @media (max-width: 768px) {
-            .book-list-container { padding: 10px 5px; gap: 8px; }
+            .book-list-container { padding: 10px 5px; gap: 2px; }
         }
         
         .book-item { 
             display: flex; justify-content: space-between; align-items: center;
-            padding: 18px 20px; 
+            padding: 15px 15px;
             background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); 
             border-left: 4px solid var(--neon);
-            border-radius: 8px; margin-bottom: 5px;
+            border-radius: 8px; margin-bottom: 2px;
             transition: 0.2s;
         }
         .book-item:active { background: rgba(0, 242, 255, 0.1); transform: scale(0.98); }
@@ -119,6 +120,7 @@
         
         let user = { uid: localStorage.getItem('bv_uid'), name: localStorage.getItem('bv_name') };
         let bookPermissions = {}; 
+        let bookCache = {}; // Cache to store loaded books
 
         // 🔥 SYSTEM BACK BUTTON HANDLER 🔥
         // This stops the app from closing when pressing Back on Android
@@ -232,26 +234,44 @@
             showScreen('reader-screen'); 
             document.getElementById('book-title').innerText = n;
             
-            fetch(f).then(r => r.text()).then(t => {
-                const d = document.getElementById('book-content');
-                d.innerHTML = t;
+            const d = document.getElementById('book-content');
 
-                // Re-run Scripts for Android
-                const scripts = d.querySelectorAll("script");
-                scripts.forEach(oldScript => {
-                    const newScript = document.createElement("script");
-                    if (oldScript.src) {
-                        newScript.src = oldScript.src;
-                        newScript.async = false;
-                    } else {
-                        newScript.textContent = oldScript.innerHTML;
-                    }
-                    oldScript.parentNode.replaceChild(newScript, oldScript);
+            // Check Cache first
+            if(bookCache[f]) {
+                d.innerHTML = bookCache[f];
+                restoreScripts(d);
+                restoreScroll(n, d);
+            } else {
+                d.innerHTML = '<div style="text-align:center; padding:50px; color:gray;"><i class="fas fa-circle-notch fa-spin" style="font-size:30px; margin-bottom:10px;"></i><br>Loading Book...</div>';
+
+                fetch(f).then(r => r.text()).then(t => {
+                    bookCache[f] = t; // Store in Cache
+                    d.innerHTML = t;
+                    restoreScripts(d);
+                    restoreScroll(n, d);
+                }).catch(err => {
+                    d.innerHTML = '<p style="text-align:center; padding:30px; color:red;">Failed to load book.</p>';
                 });
+            }
+        }
 
-                d.scrollTop = localStorage.getItem('pos_' + n) || 0; 
-                d.onscroll = () => localStorage.setItem('pos_' + n, d.scrollTop);
+        function restoreScripts(container) {
+            const scripts = container.querySelectorAll("script");
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement("script");
+                if (oldScript.src) {
+                    newScript.src = oldScript.src;
+                    newScript.async = false;
+                } else {
+                    newScript.textContent = oldScript.innerHTML;
+                }
+                oldScript.parentNode.replaceChild(newScript, oldScript);
             });
+        }
+
+        function restoreScroll(n, container) {
+            container.scrollTop = localStorage.getItem('pos_' + n) || 0;
+            container.onscroll = () => localStorage.setItem('pos_' + n, container.scrollTop);
         }
 
         // --- FULL ABOUT US & SETTINGS ---
